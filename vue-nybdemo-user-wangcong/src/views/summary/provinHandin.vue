@@ -10,18 +10,21 @@
           </div>
           <!-- <el-form-item style="margin-top: 20px">
             <label class="xrequired">本总结对应展会申报的id</label>
-            <el-input type="text" ref="meetId" v-model="declareForm.meetId" 
+            <el-input type="text" ref="meetId" v-model="declareForm.meetId"
             auto-complete="off"></el-input>
           </el-form-item> -->
           <el-form-item style="margin-top: 20px">
             <label class="xrequired">展会名称</label>
-            <el-input type="text" ref="detailId" v-model="declareForm.detailId" 
+            <el-input type="text" ref="detailId" v-model="declareForm.detailId"
             auto-complete="off"></el-input>
           </el-form-item>
-
+          <el-form-item>
+            <label class="xrequired">展览面积</label>
+            <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
+          </el-form-item>
           <el-form-item>
             <label class="xrequired">参展国家和地区数量</label>
-            <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder="个"></el-input>
+            <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <el-col :span="12">
@@ -45,45 +48,44 @@
 
           <el-form-item>
             <label class="xrequired">参展企业数量</label>
-          <el-input type="number" ref="companyNum" v-model="declareForm.companyNum" auto-complete="off" placeholder="个"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <label class="xrequired">展览面积</label>
-            <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder="平方米"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <label class="xrequired">同期活动数量</label>
-            <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder="个"></el-input>
+          <el-input type="number" ref="companyNum" v-model="declareForm.companyNum" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
 
           <el-form-item>
                 <label class="xrequired">采购商数量</label>
-    <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder="个"></el-input>
+    <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
               </el-form-item>
           <el-form-item>
                 <label class="xrequired">参展产品数量</label>
     <el-input type="number" ref=" displayObj" v-model="declareForm.displayObj" auto-complete="off"></el-input>
-              </el-form-item>              
-              <el-form-item>
-                <label class="xrequired">宣传媒体数</label>
-                <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder="家"></el-input>
               </el-form-item>
               <el-form-item>
+                <label class="xrequired">同期活动数量</label>
+                <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
+              <el-form-item>
+                <label class="xrequired">宣传媒体数</label>
+                <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
+
+          <el-form-item>
+            <label class="xrequired">线下成交额（含意向）</label>
+            <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
+          </el-form-item>
+          <el-form-item>
+            <label class="xrequired">线上成交额</label>
+            <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
+          </el-form-item>
+
+              <el-form-item>
                 <label class="xrequired">线下参展人数</label>
-                <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder="个"></el-input>
+                <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
               </el-form-item>
               <el-form-item>
                 <label class="xrequired">线上参展人数</label>
-                <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder="个"></el-input>
+                <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder=""></el-input>
               </el-form-item>
-              <el-form-item>
-                <label class="xrequired">线下成交额（含意向）</label>
-                <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder="元"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <label class="xrequired">线上成交额（含意向）</label>
-                <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder="元"></el-input>
-              </el-form-item>
+
           <el-form-item>
             <label class="xrequired">展会亮点(200字以内)</label>
             <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
@@ -93,7 +95,7 @@
             <label class="xrequired">下一步工作计划(200字以内)</label>
             <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
                       placeholder=""></el-input>
-          </el-form-item> 
+          </el-form-item>
 
           <el-form-item>
             <label class="xrequired">填报单位</label>
@@ -229,7 +231,7 @@ export default {
       // }
       let ip1 = this.$refs.summaryFile;
       let ip2 = this.$refs.hosterSignFile;
-      
+
 
       var formdata = new FormData();
       if (!ip1.files[0]) {
@@ -246,6 +248,7 @@ export default {
       //总结类型（事业单位提交[0]，省部级提交[1]，涉外展会负责单位提交[2]）
       formdata.append("kind", this.$store.getters.userKind);
       formdata.append("detailId", this.declareForm.detailId);
+      formdata.append("meetAddr", this.$store.getters.token);
 
       // 参展国家数量
       formdata.append("countryNum", this.declareForm.companyNum);

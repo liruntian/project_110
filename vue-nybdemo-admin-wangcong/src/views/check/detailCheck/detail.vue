@@ -5,7 +5,7 @@
         <colgroup span="7" width="200"></colgroup>
         <!-- <colgroup span="1" width="200"></colgroup> -->
         <tr align="center">
-          <th colspan="7">展会详细申报审核</th>
+          <th colspan="7">展会首次申报审核</th>
         </tr>
         <tr align="center">
           <td>展会名称</td>
@@ -24,7 +24,7 @@
           <td>指导单位</td>
           <td v-if="detailForm.orderComp">{{ detailForm.orderComp }}</td>
           <td v-if="!detailForm.orderComp">无</td>
-        </tr>       
+        </tr>
         <tr align="center">
           <td>批准单位</td>
           <td>{{ detailForm.authObj }}</td>
@@ -42,7 +42,7 @@
         </tr>
         <tr align="center">
           <td>举办地点</td>
-          <td>{{ detailForm.place }}</td>
+          <td>{{detailForm.chooseCity}}-{{detailForm.place }}</td>
           <td>举办面积</td>
           <td>{{ detailForm.area }}</td>
         </tr>
@@ -58,8 +58,7 @@
           <td>观众构成</td>
           <td>
             是否有参展商：<span>{{ getView1 }}</span> <br />是否有消费者：<span
-              >{{ getView2 }}</span
-            >
+              >{{ getView2 }}</span>
           </td>
         </tr>
         <tr align="center">
@@ -81,10 +80,10 @@
           <td>领导出席情况</td>
           <td colspan="6">
             是否邀请党和国家领导人出席：<span>{{ getLeaderN }} </span><br />
-            是否有国外政府官员含驻华使馆：<span>{{ getLeaderF }}</span><br />
-            国家级行业协会负责人<span>{{ getLeaderA }}</span><br />
-            省部级以上领导<span>{{ getLeaderP }}</span><br />
             有关司局和事业单位负责人<span>{{ getLeaderD }}</span><br />
+            省部级以上领导<span>{{ getLeaderP }}</span><br />
+            国家级行业协会负责人<span>{{ getLeaderA }}</span><br />
+            是否有国外政府官员含驻华使馆：<span>{{ getLeaderF }}</span><br />
           </td>
         </tr>
          <tr align="center">
@@ -92,13 +91,13 @@
           <td>{{ detailForm.writeObject }}</td>
           <td>负责处室</td>
           <td>{{ detailForm.department }}</td>
-        </tr>     
+        </tr>
          <tr align="center">
           <td>处室负责人</td>
           <td>{{ detailForm.charger }}</td>
           <td>手机号</td>
           <td>{{ detailForm.teleNum }}</td>
-        </tr>     
+        </tr>
         <tr align="center">
           <td>展会工作方案文档</td>
           <td colspan="6" style="font-size: 10px">
@@ -278,7 +277,7 @@ export default {
         const elink = document.createElement("a");
         elink.setAttribute("download", decodeURIComponent(fileName));
         elink.download = fileName;
-        elink.style.display = "none";
+        elink.style.display = "none"
         elink.href = URL.createObjectURL(blob);
         document.body.appendChild(elink);
         elink.click();

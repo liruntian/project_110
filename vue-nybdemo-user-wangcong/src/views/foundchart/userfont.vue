@@ -16,45 +16,47 @@
           <el-form-item style="margin-top: 20px">
             <label class="xrequired">展会名称</label>
             <el-input type="text" ref="name" v-model="declareForm.name" auto-complete="off"
-                      placeholder="博览会/展会/会议名"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <label class="xrequired">主办单位</label>
             <el-input type="text" ref="hostComp" v-model="declareForm.hostComp" auto-complete="off"
-                      placeholder="公司/团体名"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <label class="xrequired">承办单位</label>
             <el-input type="text" ref="fundComp" v-model="declareForm.fundComp" auto-complete="off"
-                      placeholder="公司/团体名"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <label>协办单位</label>
             <el-input type="text" ref="supportComp" v-model="declareForm.supportComp" auto-complete="off"
-                      placeholder="公司/团体名"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <label>指导单位</label>
             <el-input type="text" ref="orderComp" v-model="declareForm.orderComp" auto-complete="off"
-                      placeholder="公司/团体名"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
-          <div style="padding: 18px">
+          <div style="padding: 18px 18px 0px 18px">
             <label class="kindsfont">二、办展依据</label>
           </div>
-
+          <div class="attention">
+            <p><font class="hptext">注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见</font></p>
+          </div>
           <el-row :gutter="0">
             <el-col :span="12">
               <el-form-item>
                 <label class="xrequired">批准单位</label>
                 <el-input type="text" ref="authObj" v-model="declareForm.authObj" auto-complete="off"
-                          placeholder="部门/团体名"></el-input>
+                          placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item>
                 <label>批准文号（选填）</label>
                 <el-input type="text" ref="authNum" v-model="declareForm.authNum" auto-complete="off"
-                          placeholder="例：N2020091234"></el-input>
+                          placeholder=""></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -100,14 +102,14 @@
               <el-form-item>
                 <label class="xrequired">举办周期（年）</label>
                 <el-input type="number" ref="cycle" v-model="declareForm.cycle" auto-complete="off"
-                          placeholder="请填写纯数字，默认单位‘年’"></el-input>
+                          placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item>
                 <label class="xrequired">展览面积（m²）</label>
                 <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off"
-                          placeholder="请填写纯数字，默认单位‘m²’"></el-input>
+                          placeholder=""></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -117,7 +119,7 @@
           <el-form-item>
             <label class="xrequired">展会基本情况(100字以内)</label>
             <el-input type="textarea" ref="meetState" :maxlength="100" v-model="declareForm.meetState" auto-complete="off"
-                      placeholder=""></el-input>
+                      placeholder="主题、主要内容、展区规划等"></el-input>
           </el-form-item>
           <el-form-item>
             <label class="xrequired">同期活动(200字以内)</label>
@@ -169,11 +171,11 @@
             <label>财政金额（万元）</label>
             <el-input type="number" ref="finanFund" v-model="declareForm.finanFund" auto-complete="off"
             oninput="if(value.length > 8) value = value.slice(0,8)"
-                      placeholder="请填写纯数字，默认单位‘万元’"></el-input>
+                      placeholder=""></el-input>
             <label>自筹金额（万元）</label>
             <el-input type="number" ref="selfFund" v-model="declareForm.selfFund" auto-complete="off"
             oninput="if(value.length > 8) value = value.slice(0,8)"
-                      placeholder="请填写纯数字，默认单位‘万元’"></el-input>
+                      placeholder=""></el-input>
           </el-form-item>
 
 
@@ -192,15 +194,8 @@
             </el-col>
             <el-col :span="12">
               <p style="font-size: 10px">
-                <label style="vertical-align:middle;">是否有国外政府官员含驻华使馆</label>
-                <input style="vertical-align:middle;" ref="leaderF" type="checkbox" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
-                       placeholder=""></input>
-              </p>
-            </el-col>
-            <el-col :span="12">
-              <p style="font-size: 10px">
-                <label style="vertical-align:middle;">国家级行业协会负责人</label>
-                <input style="vertical-align:middle;" ref="leaderA" type="checkbox" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
+                <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
+                <input style="vertical-align:middle;" ref="leaderD" type="checkbox" v-model="declareForm.leaderD" name="leaderD" auto-complete="off"
                        placeholder=""></input>
               </p>
             </el-col>
@@ -213,8 +208,15 @@
             </el-col>
             <el-col :span="12">
               <p style="font-size: 10px">
-                <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
-                <input style="vertical-align:middle;" ref="leaderD" type="checkbox" v-model="declareForm.leaderD" name="leaderD" auto-complete="off"
+                <label style="vertical-align:middle;">国家级行业协会负责人</label>
+                <input style="vertical-align:middle;" ref="leaderA" type="checkbox" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
+                       placeholder=""></input>
+              </p>
+            </el-col>
+            <el-col :span="12">
+              <p style="font-size: 10px">
+                <label style="vertical-align:middle;">是否有国外政府官员含驻华使馆</label>
+                <input style="vertical-align:middle;" ref="leaderF" type="checkbox" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
                        placeholder=""></input>
               </p>
             </el-col>
@@ -237,11 +239,11 @@
 
             ></el-input>
           </el-form-item>
-          
+
 					<el-form-item enctype="multipart/form-data">
           <div class="filePlc">
 
-          
+
 						<div class="inputFile1" >
 							<label class="xrequired">展会工作方案</label><br />
 							<input type="file" ref="inputFile1"
@@ -303,7 +305,7 @@ export default {
         //   "^[0-9]{3,4}-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^([0-9]{3,4})[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$"
         // );
 
-        var pwdRegex = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^\([0-9]{3,4}\)[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/;        
+        var pwdRegex = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^\([0-9]{3,4}\)[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/;
         // var pwdRegex = /^1[3|5|8]([0-9]{1})([0-9]{8})$/;
         if (!pwdRegex.test(value)) {
           callback(new Error("您输入的手机号码有误"));
@@ -727,6 +729,13 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   margin: 10px;
   padding: 10px;
   width: 556px;
+}
+.attention {
+  background-color: rgba(70, 130, 180, 0.1);
+  transform: translateY(24%);
+  margin: 0px 10px 10px 30px;
+  padding: 10px ;
+  width: 991px;
 }
 .hptext {
   color: rgba(70, 130, 180, 0.9);

@@ -13,7 +13,7 @@
 </template>
 
 <script>
- 
+
   var cityDatas = require('./cityDatas')
     export default {
         name: "chooseCity",
@@ -150,13 +150,9 @@
     width: 100%;
     height: 40px;
   }
-
   .ivu-select-dropdown{
       background-color: rgb(226, 95, 29);
-      max-width: 300px;
+      width: 300px;
       overflow: auto;
-      
-
   }
-
 </style>
