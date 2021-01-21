@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="card1 bbxx" style="width: 100%">
+    <div class="card bbxx" style="width: 100%">
       <div class="chartUser">
 
         <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
@@ -691,7 +691,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   color: rgba(255, 38, 38, 0.9);
 }
 
-.card1 {
+.card {
   color: #666;
   @extend %shadow;
 

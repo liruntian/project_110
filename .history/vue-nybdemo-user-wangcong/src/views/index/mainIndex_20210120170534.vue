@@ -15,15 +15,15 @@
 
             <ul>
               <li>
-                <router-link to="/setPassword" class="kjfs kjfs-grennn"
+                <router-link to="/detafond" class="kjfs kjfs-grennn"
                   ><span><i class="fa fa-wpforms fa-2x"></i></span
-                  ><span>修改密码</span></router-link
+                  ><span>首次申报</span></router-link
                 >
               </li>
               <li>
-                <router-link to="/handin" class="kjfs kjfs-pinkk"
+                <router-link to="/easyfond" class="kjfs kjfs-pinkk"
                   ><span><i class="fa fa-leanpub fa-2x"></i></span
-                  ><span>上报总结</span></router-link
+                  ><span>简易申报</span></router-link
                 >
               </li>
             </ul>
