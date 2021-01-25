@@ -4,7 +4,7 @@
 
         <div class="time">{{exhiListItem.id}}</div>
         <div class="meetId">{{exhiListItem.createTime.substring(0,10)}}</div>
-        <div class="state">{{exhiListItem.writeObject}}</div>
+        <div class="state">{{getCheckState}}</div>
     </div>
 
 </div>

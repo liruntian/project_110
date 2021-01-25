@@ -7,7 +7,7 @@
     <div class="exht" style="text-align: center; width: 320px">
       <span style="width: 100px">申报ID</span>
       <span style="width: 90px">申报时间</span>
-      <span style="width: 100px">填报单位</span>
+      <span style="width: 100px">审核状态</span>
     </div>
     <exhi-list-item
       v-for="(item, index) in exhiList"

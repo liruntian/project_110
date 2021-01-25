@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="17">
         <div
           style="
             width: 340px;
@@ -44,11 +44,8 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="17">
         <detail-exhi-list></detail-exhi-list>
-      </el-col>
-      <el-col :span="11">
-        <not-read></not-read>
       </el-col>
       <!-- <el-col :span="7">
         <easy-exhi-list></easy-exhi-list>

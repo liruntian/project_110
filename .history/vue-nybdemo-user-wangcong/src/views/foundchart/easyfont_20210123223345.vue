@@ -1,12 +1,12 @@
 <template>
   <div>
 
-    <div class="card1">
+    <div class="card1 bbxx" style="width: 100%">
       <div class="chartUser">
 
-        <el-form :model="declareForm" ref="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data' :rules="rules">
+        <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
           <div class="helpinfo">
-            <p><span class="wrtext">本申报适用于未加入展会计划的申报！</span></p>
+            <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
             <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
           </div>
 
@@ -38,7 +38,7 @@
             <el-input type="text" ref="orderComp" v-model="declareForm.orderComp" auto-complete="off"
                       placeholder=""></el-input>
           </el-form-item>
-          <div style="padding: 18px 18px 0px 18px">
+          <div style="padding: 18px">
             <label class="kindsfont">二、办展依据</label>
           </div>
           <div class="attention">
@@ -62,7 +62,7 @@
           </el-row>
 					<el-form-item enctype="multipart/form-data">
 						<div class="authorizeFile">
-							<label class="xrequired">批准审核文件</label><br />
+							<label class="xrequired">去年审批文件</label><br />
 							<input type="file" ref="authorizeFile"
               accept=".pdf" name="authorizeFile"></input>
 						</div>
@@ -73,7 +73,7 @@
           </div>
 
           <el-row :gutter="0">
-            <el-col :span="15">
+            <el-col :span="17">
               <el-form-item>
                 <label class="xrequired">举办地点&举办时间</label>
                 <choose-city ref='chooseCity' :cityData = 'this.chooseCityTag'></choose-city>
@@ -81,33 +81,40 @@
                           placeholder="具体举办地点，如xx展览中心"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item>
+            <el-col :span="10">
                 <el-date-picker
                   ref="Times"
                   v-model="declareForm.Times"
                   type="datetimerange"
-                  style="margin-top:60px"
+                  size = 'large'
+                  style="margin-top:44px"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :default-time="['8:00:00', '18:00:00']">
                 </el-date-picker>
+              </el-col>
+            <!-- <el-col :span="7">
+              <el-form-item>
+                <label>开始时间</label>
+                <el-input type="date" ref="beginTime" name="beginTime" v-model="declareForm.beginTime" auto-complete="off"
+                          placeholder=""></el-input>
               </el-form-item>
             </el-col>
+            <p class="timeMid">——</p>
+            <el-col :span="7">
+              <el-form-item>
+                <label>结束时间</label>
+                <el-input type="date" ref="endTime" name="endTime" v-model="declareForm.endTime" auto-complete="off"
+                          placeholder=""></el-input>
+              </el-form-item>
+            </el-col> -->
           </el-row>
 
           <el-row>
             <el-col :span="12">
               <el-form-item>
-                <label class="xrequired">举办周期（年）</label>
-                <el-input type="number" ref="cycle" v-model="declareForm.cycle" auto-complete="off"
-                          placeholder=""></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item>
-                <label class="xrequired">展览面积（m²）</label>
+                <label  class="xrequired">展览面积（m²）</label>
                 <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off"
                           placeholder=""></el-input>
               </el-form-item>
@@ -117,12 +124,12 @@
 
 
           <el-form-item>
-            <label class="xrequired">展会基本情况(100字以内)</label>
+            <label  class="xrequired">展会基本情况(100字以内)</label>
             <el-input type="textarea" ref="meetState" :maxlength="100" v-model="declareForm.meetState" auto-complete="off"
                       placeholder="主题、主要内容、展区规划等"></el-input>
           </el-form-item>
           <el-form-item>
-            <label class="xrequired">同期活动(200字以内)</label>
+            <label  class="xrequired">同期活动(200字以内)</label>
             <el-input type="textarea" ref="activityBrief" :maxlength="200" v-model="declareForm.activityBrief" auto-complete="off"
                       placeholder=""></el-input>
           </el-form-item>
@@ -138,7 +145,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item>
-                <p><label class="xrequired">观众构成</label></p>
+                <p><label  class="xrequired">观众构成</label></p>
                 <el-row :gutter="0">
                   <el-col :span="2">
                     <div><br></div>
@@ -164,7 +171,7 @@
           </el-row>
 
           <div style="padding: 18px">
-            <label class="kindsfont xrequired">四、经费来源</label>
+            <label class="kindsfont xrequired" >四、经费来源</label>
           </div>
 
           <el-form-item>
@@ -184,7 +191,7 @@
           </div>
 
           <el-form-item>
-            <p><label class="xrequired">领导出席情况</label></p>
+            <p><label>领导出席情况</label></p>
             <el-col :span="12">
               <p style="font-size: 10px">
                 <label style="vertical-align:middle;">党和国家领导人</label>
@@ -221,6 +228,7 @@
               </p>
             </el-col>
           </el-form-item>
+
           <div style="padding: 18px">
             <label class="kindsfont xrequired">六、填报单位信息</label>
           </div>
@@ -233,39 +241,25 @@
             <label class="xrequired">处室负责人</label>
             <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
             <label class="xrequired">负责人手机号</label>
-          </el-form-item>
-          <el-form-item prop="teleNum" style="margin-top:-22px">
             <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
-            oninput="if(value.length > 11) value = value.slice(0,11)"
-
-            ></el-input>
+            oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
           </el-form-item>
 
 					<el-form-item enctype="multipart/form-data">
           <div class="filePlc">
-
-
-						<div class="inputFile1" >
+						<div class="inputFile1">
 							<label class="xrequired">展会工作方案</label><br />
 							<input type="file" ref="inputFile1"
               accept=".pdf" name="preExpoFile"></input>
 						</div>
 
-						<div class="inputFile2" >
+						<div class="inputFile2">
 							<label class="xrequired">招展招商方案</label><br/>
 							<input type="file" ref="inputFile2"  accept=".pdf" name="investmentPlanFile"></input>
 						</div>
-						<div class="inputFile3" >
-							<label class="xrequired">可行性报告</label><br />
-							<input type="file" ref="inputFile3"
-              accept=".pdf" name=""></input>
-						</div>
-						<div class="inputFile4" >
-							<label class="xrequired">承办单位办展条件说明</label><br />
-							<input type="file" ref="inputFile4"
-              accept=".pdf" name=""></input>
-						</div>
           </div>
+
+
 					</el-form-item>
               <!-- <form enctype='multipart/form-data' action="http://192.168.1.101:8445/api/handin/detail" method="post" target="#">
                 <input type="file" name='preExpoFile' accept=".pdf"  ref="inputFile1">
@@ -288,70 +282,37 @@
 </template>
 
 <script>
-import { sendDetail } from "../../network/sendForm";
+import { getEasy } from "../../network/getForm";
 import { getDetail } from "../../network/getForm";
+
 import chooseCity from "../../components/common/chooseCity/chooseCity";
-
 export default {
-  name: "userfont",
-  components: {
-    chooseCity,
-  },
+  name: "easyfont",
   data() {
-    var checkteleNum = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入手机号"));
-      } else {
-        // var pwdRegex = new RegExp(
-        //   "^[0-9]{3,4}-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^([0-9]{3,4})[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$"
-        // );
-
-        var pwdRegex = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^\([0-9]{3,4}\)[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/;
-        // var pwdRegex = /^1[3|5|8]([0-9]{1})([0-9]{8})$/;
-        if (!pwdRegex.test(value)) {
-          callback(new Error("您输入的手机号码有误"));
-        }
-        callback();
-      }
-    };
     return {
-      chooseCityTag: "北京市",
+      chooseCityTag: "",
       declareForm: {
-        //展会名称
         name: "",
-        //主办单位
         hostComp: "",
-        //承办单位
         fundComp: "",
-        //指导单位
-        orderComp: "",
-        //协办单位
+        guideComp: "",
         supportComp: "",
-        //批准单位
         authObj: "",
-        //批准文号（选填）
         authNum: "",
-        //举办地点
         place: "",
-        startTime: "",
-        endTime: "",
         Times: [],
-        //举办周期
         cycle: "",
-        //展览面积
         area: "",
-        //展会基本情况
         meetState: "",
-        //同期活动
         activityBrief: "",
         foreign: false,
-        //是否采购商
         view1: false,
-        //是否消费者
         view2: false,
-        //财政金额
+        willInvite: "",
+        capitalSource: "",
+        finanfrom: "",
+        orderComp: "",
         finanFund: "",
-        //自筹金额
         selfFund: "",
         //填报单位
         writeObject: "",
@@ -361,55 +322,78 @@ export default {
         charger: "",
         //手机号
         teleNum: "",
-
-        //党和国家领导人
         leaderN: false,
-        //有关司局和事业单位负责人
-        leaderD: false,
-        //省部级以上领导
-        leaderP: false,
-        // 国家级行业协会负责人
-        leaderA: false,
-        // 是否有国外政府官员含驻华使馆
         leaderF: false,
-      },
-      rules: {
-        teleNum: [
-          { validator: checkteleNum, trigger: "blur" }]
+        leaderA: false,
+        leaderP: false,
+        leaderD: false,
       },
     };
+  },
+  components: {
+    chooseCity,
+  },
+  created() {
+    getEasy(this.$store.getters.token).then((res) => {
+      console.log(res.data)
+      if (res.data) {
+        if (!res.data.summaryDone & res.data.checkState == 2) {
+          alert("请先完成上报总结");
+          this.$router.push("handin");
+        }
+        (this.declareForm = res.data),
+          (this.declareForm.leaderN = parseInt(res.data.leaderState / 10000)),
+          (this.declareForm.leaderF = parseInt(
+            (res.data.leaderState % 10000) / 10
+          )),
+          (this.declareForm.leaderA = parseInt(
+            (res.data.leaderState % 1000) / 10
+          )),
+          (this.declareForm.leaderP = parseInt(
+            (res.data.leaderState % 100) / 10
+          )),
+          (this.declareForm.leaderD = parseInt(res.data.leaderState % 10)),
+          (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
+          (this.chooseCityTag = res.data.chooseCity);
+        console.log(this.declareForm);
+      } else {
+        getDetail(this.$store.getters.token).then((res) => {
+          if (res.data) {
+            if (!res.data.summaryDone & res.data.checkState == 1) {
+              alert("请先完成上报总结");
+              this.$router.push("handin");
+            }
+            (this.declareForm = res.data),
+              (this.declareForm.leaderN = parseInt(
+                res.data.leaderState / 10000
+              )),
+              (this.declareForm.leaderF = parseInt(
+                (res.data.leaderState % 10000) / 10
+              )),
+              (this.declareForm.leaderA = parseInt(
+                (res.data.leaderState % 1000) / 10
+              )),
+              (this.declareForm.leaderP = parseInt(
+                (res.data.leaderState % 100) / 10
+              )),
+              (this.declareForm.leaderD = parseInt(res.data.leaderState % 10)),
+              (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
+              console.log(this.declareForm);
+          }
+        });
+      }
+    });
   },
   computed: {
     leaderPresent() {
       return (
         (this.declareForm.leaderN & 1).toString() +
-        (this.declareForm.leaderD & 1).toString() +
-        (this.declareForm.leaderP & 1).toString() +
+        (this.declareForm.leaderF & 1).toString() +
         (this.declareForm.leaderA & 1).toString() +
-        (this.declareForm.leaderF & 1).toString()
+        (this.declareForm.leaderP & 1).toString() +
+        (this.declareForm.leaderD & 1).toString()
       );
     },
-  },
-  created() {
-    getDetail(this.$store.getters.token).then((res) => {
-      if (res.data) {
-        (this.declareForm = res.data),
-          (this.declareForm.leaderN = parseInt(res.data.leaderState.toString()[0])),
-          (this.declareForm.leaderD = parseInt(
-            res.data.leaderState.toString()[1]
-          )),
-          (this.declareForm.leaderP = parseInt(
-            res.data.leaderState.toString()[2]
-          )),
-          (this.declareForm.leaderA = parseInt(
-           res.data.leaderState.toString()[3]
-          )),
-          (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
-          (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
-          (this.chooseCityTag = res.data.chooseCity);
-        console.log(this.declareForm);
-      }
-    });
   },
   methods: {
     declareFormed() {
@@ -449,6 +433,7 @@ export default {
         this.$refs.authObj.focus();
         return false;
       }
+
       if (!this.declareForm.place) {
         this.$message({
           showClose: true,
@@ -467,15 +452,6 @@ export default {
         this.$refs.Times.focus();
         return false;
       }
-      if (!this.declareForm.cycle) {
-        this.$message({
-          showClose: true,
-          message: "请填写举办周期！",
-          type: "error",
-        });
-        this.$refs.cycle.focus();
-        return false;
-      }
       if (!this.declareForm.area) {
         this.$message({
           showClose: true,
@@ -488,12 +464,13 @@ export default {
       if (!this.declareForm.meetState) {
         this.$message({
           showClose: true,
-          message: "请填写展会内容！",
+          message: "请填写展会基本情况！",
           type: "error",
         });
         this.$refs.meetState.focus();
         return false;
       }
+
       if (!this.declareForm.activityBrief) {
         this.$message({
           showClose: true,
@@ -521,17 +498,14 @@ export default {
         this.$refs.finanFund.focus();
         return false;
       }
-
       let ip0 = this.$refs.authorizeFile;
       let ip1 = this.$refs.inputFile1;
       let ip2 = this.$refs.inputFile2;
-      let ip3 = this.$refs.inputFile3;
-      let ip4 = this.$refs.inputFile4;
       var formdata = new FormData();
       if (!ip0.files[0]) {
         this.$message({
           showClose: true,
-          message: "请填写批准审核文件！",
+          message: "请填写去年审批文件！",
           type: "error",
         });
         this.$refs.authorizeFile.focus();
@@ -555,32 +529,15 @@ export default {
         this.$refs.inputFile2.focus();
         return false;
       }
-      if (!ip3.files[0]) {
-        this.$message({
-          showClose: true,
-          message: "请填写可行性报告！",
-          type: "error",
-        });
-        this.$refs.inputFile3.focus();
-        return false;
-      }
-      if (!ip4.files[0]) {
-        this.$message({
-          showClose: true,
-          message: "请填写承办单位办展条件说明！",
-          type: "error",
-        });
-        this.$refs.inputFile4.focus();
-        return false;
-      }
+      //展会简称
       formdata.append("meetAddr", this.$store.getters.token);
       // 财政资金的拨款金额
       formdata.append("finanFund", this.declareForm.finanFund);
       // 其他来源的拨款金额
-      formdata.append("selfFund", this.declareForm.selfFund);
+      // formdata.append("otherFund", this.declareForm.otherfond);
       // 展会面积
       formdata.append("area", this.declareForm.area);
-      // 是否邀请境外参展商或有关机构
+      // 是否邀请国外参展商
       formdata.append("foreign", this.declareForm.foreign);
       // 展会名称
       formdata.append("name", this.declareForm.name);
@@ -616,7 +573,6 @@ export default {
       formdata.append("leaderState", this.leaderPresent);
       //同期活动
       formdata.append("activityBrief", this.declareForm.activityBrief);
-
       //填报单位
       formdata.append("writeObject", this.declareForm.writeObject);
       //负责处室
@@ -629,23 +585,18 @@ export default {
       formdata.append("meetPlanFile", ip1.files[0]);
       //招展招商方案文档
       formdata.append("investmentPlanFile", ip2.files[0]);
-      //可行性报告文档
-      formdata.append("feasibilityFile", ip3.files[0]);
-      //承办单位办展条件说明
-      formdata.append("conditionStateFile", ip4.files[0]);
       //上级单位审核意见
       formdata.append("authFile", ip0.files[0]);
       //是否采购商参加
       formdata.append("view1", this.declareForm.view1);
       //是否消费者参加
       formdata.append("view2", this.declareForm.view2);
-      console.log(this.getChoosedCity);
-      console.log(this.leaderPresent)
-
-      // console.log(this.leaderPresent);
-      // console.log(this.declareForm.Times[0]);
+      console.log(this.leaderPresent);
+      // console.log(formdata);
       // console.log(formdata.get("finanFrom"));
-      // sendDetail(formdata).then(successResponse=>{
+
+      // sendEasy(formdata)
+      //   .then((successResponse) => {
       //     if (successResponse.data.code === 0) {
       //       this.$router.push("/").catch(() => {});
       //     } else {
@@ -655,23 +606,12 @@ export default {
       //         type: "error",
       //       });
       //     }
-      // })
-      // .catch((failResponse) => {});
-      // sendDetail(formdata).then((successResponse) => {
-      //     if (successResponse.data.code === 0) {
-      //       this.$router.push("/").catch(() => {});
-      //     } else { c
-      //       this.$message({
-      //         showClose: true,
-      //         message: "提交失败！",
-      //         type: "error",
-      //       });
-      //     }
       //   })
       //   .catch((failResponse) => {});
+
       var axios = require("axios");
       axios
-        .post("http://8.131.56.110:8445/api/handin/detail", formdata)
+        .post("http://8.131.56.110:8445/api/handin/easy", formdata)
         .then((successResponse) => {
           if (successResponse.data.code === 0) {
             this.$router.push("/").catch(() => {});
@@ -791,7 +731,6 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     }
   }
 }
-
 #lineEcharts {
   margin-#{$top}: 30px;
   padding-#{$top}: 30px;
@@ -810,7 +749,6 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   display: flex;
   flex: 1;
 }
-
 .timeMid {
   width: 20px;
   left: 0;
@@ -819,6 +757,13 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   bottom: 0;
   margin: auto;
   padding-left: 10px;
+}
+.Context:after {
+  content: "*";
+  color: red;
+  position: absolute;
+  top: 50px;
+  left: 6px;
 }
 label.xrequired:after {
   content: "*";

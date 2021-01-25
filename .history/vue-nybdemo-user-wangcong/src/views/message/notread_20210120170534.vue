@@ -25,8 +25,7 @@ export default {
   created(){
 
     getNotLook(this.$store.getters.token).then(res => {
-      this.msgList = res.data;
-      console.log(this.msgList)
+      this.msgList = res.data
 
     })
 

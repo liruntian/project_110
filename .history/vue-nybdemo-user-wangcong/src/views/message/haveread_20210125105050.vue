@@ -38,8 +38,8 @@ export default {
   created(){
     getLooked(this.$store.getters.token).then(res => {
       this.msgList = res.data
-      this.msgList = this.msgList.filter(item => item.createTime = item.createTime.split("T")[0]+' ' + item.createTime.split("T")[1])
-      console.log(this.msgList)
+      let a = this.msgList.map(item => item.updateTime = item.updateTime.split("T")[0])
+      console.log(a)
 
     })
   }

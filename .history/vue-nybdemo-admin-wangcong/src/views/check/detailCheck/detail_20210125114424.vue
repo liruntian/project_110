@@ -101,7 +101,7 @@
         <tr align="center">
           <td>展会工作方案文档</td>
           <td colspan="6" style="font-size: 10px">
-            <div class="down" @click="downMeetPlanFile">
+            <div class="down" @click="downPreExpoFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
           </td>
@@ -116,8 +116,8 @@
         </tr>
          <tr align="center">
           <td>可行性报告文档</td>
-          <td colspan="6" style="fFont-size: 10px">
-            <div class="down" @click="downFeasibilityFile">
+          <td colspan="6" style="font-size: 10px">
+            <div class="down" @click="downInvestmentPlanFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
           </td>
@@ -125,7 +125,15 @@
         <tr align="center">
           <td>承办单位办展条件说明</td>
           <td colspan="6" style="font-size: 10px">
-            <div class="down" @click="downConditionStateFile">
+            <div class="down" @click="downInvestmentPlanFile">
+              <img src="../../../assets/file.svg" />点击下载
+            </div>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>上级单位审核意见</td>
+          <td colspan="6" style="font-size: 10px">
+            <div class="down" @click="downInvestmentPlanFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
           </td>
@@ -167,7 +175,7 @@ export default {
   },
   created() {
     this.detailForm = this.$route.query.item;
-    console.log(this.detailForm)
+    // console.log(this.detailForm)
   },
   computed: {
     ishow() {
@@ -183,20 +191,20 @@ export default {
       return this.detailForm.view2 == true ? "是" : "否";
     },
     getLeaderN() {
-      return parseInt(this.detailForm.leaderState.toString()[0])  == 1 ? "是" : "否";
-    },
-    getLeaderD() {
-      return parseInt(this.detailForm.leaderState.toString()[1])  == 1 ? "是" : "否";
-    },
-
-    getLeaderP() {
-      return parseInt(this.detailForm.leaderState.toString()[2]) == 1 ? "是" : "否";
-    },
-    getLeaderA() {
-      return parseInt(this.detailForm.leaderState.toString()[3]) == 1 ? "是" : "否";
+      return parseInt(this.detailForm.leaderState / 10000)  == 1 ? "是" : "否";
     },
     getLeaderF() {
-      return parseInt(this.detailForm.leaderState.toString()[4]) == 1 ? "是" : "否";
+      return parseInt((this.detailForm.leaderState / 1000) % 10)  == 1 ? "是" : "否";
+    },
+
+    getLeaderA() {
+      return parseInt((this.detailForm.leaderState/100)%10) == 1 ? "是" : "否";
+    },
+    getLeaderP() {
+      return parseInt((this.detailForm.leaderState/10)%10) == 1 ? "是" : "否";
+    },
+    getLeaderD() {
+      return parseInt(this.detailForm.leaderState%10) == 1 ? "是" : "否";
     },
   },
   methods: {
@@ -263,7 +271,7 @@ export default {
     //   history.go(-1);
     // },
     downAuthorizeFile(){
-      getdetailFile(this.detailForm.authFileId).then((res) => {
+      getdetailFile(this.detailForm.authorizeFile).then((res) => {
         const blob = new Blob([res]); //处理文档流
         const fileName = this.detailForm.name + "的批准审核文件.pdf";
         const elink = document.createElement("a");
@@ -277,42 +285,10 @@ export default {
         document.body.removeChild(elink);
       });
     },
-    //下载展会工作方案文档
-    downMeetPlanFile(){
-      getdetailFile(this.detailForm.meetPlanFileId).then((res) => {
+    downPreExpoFile() {
+      getdetailFile(this.detailForm.preExpoFileId).then((res) => {
         const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的展会工作方案文档.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none"
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
-    },
-    downFeasibilityFile(){
-      getdetailFile(this.detailForm.feasibilityFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none"
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
-    },
-    //下载条件说明
-    downConditionStateFile() {
-      getdetailFile(this.detailForm.conditionStateFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf";
+        const fileName = this.detailForm.name + "的以往会展情况.pdf";
         const elink = document.createElement("a");
         elink.setAttribute("download", decodeURIComponent(fileName));
         elink.download = fileName;
