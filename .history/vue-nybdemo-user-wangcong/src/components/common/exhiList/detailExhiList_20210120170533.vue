@@ -2,12 +2,12 @@
   <div class="exhiList">
     <!--<p class="exhtitle fa fa-th-large fa-lg">正在申请中的展会</p> -->
     <p class="exhtitle">
-      <i class="fa fa-th-large fa-lg" style="margin-right: 5px"></i>正在审核中的展会
+      <i class="fa fa-th-large fa-lg" style="margin-right: 5px"></i>展会申报状态
     </p>
     <div class="exht" style="text-align: center; width: 320px">
       <span style="width: 100px">申报ID</span>
       <span style="width: 90px">申报时间</span>
-      <span style="width: 100px">填报单位</span>
+      <span style="width: 100px">审核状态</span>
     </div>
     <exhi-list-item
       v-for="(item, index) in exhiList"
@@ -40,16 +40,14 @@ export default {
     exhiListItem,
   },
 
-  // 从后台获取所有审核中的数据，并且保存到exhiList
+  // 从后台获取数据，并且保存到exhiList
   created() {
     getDetailExhiState(this.$store.getters.token).then((res) => {
       this.exhiList = this.exhiList.concat(res.data);
-      this.exhiList = this.exhiList.filter(item => item.checkState == 0)
       
       // console.log( this.exhiList)
       getEasyExhiState(this.$store.getters.token).then((res) => {
         this.exhiList = this.exhiList.concat(res.data);
-        this.exhiList = this.exhiList.filter(item => item.checkState == 0);
         console.log(this.exhiList);
       });
     });

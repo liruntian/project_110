@@ -130,6 +130,14 @@
             </div>
           </td>
         </tr>
+        <tr align="center">
+          <td>上级单位审核意见</td>
+          <td colspan="6" style="font-size: 10px">
+            <div class="down" @click="downInvestmentPlanFile">
+              <img src="../../../assets/file.svg" />点击下载
+            </div>
+          </td>
+        </tr>
       </table>
       <br />
       <div class="check">
@@ -183,20 +191,20 @@ export default {
       return this.detailForm.view2 == true ? "是" : "否";
     },
     getLeaderN() {
-      return parseInt(this.detailForm.leaderState.toString()[0])  == 1 ? "是" : "否";
-    },
-    getLeaderD() {
-      return parseInt(this.detailForm.leaderState.toString()[1])  == 1 ? "是" : "否";
-    },
-
-    getLeaderP() {
-      return parseInt(this.detailForm.leaderState.toString()[2]) == 1 ? "是" : "否";
-    },
-    getLeaderA() {
-      return parseInt(this.detailForm.leaderState.toString()[3]) == 1 ? "是" : "否";
+      return parseInt(this.detailForm.leaderState / 10000)  == 1 ? "是" : "否";
     },
     getLeaderF() {
-      return parseInt(this.detailForm.leaderState.toString()[4]) == 1 ? "是" : "否";
+      return parseInt((this.detailForm.leaderState / 1000) % 10)  == 1 ? "是" : "否";
+    },
+
+    getLeaderA() {
+      return parseInt((this.detailForm.leaderState/100)%10) == 1 ? "是" : "否";
+    },
+    getLeaderP() {
+      return parseInt((this.detailForm.leaderState/10)%10) == 1 ? "是" : "否";
+    },
+    getLeaderD() {
+      return parseInt(this.detailForm.leaderState%10) == 1 ? "是" : "否";
     },
   },
   methods: {

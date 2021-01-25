@@ -185,17 +185,17 @@ export default {
     getLeaderN() {
       return parseInt(this.detailForm.leaderState.toString()[0])  == 1 ? "是" : "否";
     },
-    getLeaderD() {
+    getLeaderF() {
       return parseInt(this.detailForm.leaderState.toString()[1])  == 1 ? "是" : "否";
     },
 
-    getLeaderP() {
+    getLeaderA() {
       return parseInt(this.detailForm.leaderState.toString()[2]) == 1 ? "是" : "否";
     },
-    getLeaderA() {
+    getLeaderP() {
       return parseInt(this.detailForm.leaderState.toString()[3]) == 1 ? "是" : "否";
     },
-    getLeaderF() {
+    getLeaderD() {
       return parseInt(this.detailForm.leaderState.toString()[4]) == 1 ? "是" : "否";
     },
   },
