@@ -394,17 +394,17 @@ export default {
     getDetail(this.$store.getters.token).then((res) => {
       if (res.data) {
         (this.declareForm = res.data),
-          (this.declareForm.leaderN = parseInt(res.data.leaderState.toString()[0])),
+          (this.declareForm.leaderN = parseInt(res.data.leaderState / 10000)),
           (this.declareForm.leaderD = parseInt(
-            res.data.leaderState.toString()[1]
+            (res.data.leaderState / 1000) % 10
           )),
           (this.declareForm.leaderP = parseInt(
-            res.data.leaderState.toString()[2]
+            (res.data.leaderState / 100) % 10
           )),
           (this.declareForm.leaderA = parseInt(
-           res.data.leaderState.toString()[3]
+            (res.data.leaderState / 10) % 10
           )),
-          (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
+          (this.declareForm.leaderF = parseInt(res.data.leaderState % 10)),
           (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
           (this.chooseCityTag = res.data.chooseCity);
         console.log(this.declareForm);

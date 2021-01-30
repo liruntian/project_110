@@ -57,6 +57,7 @@ created() {
         item.checkState = item.checkState == 0 ? '待审核': '已通过'
       }
     })
+    console.log('this.easyForm')
 
 },
 //生命周期 - 挂载完成（可以访问DOM元素）

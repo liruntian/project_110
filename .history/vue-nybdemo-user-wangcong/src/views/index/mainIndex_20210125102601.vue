@@ -47,7 +47,7 @@
       <el-col :span="6">
         <detail-exhi-list></detail-exhi-list>
       </el-col>
-      <el-col :span="11">
+      <el-col :span="12">
         <not-read></not-read>
       </el-col>
       <!-- <el-col :span="7">

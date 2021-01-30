@@ -362,16 +362,11 @@ export default {
         //手机号
         teleNum: "",
 
-        //党和国家领导人
         leaderN: false,
-        //有关司局和事业单位负责人
-        leaderD: false,
-        //省部级以上领导
-        leaderP: false,
-        // 国家级行业协会负责人
-        leaderA: false,
-        // 是否有国外政府官员含驻华使馆
         leaderF: false,
+        leaderA: false,
+        leaderP: false,
+        leaderD: false,
       },
       rules: {
         teleNum: [
@@ -383,10 +378,10 @@ export default {
     leaderPresent() {
       return (
         (this.declareForm.leaderN & 1).toString() +
-        (this.declareForm.leaderD & 1).toString() +
-        (this.declareForm.leaderP & 1).toString() +
+        (this.declareForm.leaderF & 1).toString() +
         (this.declareForm.leaderA & 1).toString() +
-        (this.declareForm.leaderF & 1).toString()
+        (this.declareForm.leaderP & 1).toString() +
+        (this.declareForm.leaderD & 1).toString()
       );
     },
   },
@@ -394,17 +389,17 @@ export default {
     getDetail(this.$store.getters.token).then((res) => {
       if (res.data) {
         (this.declareForm = res.data),
-          (this.declareForm.leaderN = parseInt(res.data.leaderState.toString()[0])),
-          (this.declareForm.leaderD = parseInt(
-            res.data.leaderState.toString()[1]
-          )),
-          (this.declareForm.leaderP = parseInt(
-            res.data.leaderState.toString()[2]
+          (this.declareForm.leaderN = parseInt(res.data.leaderState / 10000)),
+          (this.declareForm.leaderF = parseInt(
+            (res.data.leaderState / 1000) % 10
           )),
           (this.declareForm.leaderA = parseInt(
-           res.data.leaderState.toString()[3]
+            (res.data.leaderState / 100) % 10
           )),
-          (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
+          (this.declareForm.leaderP = parseInt(
+            (res.data.leaderState / 10) % 10
+          )),
+          (this.declareForm.leaderD = parseInt(res.data.leaderState % 10)),
           (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
           (this.chooseCityTag = res.data.chooseCity);
         console.log(this.declareForm);

@@ -137,23 +137,24 @@
         <!-- <button class="pass" @click="enrol" v-show="!ishow">
           列入展会计划
         </button> -->
-        <Button class="reject" type="primary" @click="ok">返回修改</Button>
-<!--        <Modal-->
-<!--          v-model="modal1"-->
-<!--          title="需要返回修改意见吗"-->
-<!--          :mask-closable="true"-->
-<!--          @on-ok="ok"-->
-<!--          @on-cancel="cancel"-->
-<!--        >-->
-<!--          <p>需要返回修改意见，请点击确认；否则按取消返回详细申报审核列表界面</p>-->
-<!--        </Modal>-->
+        <Button class="reject" type="primary" @click="modal1 = true"
+          >返回修改</Button
+        >
+        <Modal
+          v-model="modal1"
+          title="需要返回修改意见吗"
+          :mask-closable="true"
+          @on-ok="ok"
+          @on-cancel="cancel"
+        >
+          <p>需要返回修改意见，请点击确认；否则按取消返回详细申报审核列表界面</p>
+        </Modal>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getUserId, send} from "../../../network/sendMessage";
 import { getdetailFile, checkPass } from "../../../network/detailCheck";
 export default {
   name: "detail",
@@ -184,17 +185,17 @@ export default {
     getLeaderN() {
       return parseInt(this.detailForm.leaderState.toString()[0])  == 1 ? "是" : "否";
     },
-    getLeaderD() {
+    getLeaderF() {
       return parseInt(this.detailForm.leaderState.toString()[1])  == 1 ? "是" : "否";
     },
 
-    getLeaderP() {
+    getLeaderA() {
       return parseInt(this.detailForm.leaderState.toString()[2]) == 1 ? "是" : "否";
     },
-    getLeaderA() {
+    getLeaderP() {
       return parseInt(this.detailForm.leaderState.toString()[3]) == 1 ? "是" : "否";
     },
-    getLeaderF() {
+    getLeaderD() {
       return parseInt(this.detailForm.leaderState.toString()[4]) == 1 ? "是" : "否";
     },
   },
@@ -238,14 +239,7 @@ export default {
             });
           }
     });
-      console.log(this.detailForm.meetAddr);
-      console.log(this.$store.getters.token);
-      getUserId(this.detailForm.meetAddr).then(res=>{
-        this.detailForm.userId = res.data;
-        console.log(this.detailForm.userId);
-        send(this.$store.getters.token,this.detailForm.userId,"审核通过","您的申请已经通过审核")
-      });
-      history.go(-1);
+    history.go(-1);
     },
 
     // checkPass() {

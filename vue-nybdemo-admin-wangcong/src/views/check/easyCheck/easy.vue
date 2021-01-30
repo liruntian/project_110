@@ -79,10 +79,10 @@
         <tr align="center">
           <td>领导出席情况</td>
           <td colspan="6">
-            是否邀请党和国家领导人出席：<span>{{ getLeaderN }} </span><br />
-            有关司局和事业单位负责人<span>{{ getLeaderD }}</span>
-            省部级以上领导<span>{{ getLeaderP }}</span>
-            国家级行业协会负责人<span>{{ getLeaderA }}</span>
+            是否邀请党和国家领导人出席：<span>{{ getLeaderN }} </span><br/>
+            有关司局和事业单位负责人<span>{{ getLeaderD }}</span><br/>
+            省部级以上领导<span>{{ getLeaderP }}</span><br/>
+            国家级行业协会负责人<span>{{ getLeaderA }}</span><br/>
             是否有国外政府官员含驻华使馆：<span>{{ getLeaderF }}</span>
           </td>
         </tr>
@@ -151,7 +151,7 @@ export default {
   },
   created() {
     this.detailForm = this.$route.query.item;
-    // console.log(this.detailForm)
+    console.log(this.detailForm)
   },
   computed: {
     ishow() {
@@ -167,21 +167,21 @@ export default {
       return this.detailForm.view2 == true ? "是" : "否";
     },
 
-    getLeaderN() {
-      return parseInt(this.detailForm.leaderState/10000)  == 1 ? "是" : "否";
-    },
-    getLeaderF() {
-      return parseInt((this.detailForm.leaderState%10000)/10)  == 1 ? "是" : "否";
-    },
-
-    getLeaderA() {
-      return parseInt((this.detailForm.leaderState%1000)/10) == 1 ? "是" : "否";
-    },
-    getLeaderP() {
-      return parseInt((this.detailForm.leaderState%100)/10) == 1 ? "是" : "否";
+   getLeaderN() {
+      return parseInt(this.detailForm.leaderState.toString()[0])  == 1 ? "是" : "否";
     },
     getLeaderD() {
-      return parseInt((this.detailForm.leaderState%100)/10) == 1 ? "是" : "否";
+      return parseInt(this.detailForm.leaderState.toString()[1])  == 1 ? "是" : "否";
+    },
+
+    getLeaderP() {
+      return parseInt(this.detailForm.leaderState.toString()[2]) == 1 ? "是" : "否";
+    },
+    getLeaderA() {
+      return parseInt(this.detailForm.leaderState.toString()[3]) == 1 ? "是" : "否";
+    },
+    getLeaderF() {
+      return parseInt(this.detailForm.leaderState.toString()[4]) == 1 ? "是" : "否";
     },
   },
   methods: {
@@ -212,7 +212,7 @@ export default {
     history.go(-1);
     },
     Pass() {
-      checkPass(this.detailForm.id,this.$store.getters.token,1).then(successResponse => {
+    checkPass(this.detailForm.id,this.$store.getters.token,2).then(successResponse => {
           if (successResponse.data.code === 0) {
           } else {
             this.$message({
@@ -247,9 +247,9 @@ export default {
       });
     },
     downInvestmentPlanFile() {
-      getEasyFile(this.detailForm.authFileId).then((res) => {
+      getEasyFile(this.detailForm.investmentPlanFile).then((res) => {
         const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "上级单位审核意见.pdf";
+        const fileName = this.detailForm.name + "招展招商方案文档.pdf";
         const elink = document.createElement("a");
         elink.setAttribute("download", decodeURIComponent(fileName));
         elink.download = fileName;
@@ -262,9 +262,9 @@ export default {
       });
     },
     downAuthFile(){
-      getEasyFile(this.detailForm.investmentPlanFileId).then((res) => {
+      getEasyFile(this.detailForm.authFileId).then((res) => {
         const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "招展招商方案文档.pdf";
+        const fileName = this.detailForm.name + "去年审批文件.pdf";
         const elink = document.createElement("a");
         elink.setAttribute("download", decodeURIComponent(fileName));
         elink.download = fileName;
