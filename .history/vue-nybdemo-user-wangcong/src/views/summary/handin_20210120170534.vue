@@ -43,7 +43,7 @@ methods: {
 created() {
   // console.log(this.$store.getters.userKind)
 
-    this.kind = this.$store.getters.userKinds
+    // this.kind = this.$store.getters.userKinds
 
 
 },

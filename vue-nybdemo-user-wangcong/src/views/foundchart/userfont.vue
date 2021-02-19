@@ -521,7 +521,26 @@ export default {
         this.$refs.finanFund.focus();
         return false;
       }
-
+      if (!this.declareForm.writeObject) {
+        warningOpen("请填写填报单位");
+        this.$refs.writeObject.focus();
+        return false;
+      }          
+      if (!this.declareForm.department) {
+        warningOpen("请填写责任处室");
+        this.$refs.department.focus();
+        return false;
+      }          
+      if (!this.declareForm.charger) {
+        warningOpen("请填写处室负责人");
+        this.$refs.charger.focus();
+        return false;
+      }          
+      if (!this.declareForm.teleNum) {
+        warningOpen("请填写负责人手机号");
+        this.$refs.teleNum.focus();
+        return false;
+      }
       let ip0 = this.$refs.authorizeFile;
       let ip1 = this.$refs.inputFile1;
       let ip2 = this.$refs.inputFile2;

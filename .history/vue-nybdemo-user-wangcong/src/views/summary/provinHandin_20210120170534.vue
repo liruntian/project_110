@@ -6,7 +6,7 @@
 
         <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
           <div class="helpinfo">
-            <p><font class="hptext">请省部级单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改</font></p>
+            <p><font class="hptext">请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改</font></p>
           </div>
           <!-- <el-form-item style="margin-top: 20px">
             <label class="xrequired">本总结对应展会申报的id</label>
@@ -18,22 +18,19 @@
             <el-input type="text" ref="detailId" v-model="declareForm.detailId"
             auto-complete="off"></el-input>
           </el-form-item>
-
           <el-form-item>
             <label class="xrequired">展览面积</label>
             <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
-
           <el-form-item>
             <label class="xrequired">参展国家和地区数量</label>
             <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
-
           <el-form-item>
             <el-col :span="12">
               <span class="demonstration"><label class="xrequired">参展省市自治区情况</label></span>
               <el-dropdown trigger="click" :hide-on-click='false'>
-                <span class="el-dropdown-linkk" ref="checkedCities">
+                <span class="el-dropdown-linkk">
                   选择参与地区<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -55,54 +52,48 @@
           </el-form-item>
 
           <el-form-item>
-            <label class="xrequired">采购商数量</label>
-            <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
-          </el-form-item>
-
+                <label class="xrequired">采购商数量</label>
+    <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
           <el-form-item>
                 <label class="xrequired">参展产品数量</label>
-                <el-input type="number" ref=" displayObj" v-model="declareForm.displayObj" auto-complete="off"></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <label class="xrequired">同期活动数量</label>
-            <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <label class="xrequired">宣传媒体数</label>
-            <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
-          </el-form-item>
+    <el-input type="number" ref=" displayObj" v-model="declareForm.displayObj" auto-complete="off"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <label class="xrequired">同期活动数量</label>
+                <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
+              <el-form-item>
+                <label class="xrequired">宣传媒体数</label>
+                <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
 
           <el-form-item>
             <label class="xrequired">线下成交额（含意向）</label>
             <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
-
           <el-form-item>
             <label class="xrequired">线上成交额</label>
             <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item>
-            <label class="xrequired">线下参展人数</label>
-            <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <label class="xrequired">线上参展人数</label>
-            <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder=""></el-input>
-          </el-form-item>
+              <el-form-item>
+                <label class="xrequired">线下参展人数</label>
+                <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
+              <el-form-item>
+                <label class="xrequired">线上参展人数</label>
+                <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder=""></el-input>
+              </el-form-item>
 
           <el-form-item>
             <label class="xrequired">展会亮点(200字以内)</label>
-            <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
+            <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
                       placeholder=""></el-input>
           </el-form-item>
-
           <el-form-item>
             <label class="xrequired">下一步工作计划(200字以内)</label>
-            <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
+            <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
                       placeholder=""></el-input>
           </el-form-item>
 
@@ -179,7 +170,7 @@ export default {
         lightSpot: "",
         //填报单位
         writeObject: "",
-        //责任处室
+        //负责处室
         department: "",
         //处室负责人
         charger: "",
@@ -203,101 +194,41 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
     declareFormed() {
-      if (!this.declareForm.detailId) {
-        warningOpen("请填写展会名称");
-        this.$refs.detailId.focus();
-        return false;
-      }
-      if (!this.declareForm.area) {
-        warningOpen("请填写展览面积");
-        this.$refs.area.focus();
-        return false;
-      }
-      if (!this.declareForm.countryNum) {
-        warningOpen("请填写参展国家和地区数量");
-        this.$refs.countryNum.focus();
-        return false;
-      }
-      if (!this.checkedCities.length) {
-        warningOpen("请填写参展省市自治区情况");
-        this.$refs.checkedCities.focus();
-        return false;
-      }
-      if (!this.declareForm.companyNum) {
-        warningOpen("请填写参展企业数量");
-        this.$refs.companyNum.focus();
-        return false;
-      }
-      if (!this.declareForm.buyerNum) {
-        warningOpen("请填写采购商数量");
-        this.$refs.buyerNum.focus();
-        return false;
-      }
-      if (!this.declareForm.displayObj) {
-        warningOpen("请填写参展产品数量");
-        this.$refs.displayObj.focus();
-        return false;
-      }   
-      if (!this.declareForm.activityNum) {
-        warningOpen("请填写同期活动数量");
-        this.$refs.activityNum.focus();
-        return false;
-      }        
-      if (!this.declareForm.mediaNum) {
-        warningOpen("请填写宣传媒体数");
-        this.$refs.mediaNum.focus();
-        return false;
-      }
-      if (!this.declareForm.turnover) {
-        warningOpen("请填写线下成交额");
-        this.$refs.turnover.focus();
-        return false;
-      }
-      if (!this.declareForm.onlineTurnover) {
-        warningOpen("请填写线上成交额");
-        this.$refs.onlineTurnover.focus();
-        return false;
-      }
-      if (!this.declareForm.viewerNum) {
-        warningOpen("请填写线下参展人数");
-        this.$refs.viewerNum.focus();
-        return false;
-      }
-      if (!this.declareForm.onlineViewerNum) {
-        warningOpen("请填写线上参展人数");
-        this.$refs.onlineViewerNum.focus();
-        return false;
-      }
-      if (!this.declareForm.meetHighlight) {
-        warningOpen("请填写展会亮点");
-        this.$refs.meetHighlight.focus();
-        return false;
-      }          
-      if (!this.declareForm.nextWorkPlan) {
-        warningOpen("请填写下一步工作计划");
-        this.$refs.nextWorkPlan.focus();
-        return false;
-      }          
-      if (!this.declareForm.writeObject) {
-        warningOpen("请填写填报单位");
-        this.$refs.writeObject.focus();
-        return false;
-      }          
-      if (!this.declareForm.department) {
-        warningOpen("请填写责任处室");
-        this.$refs.department.focus();
-        return false;
-      }          
-      if (!this.declareForm.charger) {
-        warningOpen("请填写处室负责人");
-        this.$refs.charger.focus();
-        return false;
-      }          
-      if (!this.declareForm.teleNum) {
-        warningOpen("请填写负责人手机号");
-        this.$refs.teleNum.focus();
-        return false;
-      }          
+      // if (!this.declareForm.detailId) {
+      //   warningOpen("请填写展会ID");
+      //   this.$refs.detailId.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.countryNum) {
+      //   warningOpen("请填写参展国家和地区数量");
+      //   this.$refs.countryNum.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.companyNum) {
+      //   warningOpen("请填写参展企业数量");
+      //   this.$refs.companyNum.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.area) {
+      //   warningOpen("请填写展出总面积");
+      //   this.$refs.area.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.buyerNum) {
+      //   warningOpen("请填写采购商数量");
+      //   this.$refs.buyerNum.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.mediaNum) {
+      //   warningOpen("请填写宣传媒体数");
+      //   this.$refs.mediaNum.focus();
+      //   return false;
+      // }
+      // if (!this.declareForm.turnover) {
+      //   warningOpen("请填写成交额");
+      //   this.$refs.turnover.focus();
+      //   return false;
+      // }
       let ip1 = this.$refs.summaryFile;
       let ip2 = this.$refs.hosterSignFile;
 
@@ -317,7 +248,6 @@ export default {
       //总结类型（事业单位提交[0]，省部级提交[1]，涉外展会负责单位提交[2]）
       formdata.append("kind", this.$store.getters.userKind);
       formdata.append("detailId", this.declareForm.detailId);
-
       formdata.append("meetAddr", this.$store.getters.token);
 
       // 参展国家数量
@@ -349,7 +279,7 @@ export default {
       formdata.append("nextWorkPlan", this.declareForm.nextWorkPlan);
       //填报单位
       formdata.append("writeObject", this.declareForm.writeObject);
-      //责任处室
+      //负责处室
       formdata.append("department", this.declareForm.department);
       //处室负责人
       formdata.append("charger", this.declareForm.charger);
@@ -360,11 +290,12 @@ export default {
       //单位主要负责同志签发页
       formdata.append("hosterSignFile", ip2.files[0]);
 
+      console.log(this.checkedCities);
+
       var axios = require("axios");
       axios
         .post("http://8.131.56.110:8445/api/handin/summary", formdata)
         .then((successResponse) => {
-          console.log(successResponse)
           if (successResponse.data.code === 0) {
             this.$router.push("/").catch(() => {});
           } else if (successResponse.data.code === 6001) {

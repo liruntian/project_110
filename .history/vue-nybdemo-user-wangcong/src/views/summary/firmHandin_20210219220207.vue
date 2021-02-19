@@ -218,7 +218,7 @@ export default {
         this.$refs.countryNum.focus();
         return false;
       }
-      if (!this.checkedCities.length) {
+      if (!this.checkedCities) {
         warningOpen("请填写参展省市自治区情况");
         this.$refs.checkedCities.focus();
         return false;

@@ -38,7 +38,6 @@ const en = {
     send:"send",
     account:"account",
     register:"register",
-    frozenAccount: "frozenAccount",
 
     "menu2-1": "menu2-1",
     "menu2-2": "menu2-2",

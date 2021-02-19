@@ -16,7 +16,6 @@ const Easy = () => import("@/views/check/easyCheck/easyCheckList")
 const EasyCheck = () => import("@/views/check/easyCheck/easy")
 const Send = () => import("@/views/message/send")
 const Register = () => import("@/views/useraccount/registercheck")
-const frozenAccount = () => import("@/views/useraccount/frozenAccount")
 
 /**
  * 重写路由的push方法
@@ -137,13 +136,6 @@ let addRouter = [
         iconCls: "fa fa-address-card-o", // 图标样式class
         name: routeName.register,
         component: Register,
-        children: []
-      },
-      {
-        path: "/frozenAccount",
-        iconCls: "el-icon-warning", // 图标样式class
-        name: routeName.frozenAccount,
-        component: frozenAccount,
         children: []
       }
     ]

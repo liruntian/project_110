@@ -179,7 +179,7 @@ export default {
         lightSpot: "",
         //填报单位
         writeObject: "",
-        //责任处室
+        //负责处室
         department: "",
         //处室负责人
         charger: "",
@@ -218,7 +218,7 @@ export default {
         this.$refs.countryNum.focus();
         return false;
       }
-      if (!this.checkedCities.length) {
+      if (!this.checkedCities) {
         warningOpen("请填写参展省市自治区情况");
         this.$refs.checkedCities.focus();
         return false;
@@ -278,26 +278,6 @@ export default {
         this.$refs.nextWorkPlan.focus();
         return false;
       }          
-      if (!this.declareForm.writeObject) {
-        warningOpen("请填写填报单位");
-        this.$refs.writeObject.focus();
-        return false;
-      }          
-      if (!this.declareForm.department) {
-        warningOpen("请填写责任处室");
-        this.$refs.department.focus();
-        return false;
-      }          
-      if (!this.declareForm.charger) {
-        warningOpen("请填写处室负责人");
-        this.$refs.charger.focus();
-        return false;
-      }          
-      if (!this.declareForm.teleNum) {
-        warningOpen("请填写负责人手机号");
-        this.$refs.teleNum.focus();
-        return false;
-      }          
       let ip1 = this.$refs.summaryFile;
       let ip2 = this.$refs.hosterSignFile;
 
@@ -349,7 +329,7 @@ export default {
       formdata.append("nextWorkPlan", this.declareForm.nextWorkPlan);
       //填报单位
       formdata.append("writeObject", this.declareForm.writeObject);
-      //责任处室
+      //负责处室
       formdata.append("department", this.declareForm.department);
       //处室负责人
       formdata.append("charger", this.declareForm.charger);

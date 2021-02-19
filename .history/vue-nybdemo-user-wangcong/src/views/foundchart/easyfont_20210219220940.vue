@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="card bbxx" style="width: 100%">
+    <div class="card1 bbxx" style="width: 100%">
       <div class="chartUser">
 
         <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
@@ -290,7 +290,7 @@ export default {
   name: "easyfont",
   data() {
     return {
-      chooseCityTag: "黑龙江省-佳木斯市-抚远县",
+      chooseCityTag: "",
       declareForm: {
         name: "",
         hostComp: "",
@@ -322,11 +322,19 @@ export default {
         charger: "",
         //手机号
         teleNum: "",
+        //党和国家领导人
         leaderN: false,
-        leaderF: false,
-        leaderA: false,
-        leaderP: false,
+        //有关司局和事业单位负责人
         leaderD: false,
+        //省部级以上领导
+        leaderP: false,
+        // 国家级行业协会负责人
+        leaderA: false,
+        // 是否有国外政府官员含驻华使馆
+        leaderF: false,
+        
+        
+        
       },
     };
   },
@@ -335,49 +343,50 @@ export default {
   },
   created() {
     getEasy(this.$store.getters.token).then((res) => {
-      // console.log(res.data)
+      console.log(res.data)
       if (res.data) {
-        if (!res.data.summaryDone) {
+        if (!res.data.summaryDone & res.data.checkState == 2) {
           alert("请先完成上报总结");
           this.$router.push("handin");
         }
         (this.declareForm = res.data),
-          (this.declareForm.leaderN = parseInt(res.data.leaderState / 10000)),
-          (this.declareForm.leaderF = parseInt(
-            (res.data.leaderState % 10000) / 10
-          )),
-          (this.declareForm.leaderA = parseInt(
-            (res.data.leaderState % 1000) / 10
+          (this.declareForm.leaderN = parseInt(res.data.leaderState.toString()[0])),
+          (this.declareForm.leaderD = parseInt(
+            res.data.leaderState.toString()[1]
           )),
           (this.declareForm.leaderP = parseInt(
-            (res.data.leaderState % 100) / 10
+            res.data.leaderState.toString()[2]
           )),
-          (this.declareForm.leaderD = parseInt(res.data.leaderState % 10)),
+          (this.declareForm.leaderA = parseInt(
+            res.data.leaderState.toString()[3]
+          )),
+          (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
           (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
           (this.chooseCityTag = res.data.chooseCity);
         console.log(this.declareForm);
       } else {
         getDetail(this.$store.getters.token).then((res) => {
           if (res.data) {
-            if (!res.data.summaryDone) {
+            if (!res.data.summaryDone & res.data.checkState == 2) {
               alert("请先完成上报总结");
               this.$router.push("handin");
             }
             (this.declareForm = res.data),
               (this.declareForm.leaderN = parseInt(
-                res.data.leaderState / 10000
+                res.data.leaderState.toString()[0]
               )),
-              (this.declareForm.leaderF = parseInt(
-                (res.data.leaderState % 10000) / 10
-              )),
-              (this.declareForm.leaderA = parseInt(
-                (res.data.leaderState % 1000) / 10
+              (this.declareForm.leaderD = parseInt(
+                res.data.leaderState.toString()[1]
               )),
               (this.declareForm.leaderP = parseInt(
-                (res.data.leaderState % 100) / 10
+                res.data.leaderState.toString()[2]
               )),
-              (this.declareForm.leaderD = parseInt(res.data.leaderState % 10)),
+              (this.declareForm.leaderA = parseInt(
+                res.data.leaderState.toString()[3]
+              )),
+              (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
               (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
+              (this.chooseCityTag = res.data.chooseCity);
               console.log(this.declareForm);
           }
         });
@@ -388,10 +397,10 @@ export default {
     leaderPresent() {
       return (
         (this.declareForm.leaderN & 1).toString() +
-        (this.declareForm.leaderF & 1).toString() +
-        (this.declareForm.leaderA & 1).toString() +
+        (this.declareForm.leaderD & 1).toString() +
         (this.declareForm.leaderP & 1).toString() +
-        (this.declareForm.leaderD & 1).toString()
+        (this.declareForm.leaderA & 1).toString() +
+        (this.declareForm.leaderF & 1).toString()
       );
     },
   },
@@ -496,6 +505,26 @@ export default {
           type: "error",
         });
         this.$refs.finanFund.focus();
+        return false;
+      }
+      if (!this.declareForm.writeObject) {
+        warningOpen("请填写填报单位");
+        this.$refs.writeObject.focus();
+        return false;
+      }          
+      if (!this.declareForm.department) {
+        warningOpen("请填写责任处室");
+        this.$refs.department.focus();
+        return false;
+      }          
+      if (!this.declareForm.charger) {
+        warningOpen("请填写处室负责人");
+        this.$refs.charger.focus();
+        return false;
+      }          
+      if (!this.declareForm.teleNum) {
+        warningOpen("请填写负责人手机号");
+        this.$refs.teleNum.focus();
         return false;
       }
       let ip0 = this.$refs.authorizeFile;
@@ -691,7 +720,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   color: rgba(255, 38, 38, 0.9);
 }
 
-.card {
+.card1 {
   color: #666;
   @extend %shadow;
 

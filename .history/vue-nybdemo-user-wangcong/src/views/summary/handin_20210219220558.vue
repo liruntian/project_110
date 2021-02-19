@@ -27,7 +27,7 @@ components: {
 data() {
 //这里存放数据
 return {
-  kind : 1
+  kind : 2
 
 };
 },
@@ -43,7 +43,7 @@ methods: {
 created() {
   // console.log(this.$store.getters.userKind)
 
-    this.kind = this.$store.getters.userKinds
+    // this.kind = this.$store.getters.userKinds
 
 
 },
