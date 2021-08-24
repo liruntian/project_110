@@ -141,8 +141,8 @@ let addRouter = [
       },
       {
         path: "/frozenAccount",
-        iconCls: "el-icon-warning", // 图标样式class
-        name: routeName.frozenAccount,
+        iconCls: "fa fa-address-card-o", // 图标样式class
+        name: routeName.register,
         component: frozenAccount,
         children: []
       }
