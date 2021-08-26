@@ -525,17 +525,17 @@ export default {
         warningOpen("请填写填报单位");
         this.$refs.writeObject.focus();
         return false;
-      }          
+      }
       if (!this.declareForm.department) {
         warningOpen("请填写责任处室");
         this.$refs.department.focus();
         return false;
-      }          
+      }
       if (!this.declareForm.charger) {
         warningOpen("请填写处室负责人");
         this.$refs.charger.focus();
         return false;
-      }          
+      }
       if (!this.declareForm.teleNum) {
         warningOpen("请填写负责人手机号");
         this.$refs.teleNum.focus();
@@ -690,7 +690,7 @@ export default {
       //   .catch((failResponse) => {});
       var axios = require("axios");
       axios
-        .post("http://8.131.56.110:8445/api/handin/detail", formdata)
+        .post("http://8.140.21.128:8445/api/handin/detail", formdata)
         .then((successResponse) => {
           if (successResponse.data.code === 0) {
             this.$router.push("/").catch(() => {});

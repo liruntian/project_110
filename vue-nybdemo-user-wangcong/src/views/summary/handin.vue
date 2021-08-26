@@ -41,9 +41,10 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-  // console.log(this.$store.getters.userKind)
+  console.log("jinlail");
+  console.log(this.$store.getters.userKind)
 
-    this.kind = this.$store.getters.userKinds
+    this.kind = this.$store.getters.userKind
 
 
 },

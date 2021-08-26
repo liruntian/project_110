@@ -28,19 +28,19 @@
                             })
                         }
                     },
-                    {   
+                    {
                         title: '消息标题',
                         key: 'title'
                     },
-                    {   
+                    {
                         title: '发送人',
                         key: 'adminId'
-                    },                   
+                    },
                     {
                         title: '发送时间',
                         key: 'createTime'
                     },
-                 
+
                 ],
             }
         }

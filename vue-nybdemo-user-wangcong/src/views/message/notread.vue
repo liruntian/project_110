@@ -23,9 +23,14 @@ export default {
   };
   },
   created(){
-
+    console.log(this.$store.getters.token);
     getNotLook(this.$store.getters.token).then(res => {
-      this.msgList = res.data;
+      console.log(res);
+      if(res.data == null){
+        this.msgList = [];
+      }else {
+        this.msgList = res.data;
+      };
       console.log(this.msgList)
 
     })
