@@ -120,9 +120,9 @@ export default {
     },
 
   },
-  mounted () {
-    this.message()
-  }
+  // mounted () {
+  //   this.message()
+  // }
 }
 </script>
 <style lang="scss">
