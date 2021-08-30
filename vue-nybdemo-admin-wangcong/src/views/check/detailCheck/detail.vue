@@ -1,7 +1,9 @@
 <template>
   <div class="detailCkeck">
-    <div class="card kjfs">
-      <table border="1px" cellspacing="0">
+    <div class="card kjfs" >
+      <div id="pdfDom" style="padding-top: 55px;padding-left: 24px;padding-right: 24px;
+      background-color:#fff;margin: auto; width: fit-content">
+      <table border="1px" cellspacing="0" >
         <colgroup span="7" width="200"></colgroup>
         <!-- <colgroup span="1" width="200"></colgroup> -->
         <tr align="center">
@@ -131,9 +133,11 @@
           </td>
         </tr>
       </table>
+      </div>
       <br />
       <div class="check">
-        <button class="pass" @click="Pass">审核通过</button>
+        <button class="pass" @click="Pass" style="cursor: pointer">审核通过</button>
+        <button class="pass" @click="getPdf()" style="cursor: pointer">导出为pdf</button>
         <!-- <button class="pass" @click="enrol" v-show="!ishow">
           列入展会计划
         </button> -->
@@ -161,12 +165,13 @@ export default {
     return {
       detailForm: {},
       modal1: false,
+      pdfTitle:'',
       // ishow: false
     };
   },
   created() {
     this.detailForm = this.$route.query.item;
-    console.log(this.detailForm)
+    this.pdfTitle =  `${this.detailForm?  this.detailForm.name: '未命名展会'}申报文件`;
   },
   computed: {
     ishow() {
@@ -238,11 +243,8 @@ export default {
             });
           }
     });
-      console.log(this.detailForm.meetAddr);
-      console.log(this.$store.getters.token);
       getUserId(this.detailForm.meetAddr).then(res=>{
         this.detailForm.userId = res.data;
-        console.log(this.detailForm.userId);
         send(this.$store.getters.token,this.detailForm.userId,"审核通过","您的申请已经通过审核")
       });
       history.go(-1);

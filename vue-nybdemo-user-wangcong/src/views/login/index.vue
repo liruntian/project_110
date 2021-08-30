@@ -39,7 +39,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button class="subBtn" type="primary" v-on:click="submitForm"
-                >登录</el-button
+                  >登录</el-button
                 >
               </el-form-item>
               <p class="smalltxt"></p>
@@ -108,29 +108,30 @@ export default {
             password: this.loginForm.password,
           })
           .then((successResponse) => {
-
             if (successResponse.data.code === 0) {
-              if(successResponse.data.data.isFreeze){
-                alert('该账号已被冻结，请联系管理人员进行处理');
-              }else{
-                              that.$store.dispatch("setUserKind", successResponse.data.data.kind);
-              that.$store.dispatch("setFlash", false);
+              if (successResponse.data.data.isFreeze) {
+                alert("该账号已被冻结，请联系管理人员进行处理");
+              } else {
+                that.$store.dispatch(
+                  "setUserKind",
+                  successResponse.data.data.kind
+                );
+                that.$store.dispatch("setFlash", false);
 
-              // 将 id 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
-              that.$store
-                .dispatch("setToken", that.loginForm.meetAddr)
-                .then(() => {
-                  that.$router.push({ path: "/" });
-                })
-                .catch((res) => {
-                  that.$message({
-                    showClose: true,
-                    message: res,
-                    type: "error",
+                // 将 id 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
+                that.$store
+                  .dispatch("setToken", that.loginForm.meetAddr)
+                  .then(() => {
+                    that.$router.push({ path: "/" });
+                  })
+                  .catch((res) => {
+                    that.$message({
+                      showClose: true,
+                      message: res,
+                      type: "error",
+                    });
                   });
-                });
               }
-
             } else {
               this.$message({
                 showClose: true,
@@ -141,7 +142,6 @@ export default {
           })
           .catch((failResponse) => {});
       }
-
     },
   },
   mounted() {

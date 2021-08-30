@@ -225,7 +225,6 @@ export default {
     checkPass(this.detailForm.id,this.$store.getters.token,2).then(successResponse => {
           if (successResponse.data.code === 0) {
           } else {
-            console.log(successResponse)
             this.$message({
               showClose: true,
               message: "提交失败！",

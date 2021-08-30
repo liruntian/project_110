@@ -15,6 +15,8 @@ import "element-ui/lib/theme-chalk/index.css"
 import "@/assets/iconfont/iconfont.css"
 import "font-awesome/css/font-awesome.css"
 import "@/router/permission"
+import htmlToPdf from '@/utils/Topdf.js'
+Vue.use(htmlToPdf)
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
