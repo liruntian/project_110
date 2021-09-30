@@ -39,7 +39,7 @@ let routeName = en.routeName
 let defaultRouter = [
   { path: "/",
     redirect: "/index",
-    hidden:true,
+    hidden: true,
     children: []
   },
   {
