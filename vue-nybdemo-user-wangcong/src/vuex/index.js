@@ -18,7 +18,6 @@ const store = new Vuex.Store({
   mutations: {
     setToken (state, token) {
       state.token = token
-      // Cookies.set("token", token, { expires: 1 / 24 })
     },
     setUserKind (state, userKind) {
       state.userKind = userKind
