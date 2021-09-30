@@ -1,14 +1,19 @@
 <template>
 <div class='register'>
-  <el-form :inline="true" :model="formInline" class="demo-ruleForm">
+  <el-form :model="formInline" class="demo-ruleForm">
   <el-form-item label="展会名称:">
     <el-input v-model="formInline.name" placeholder="展会名称"></el-input>
   </el-form-item>
   <el-form-item label="展会简称:">
     <el-input v-model="formInline.meetAddr" placeholder="展会首字母小写"></el-input>
   </el-form-item>
-    <el-form-item label="展会类型:" style="width: 100%">
-      <el-input v-model="formInline.kindInput" placeholder="事业单位 或 省部级 或 海外机构" style="width: 300px"></el-input>
+    <el-form-item label="展会类型:">
+      <el-radio-group v-model="formInline.kindInput">
+      <el-radio-button label="事业单位"></el-radio-button>
+      <el-radio-button label="省部级"></el-radio-button>
+      <el-radio-button label="海外机构"></el-radio-button>
+    </el-radio-group>
+      <!-- <el-input v-model="formInline.kindInput" placeholder="事业单位 或 省部级 或 海外机构" ></el-input> -->
     </el-form-item>
 
   <el-form-item>
@@ -33,8 +38,6 @@ import {addUser} from '../../network/addUser';
     },
     methods: {
       onSubmit() {
-        console.log('submit!');
-
         if (!this.formInline.kindInput) {
           this.$message({
             showClose: true,

@@ -1,6 +1,49 @@
 <template>
   <div class="main">
-<el-row :gutter='20'>
+    <h1 style="margin-bottom: 16px">待处理任务</h1>
+    <el-table
+      :data="tableData"
+      style="margin-bottom: 16px"
+      class="task-table"
+      border
+    >
+      <el-table-column prop="detailNum" label="待审核首次申报" width="180">
+      </el-table-column>
+      <el-table-column prop="easyNum" label="待审核再次申报" width="180">
+      </el-table-column>
+      <el-table-column prop="summaryNum" label="待提交总结" width="180">
+      </el-table-column>
+    </el-table>
+
+    <h1 style="margin-bottom: 16px">本年度申请情况</h1>
+    <el-steps>
+      <el-step
+        title="待审核"
+        :description='this.tableData[0].detailNum'
+      ></el-step>
+      <el-step
+        title="待修改"
+        description="这是一段很长很长很长的描述性文字"
+      ></el-step>
+      <el-step title="待总结" description="这段就没那么长了"></el-step>
+      <el-step title="已完成" description="这段就没那么长了"></el-step>
+    </el-steps>
+
+    <h1 style="margin-bottom: 16px;margin-top: 16px">本年度申请情况</h1>
+    <el-steps>
+      <el-step
+        title="待审核"
+        :description='this.tableData[0].detailNum'
+      ></el-step>
+      <el-step
+        title="待修改"
+        description="这是一段很长很长很长的描述性文字"
+      ></el-step>
+      <el-step title="待总结" description="这段就没那么长了"></el-step>
+      <el-step title="已完成" description="这段就没那么长了"></el-step>
+    </el-steps>
+
+    <!-- <el-row :gutter='20'>
 
       <el-col :span='12'>
         <div class="card bbxx">
@@ -29,282 +72,276 @@
         </div>
       </el-col>
 
-    </el-row>
-
-
+    </el-row> -->
   </div>
 </template>
 
 <script>
-import LineEcharts from "../../components/ECharts/lineEcharts"
+import LineEcharts from "../../components/ECharts/lineEcharts";
 import Cookies from "js-cookie";
 
 export default {
   name: "mainIndex",
-  components: {LineEcharts},
-  mounted () {
-    this.selfAdaption()
+  components: { LineEcharts },
+  mounted() {
+    this.selfAdaption();
   },
-  data(){
-    return{
-      imgUrl:require("../../assets/photo.jpeg"),
+  data() {
+    return {
+      imgUrl: require("../../assets/photo.jpeg"),
 
-      efcheck : false,
-      easyNum: '',
-      detailNum: ''
-
-
-    }
+      efcheck: false,
+      tableData: [
+        {
+          easyNum: "",
+          detailNum: "",
+          summaryNum: "",
+        },
+      ],
+    };
   },
 
   created() {
     console.log(this.$store);
-this.$axios
-      .post('/message/easyNum', {
-
-      })
-      .then(successResponse => {
+    this.$axios
+      .post("/message/easyNum", {})
+      .then((successResponse) => {
         if (successResponse.data.code === 0) {
-          this.easyNum = successResponse.data.data
-        }
-        else {
+          this.tableData[0].easyNum = successResponse.data.data;
+        } else {
           this.$message({
             showClose: true,
             message: "系统错误！",
-            type: "error"
-          })
+            type: "error",
+          });
         }
       })
-      .catch(failResponse => {
-      })
+      .catch((failResponse) => {});
 
     this.$axios
-      .post('/message/detailNum', {
-
-      })
-      .then(successResponse => {
+      .post("/message/detailNum", {})
+      .then((successResponse) => {
         if (successResponse.data.code === 0) {
-          this.detailNum = successResponse.data.data
-        }
-        else {
+          this.tableData[0].detailNum = successResponse.data.data;
+        } else {
           this.$message({
             showClose: true,
             message: "系统错误！",
-            type: "error"
-          })
+            type: "error",
+          });
         }
       })
-      .catch(failResponse => {
-      })
-
-
-
+      .catch((failResponse) => {});
   },
 
-  destroyed() {
-
-  },
-
+  destroyed() {},
 
   methods: {
-
     logout() {
-
-      Cookies.remove("token")
-      Cookies.remove("face")
-      location.reload()
-
+      Cookies.remove("token");
+      Cookies.remove("face");
+      location.reload();
     },
 
     // echart自适应
-    selfAdaption () {
-      let that = this
+    selfAdaption() {
+      let that = this;
       setTimeout(() => {
         window.onresize = function () {
           if (that.$refs.echarts) {
-            that.$refs.echarts.chart.resize()
+            that.$refs.echarts.chart.resize();
           }
-        }
-      }, 10)
-    }
-
-  }
-}
+        };
+      }, 10);
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-  $top:top;
-  $bottom:bottom;
-  $left:left;
-  $right:right;
-  $leftright: ($left, $right);
-  $pinkk: #eec2d3;
-  $bluee: #409eff;
-  $yelloww: #f4d884;
-  $grennn: #89dda0;
-  $purplee: #78a2ea;
-  $lightBluee: #b8d6ff;
+$top: top;
+$bottom: bottom;
+$left: left;
+$right: right;
+$leftright: ($left, $right);
+$pinkk: #eec2d3;
+$bluee: #409eff;
+$yelloww: #f4d884;
+$grennn: #89dda0;
+$purplee: #78a2ea;
+$lightBluee: #b8d6ff;
 
-  $list: bluee pinkk yelloww grennn purplee lightBluee;
-  $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
-  %shadow{
-    background: #fff;
-    -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
-    border-color: rgba(0, 0, 0, 0.2);
-    .title{
-      font-size: 14px;
-      padding: 10px;
-      i{
-        margin-#{$right}: 5px;
-      }
+$list: bluee pinkk yelloww grennn purplee lightBluee;
+$list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
+%shadow {
+  background: #fff;
+  -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+  .title {
+    font-size: 14px;
+    padding: 10px;
+    i {
+      margin-#{$right}: 5px;
     }
   }
+}
 
-  @mixin flex($direction:row,$content:space-between){
-    display: flex;
-    flex-direction: $direction;
-    justify-content: $content;
-  }
+@mixin flex($direction: row, $content: space-between) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $content;
+}
 
-  .photo{
-    height: 200px;
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.photo {
+  height: 200px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .card{
-    color: #666;
-    @extend %shadow;
+.card {
+  color: #666;
+  @extend %shadow;
 
-    ul{
-      @include flex;
-      li{
-        flex: 1;
-        a{
-          color: #666666;
-          align-items:center;
-          padding-#{$top}: 20px;
-          padding-#{$bottom}: 20px;
-          @include flex(column);
-          span{
-            height: 44px;
-          }
-          .num{
-            line-height: 44px;
-            font-size: 42px;
-            color: $bluee;
-            margin: 0px;
-          }
+  ul {
+    @include flex;
+    li {
+      flex: 1;
+      a {
+        color: #666666;
+        align-items: center;
+        padding-#{$top}: 20px;
+        padding-#{$bottom}: 20px;
+        @include flex(column);
+        span {
+          height: 44px;
         }
-        .kjfs-bluee{
+        .num {
+          line-height: 44px;
+          font-size: 42px;
           color: $bluee;
+          margin: 0px;
         }
-        .kjfs-pinkk{
-          color: $pinkk;
+      }
+      .kjfs-bluee {
+        color: $bluee;
+      }
+      .kjfs-pinkk {
+        color: $pinkk;
+      }
+      .kjfs-yelloww {
+        color: $yelloww;
+      }
+      .kjfs-grennn {
+        color: $grennn;
+      }
+      .kjfs-purplee {
+        color: $purplee;
+      }
+      .kjfs-lightBluee {
+        color: $lightBluee;
+      }
+      &:hover {
+        .kjfs-bluee {
+          color: #ffffff;
+          background: $bluee;
         }
-        .kjfs-yelloww{
-          color: $yelloww;
+        .kjfs-pinkk {
+          color: #ffffff;
+          background: $pinkk;
         }
-        .kjfs-grennn{
-          color: $grennn;
+        .kjfs-yelloww {
+          color: #ffffff;
+          background: $yelloww;
         }
-        .kjfs-purplee{
-          color: $purplee;
+        .kjfs-grennn {
+          color: #ffffff;
+          background: $grennn;
         }
-        .kjfs-lightBluee{
-          color: $lightBluee;
+        .kjfs-purplee {
+          color: #ffffff;
+          background: $purplee;
         }
-        &:hover{
-          .kjfs-bluee{
-            color: #ffffff;
-            background: $bluee;
-          }
-          .kjfs-pinkk{
-            color: #ffffff;
-            background: $pinkk;
-          }
-          .kjfs-yelloww{
-            color: #ffffff;
-            background: $yelloww;
-          }
-          .kjfs-grennn{
-            color: #ffffff;
-            background: $grennn;
-          }
-          .kjfs-purplee{
-            color: #ffffff;
-            background: $purplee;
-          }
-          .kjfs-lightBluee{
-            color: #ffffff;
-            background: $lightBluee;
-          }
+        .kjfs-lightBluee {
+          color: #ffffff;
+          background: $lightBluee;
         }
       }
     }
-    .table{
-      padding: 21px;
-      p{
-        height: 52px;
-        line-height: 52px;
-        border: 1px solid #cccccc;
+  }
+  .table {
+    padding: 21px;
+    p {
+      height: 52px;
+      line-height: 52px;
+      border: 1px solid #cccccc;
+      overflow: hidden;
+      border-#{$top}: none;
+      @include flex(null, start);
+      &:first-child {
+        border-#{$top}: 1px solid #cccccc;
+      }
+      span {
+      }
+      .tit {
+        width: 180px;
+        min-width: 180px;
+        height: 100%;
+        text-align: center;
+        border-#{$right}: 1px solid #cccccc;
+        margin-#{$right}: 18px;
+      }
+      span.gitbox {
+        flex: 1;
+        height: 100%;
         overflow: hidden;
-        border-#{$top}: none;
-        @include flex( null,start);
-        &:first-child{
-          border-#{$top}: 1px solid #cccccc;
-        }
-        span{
-        }
-        .tit{
-          width: 180px;
-          min-width: 180px;
-          height: 100%;
-          text-align: center;
-          border-#{$right}: 1px solid #cccccc;
-          margin-#{$right}: 18px;
-        }
-        span.gitbox{
-          flex: 1;
-          height: 100%;
-          overflow: hidden;
-          @include flex(row,start);
-          a{
-            &:first-child{
-              margin-#{$right}: 30px;
-            }
+        @include flex(row, start);
+        a {
+          &:first-child {
+            margin-#{$right}: 30px;
           }
         }
       }
     }
   }
-  #lineEcharts{
-    margin-#{$top}: 30px;
-    padding-#{$top}: 30px;
-    @extend %shadow;
+}
+#lineEcharts {
+  margin-#{$top}: 30px;
+  padding-#{$top}: 30px;
+  @extend %shadow;
+}
+#maintable {
+  margin-#{$top}: 30px;
+  padding-#{$top}: 10px;
+  @extend %shadow;
+}
+.notice {
+  margin-right: 15px;
+  padding: auto;
+  font-size: 22px;
+  line-height: 110px;
+  height: 110px;
+  width: 400px;
+}
+.el-row {
+  display: flex;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  .el-table .cell {
+    text-align: center;
   }
-  #maintable{
-    margin-#{$top}: 30px;
-    padding-#{$top}: 10px;
-    @extend %shadow;
+  .el-table__row {
+    .cell {
+      color: red;
+    }
   }
-  .notice{
-    margin-right: 15px;
-    padding: auto;
-    font-size: 22px;
-    line-height: 110px;
-    height: 110px;
-    width:400px;
-
+  .task-table {
+    background-color: transparent;
   }
-  .el-row{
-    display: flex;
-  }
-  .main{
-    display: flex;
-  }
+}
 </style>
