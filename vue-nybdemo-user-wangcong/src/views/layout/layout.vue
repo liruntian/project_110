@@ -53,12 +53,11 @@ export default {
         meetAddr: that.$store.getters.token,
       })
       .then((res) => {
-        if(res.data){
+        if(res.data.data){
           that.$store.dispatch('setState', res.data.data.checkState)
         }else{
           that.$store.dispatch('setState', 0)
         }
-        console.log(that.$store.getters.checkState);
       })
       .catch((failResponse) => {});
     // var sleep = function(time) {
