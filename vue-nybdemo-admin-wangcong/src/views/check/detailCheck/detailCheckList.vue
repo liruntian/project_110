@@ -43,7 +43,7 @@ methods: {
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
     getdetailFormdata().then(res => {
-        // console.log(res)
+        console.log(res)
       this.detailForm = res.data
 
     for(let item of this.detailForm){
