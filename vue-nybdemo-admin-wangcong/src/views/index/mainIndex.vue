@@ -10,20 +10,37 @@
 
       <tr class="num">
         <td>
-          <el-button round type="info" @click="toDetailCheck">{{ detailNum }}</el-button>
+          <el-button
+            plain
+            type="info"
+            @click="toDetailCheck"
+            class="num-button"
+            >{{ detailNum }}</el-button
+          >
         </td>
         <td>
-          <el-button  round type="info" @click="toEasyCheck">{{ easyNum }}</el-button>
+          <el-button
+            plain
+            type="info"
+            class="num-button"
+            @click="toEasyCheck"
+            >{{ easyNum }}</el-button
+          >
         </td>
         <td>
-          <el-button round type="info">{{ easyNum }}</el-button>
+          <el-button plain class="num-button" type="info">{{
+            easyNum
+          }}</el-button>
         </td>
       </tr>
     </table>
 
     <h1 style="margin-bottom: 16px">本年度申请情况</h1>
     <el-steps>
-      <el-step title="待审核" :description="this.detailNum.toString()"></el-step>
+      <el-step
+        title="待审核"
+        :description="this.detailNum.toString()"
+      ></el-step>
       <el-step
         title="待修改"
         description="这是一段很长很长很长的描述性文字"
@@ -34,7 +51,10 @@
 
     <h1 style="margin-bottom: 16px; margin-top: 16px">本年度申请情况</h1>
     <el-steps>
-      <el-step title="待审核" :description="this.detailNum.toString()"></el-step>
+      <el-step
+        title="待审核"
+        :description="this.detailNum.toString()"
+      ></el-step>
       <el-step
         title="待修改"
         description="这是一段很长很长很长的描述性文字"
@@ -108,11 +128,11 @@ export default {
       location.reload();
     },
     toDetailCheck() {
-      this.$router.push({path: '/detail'})
-        },
+      this.$router.push({ path: "/detail" });
+    },
     toEasyCheck() {
-      this.$router.push({path: '/easy'})
-        },
+      this.$router.push({ path: "/easy" });
+    },
 
     // echart自适应
     selfAdaption() {
@@ -164,7 +184,6 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   justify-content: $content;
 }
 
-
 .main {
   display: flex;
   flex-direction: column;
@@ -191,6 +210,12 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     }
     .num {
       color: red;
+      .num-button {
+        color: rgb(245, 108, 108);
+        font-size: 16px;
+        font-weight: bold;
+        font-family: "element-icons";
+      }
     }
   }
 

@@ -4,57 +4,44 @@
       <div id="pdfDom" style="padding-top: 55px;padding-left: 24px;padding-right: 24px;
       background-color:#fff;margin: auto; width: fit-content">
       <table border="1px" cellspacing="0" >
-        <colgroup span="7" width="200"></colgroup>
+        <colgroup span="8" width="200"></colgroup>
         <!-- <colgroup span="1" width="200"></colgroup> -->
         <tr align="center">
-          <th colspan="7">展会首次申报审核</th>
+          <th colspan="8">展会首次申报审核</th>
         </tr>
         <tr align="center">
           <td>展会名称</td>
-          <td colspan="6">{{ detailForm.name }}</td>
+          <td colspan="7">{{ detailForm.name }}</td>
         </tr>
         <tr align="center">
           <td>主办单位</td>
           <td>{{ detailForm.hostComp }}</td>
           <td>承办单位</td>
           <td>{{ detailForm.fundComp }}</td>
-        </tr>
-         <tr align="center">
           <td>协办单位</td>
           <td v-if="detailForm.supportComp">{{ detailForm.supportComp }}</td>
           <td v-if="!detailForm.supportComp">无</td>
           <td>指导单位</td>
-          <td v-if="detailForm.orderComp">{{ detailForm.orderComp }}</td>
+          <td v-if="detailForm.orderComp" >{{ detailForm.orderComp }}</td>
           <td v-if="!detailForm.orderComp">无</td>
         </tr>
-        <tr align="center">
+         <tr align="center">
           <td>批准单位</td>
           <td>{{ detailForm.authObj }}</td>
           <td>批准文号</td>
           <td v-if="detailForm.authNum">{{ detailForm.authNum }}</td>
           <td v-if="!detailForm.authNum">无</td>
-        </tr>
-        <tr align="center">
-          <td>批准审核文件</td>
-          <td colspan="6" style="font-size: 10px">
-            <div class="down" @click="downAuthorizeFile">
-              <img src="../../../assets/file.svg" />点击下载
-            </div>
-          </td>
-        </tr>
-        <tr align="center">
           <td>举办地点</td>
           <td>{{detailForm.chooseCity}}-{{detailForm.place }}</td>
           <td>举办面积</td>
           <td>{{ detailForm.area }}</td>
         </tr>
+
         <tr align="center">
           <td>举办时间</td>
           <td>{{ detailForm.startTime }}—{{ detailForm.endTime }}</td>
           <td>举办周期</td>
           <td>{{ detailForm.cycle }}</td>
-        </tr>
-        <tr align="center">
           <td>是否邀请境外有关机构及参展商</td>
           <td>{{ getForign }}</td>
           <td>观众构成</td>
@@ -65,22 +52,22 @@
         </tr>
         <tr align="center">
           <td>展会内容</td>
-          <td colspan="6">{{ detailForm.meetState }}</td>
+          <td colspan="7">{{ detailForm.meetState }}</td>
         </tr>
         <tr align="center">
           <td>同期活动</td>
-          <td colspan="6">{{ detailForm.activityBrief }}</td>
+          <td colspan="7">{{ detailForm.activityBrief }}</td>
         </tr>
         <tr align="center">
           <td>经费来源</td>
-          <td colspan="3">
+          <td colspan="7">
             财政资金：<span>{{ detailForm.finanFund }}元<br /></span> 自筹资金:
             <span>{{ detailForm.selfFund }}元</span>
           </td>
         </tr>
         <tr align="center">
           <td>领导出席情况</td>
-          <td colspan="6">
+          <td colspan="7">
             是否邀请党和国家领导人出席：<span>{{ getLeaderN }} </span><br />
             有关司局和事业单位负责人<span>{{ getLeaderD }}</span><br />
             省部级以上领导<span>{{ getLeaderP }}</span><br />
@@ -93,16 +80,23 @@
           <td>{{ detailForm.writeObject }}</td>
           <td>负责处室</td>
           <td>{{ detailForm.department }}</td>
-        </tr>
-         <tr align="center">
           <td>处室负责人</td>
           <td>{{ detailForm.charger }}</td>
           <td>手机号</td>
           <td>{{ detailForm.teleNum }}</td>
         </tr>
         <tr align="center">
+          <td v-if="isFirstApply">批准审核文件</td>
+          <td v-if="!isFirstApply">去年审批文件</td>
+          <td colspan="7" style="font-size: 10px">
+            <div class="down" @click="downAuthorizeFile">
+              <img src="../../../assets/file.svg" />点击下载
+            </div>
+          </td>
+        </tr>
+        <tr align="center">
           <td>展会工作方案文档</td>
-          <td colspan="6" style="font-size: 10px">
+          <td colspan="7" style="font-size: 10px">
             <div class="down" @click="downMeetPlanFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
@@ -110,23 +104,23 @@
         </tr>
         <tr align="center">
           <td>招展招商方案文档</td>
-          <td colspan="6" style="font-size: 10px">
+          <td colspan="7" style="font-size: 10px">
             <div class="down" @click="downInvestmentPlanFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
           </td>
         </tr>
-         <tr align="center">
+         <tr align="center" v-show="isFirstApply">
           <td>可行性报告文档</td>
-          <td colspan="6" style="fFont-size: 10px">
+          <td colspan="7" style="fFont-size: 10px">
             <div class="down" @click="downFeasibilityFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
           </td>
         </tr>
-        <tr align="center">
+        <tr align="center"  v-show="isFirstApply">
           <td>承办单位办展条件说明</td>
-          <td colspan="6" style="font-size: 10px">
+          <td colspan="7" style="font-size: 10px">
             <div class="down" @click="downConditionStateFile">
               <img src="../../../assets/file.svg" />点击下载
             </div>
@@ -166,6 +160,7 @@ export default {
       detailForm: {},
       modal1: false,
       pdfTitle:'',
+      isFirstApply: false,
       // ishow: false
     };
   },

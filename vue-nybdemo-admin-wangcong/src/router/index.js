@@ -59,21 +59,11 @@ let defaultRouter = [
     ]
   },
   {
-    path: "/404",
-    component: NotFound,
-    name: "404",
-    hidden: true,
-    children: []
-  }
-]
-
-let addRouter = [
-
-  {
-    path: "/",
+    path: "/detail",
     iconCls: "fa fa-check-square-o", // 图标样式class
     name: routeName.check,
     component: Layout,
+    alone: true,
     children: [
       {
         path: "/easy",
@@ -108,23 +98,36 @@ let addRouter = [
       },
     ]
   },
-
-
   {
-    path: "/",
-    iconCls: "fa fa-file-text", // 图标样式class
-    name: routeName.message,
-    component: Layout,
-    children: [
-      {
-        path: "/send",
-        iconCls: "el-icon-edit", // 图标样式class
-        name: routeName.send,
-        component: Send,
-        children: []
-      }
-    ]
-  },
+    path: "/404",
+    component: NotFound,
+    name: "404",
+    hidden: true,
+    children: []
+  }
+]
+
+let addRouter = [
+
+
+
+  //信息系统
+
+  // {
+  //   path: "/",
+  //   iconCls: "fa fa-file-text", // 图标样式class
+  //   name: routeName.message,
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/send",
+  //       iconCls: "el-icon-edit", // 图标样式class
+  //       name: routeName.send,
+  //       component: Send,
+  //       children: []
+  //     }
+  //   ]
+  // },
 
   {
     path: "/",

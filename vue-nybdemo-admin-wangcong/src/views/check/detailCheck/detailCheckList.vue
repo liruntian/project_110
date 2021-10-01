@@ -15,7 +15,11 @@
         style="width: 200px"
       ></el-input>
     </div>
-    <div class="filter-state">
+    <div class="search-button">
+      <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
+      <el-button size="small">重置</el-button>
+    </div>
+        <div class="filter-state">
       <h3 class="title">状态</h3>
       <el-checkbox-group v-model="checkList">
         <el-checkbox label="首次申报待审批"></el-checkbox>
@@ -24,10 +28,6 @@
         <el-checkbox label="待总结"></el-checkbox>
         <el-checkbox label="已完成"></el-checkbox>
       </el-checkbox-group>
-    </div>
-    <div class="search-button">
-      <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
-      <el-button size="small">重置</el-button>
     </div>
 
     <bea-table :data="detailForm" :nextPath="nextPath"></bea-table>
