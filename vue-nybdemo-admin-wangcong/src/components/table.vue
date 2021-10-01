@@ -81,8 +81,7 @@ export default {
                       },
                       on: {
                         click: () => {
-                          // this.editorButton(params.row)
-                          console.log(params);
+                          this.check(params.row);
                         },
                       },
                     },

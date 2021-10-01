@@ -1,26 +1,29 @@
 <template>
   <div class="main">
     <h1 style="margin-bottom: 16px">待处理任务</h1>
-    <el-table
-      :data="tableData"
-      style="margin-bottom: 16px"
-      class="task-table"
-      border
-    >
-      <el-table-column prop="detailNum" label="待审核首次申报" width="180">
-      </el-table-column>
-      <el-table-column prop="easyNum" label="待审核再次申报" width="180">
-      </el-table-column>
-      <el-table-column prop="summaryNum" label="待提交总结" width="180">
-      </el-table-column>
-    </el-table>
+    <table border=".5px" cellspacing="0" class="task-table">
+      <tr>
+        <th>待审核首次申报</th>
+        <th>待审核再次申报</th>
+        <th>待提交总结</th>
+      </tr>
+
+      <tr class="num">
+        <td>
+          <el-button round type="info" @click="toDetailCheck">{{ detailNum }}</el-button>
+        </td>
+        <td>
+          <el-button  round type="info" @click="toEasyCheck">{{ easyNum }}</el-button>
+        </td>
+        <td>
+          <el-button round type="info">{{ easyNum }}</el-button>
+        </td>
+      </tr>
+    </table>
 
     <h1 style="margin-bottom: 16px">本年度申请情况</h1>
     <el-steps>
-      <el-step
-        title="待审核"
-        :description='this.tableData[0].detailNum'
-      ></el-step>
+      <el-step title="待审核" :description="this.detailNum.toString()"></el-step>
       <el-step
         title="待修改"
         description="这是一段很长很长很长的描述性文字"
@@ -29,12 +32,9 @@
       <el-step title="已完成" description="这段就没那么长了"></el-step>
     </el-steps>
 
-    <h1 style="margin-bottom: 16px;margin-top: 16px">本年度申请情况</h1>
+    <h1 style="margin-bottom: 16px; margin-top: 16px">本年度申请情况</h1>
     <el-steps>
-      <el-step
-        title="待审核"
-        :description='this.tableData[0].detailNum'
-      ></el-step>
+      <el-step title="待审核" :description="this.detailNum.toString()"></el-step>
       <el-step
         title="待修改"
         description="这是一段很长很长很长的描述性文字"
@@ -42,37 +42,6 @@
       <el-step title="待总结" description="这段就没那么长了"></el-step>
       <el-step title="已完成" description="这段就没那么长了"></el-step>
     </el-steps>
-
-    <!-- <el-row :gutter='20'>
-
-      <el-col :span='12'>
-        <div class="card bbxx">
-          <p class="title"><i class="fa fa-th-large fa-lg"></i>待审核的申报</p >
-          <div style="padding-bottom: 35px; text-align: center">
-            <p class="notice">需要审核的再次申报共有<span style="color: #bd2c00">&nbsp;{{easyNum}}&nbsp;</span>件</p >
-            <p class="notice">需要审核的首次申报共有<span style="color: #bd2c00">&nbsp;{{detailNum}}&nbsp;</span>件</p >
-          </div>
-        </div>
-      </el-col>
-
-      <el-col :span='12'>
-        <div style="width: 340px">
-          <div class="card kjfs">
-            <p class="title"><i class="fa fa-th-large fa-lg"></i>快捷方式</p >
-
-            <ul>
-              <li><router-link to="/detail" class="kjfs kjfs-grennn"><span><i class="fa fa-wpforms fa-2x"></i></span><span>首次申报审核</span></router-link></li>
-              <li><router-link to="/easy" class="kjfs kjfs-pinkk"><span><i class="fa fa-leanpub fa-2x"></i></span><span>再次申报审核</span></router-link></li>
-            </ul>
-            <ul>
-              <li><router-link to="/register" class="kjfs kjfs-purplee"><span><i class="fa fa-address-card-o fa-2x"></i></span><span>注册审核</span></router-link></li>
-              <li  v-on:click="logout"><router-link to="/" class="kjfs kjfs-lightBluee"><span><i class="fa fa-sign-out fa-2x"></i></span><span>退出系统</span></router-link></li>
-            </ul>
-          </div>
-        </div>
-      </el-col>
-
-    </el-row> -->
   </div>
 </template>
 
@@ -91,13 +60,9 @@ export default {
       imgUrl: require("../../assets/photo.jpeg"),
 
       efcheck: false,
-      tableData: [
-        {
-          easyNum: "",
-          detailNum: "",
-          summaryNum: "",
-        },
-      ],
+      easyNum: "",
+      detailNum: "",
+      summaryNum: "",
     };
   },
 
@@ -107,7 +72,7 @@ export default {
       .post("/message/easyNum", {})
       .then((successResponse) => {
         if (successResponse.data.code === 0) {
-          this.tableData[0].easyNum = successResponse.data.data;
+          this.easyNum = successResponse.data.data;
         } else {
           this.$message({
             showClose: true,
@@ -122,7 +87,7 @@ export default {
       .post("/message/detailNum", {})
       .then((successResponse) => {
         if (successResponse.data.code === 0) {
-          this.tableData[0].detailNum = successResponse.data.data;
+          this.detailNum = successResponse.data.data;
         } else {
           this.$message({
             showClose: true,
@@ -142,6 +107,12 @@ export default {
       Cookies.remove("face");
       location.reload();
     },
+    toDetailCheck() {
+      this.$router.push({path: '/detail'})
+        },
+    toEasyCheck() {
+      this.$router.push({path: '/easy'})
+        },
 
     // echart自适应
     selfAdaption() {
@@ -193,155 +164,38 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   justify-content: $content;
 }
 
-.photo {
-  height: 200px;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.card {
-  color: #666;
-  @extend %shadow;
-
-  ul {
-    @include flex;
-    li {
-      flex: 1;
-      a {
-        color: #666666;
-        align-items: center;
-        padding-#{$top}: 20px;
-        padding-#{$bottom}: 20px;
-        @include flex(column);
-        span {
-          height: 44px;
-        }
-        .num {
-          line-height: 44px;
-          font-size: 42px;
-          color: $bluee;
-          margin: 0px;
-        }
-      }
-      .kjfs-bluee {
-        color: $bluee;
-      }
-      .kjfs-pinkk {
-        color: $pinkk;
-      }
-      .kjfs-yelloww {
-        color: $yelloww;
-      }
-      .kjfs-grennn {
-        color: $grennn;
-      }
-      .kjfs-purplee {
-        color: $purplee;
-      }
-      .kjfs-lightBluee {
-        color: $lightBluee;
-      }
-      &:hover {
-        .kjfs-bluee {
-          color: #ffffff;
-          background: $bluee;
-        }
-        .kjfs-pinkk {
-          color: #ffffff;
-          background: $pinkk;
-        }
-        .kjfs-yelloww {
-          color: #ffffff;
-          background: $yelloww;
-        }
-        .kjfs-grennn {
-          color: #ffffff;
-          background: $grennn;
-        }
-        .kjfs-purplee {
-          color: #ffffff;
-          background: $purplee;
-        }
-        .kjfs-lightBluee {
-          color: #ffffff;
-          background: $lightBluee;
-        }
-      }
-    }
-  }
-  .table {
-    padding: 21px;
-    p {
-      height: 52px;
-      line-height: 52px;
-      border: 1px solid #cccccc;
-      overflow: hidden;
-      border-#{$top}: none;
-      @include flex(null, start);
-      &:first-child {
-        border-#{$top}: 1px solid #cccccc;
-      }
-      span {
-      }
-      .tit {
-        width: 180px;
-        min-width: 180px;
-        height: 100%;
-        text-align: center;
-        border-#{$right}: 1px solid #cccccc;
-        margin-#{$right}: 18px;
-      }
-      span.gitbox {
-        flex: 1;
-        height: 100%;
-        overflow: hidden;
-        @include flex(row, start);
-        a {
-          &:first-child {
-            margin-#{$right}: 30px;
-          }
-        }
-      }
-    }
-  }
-}
-#lineEcharts {
-  margin-#{$top}: 30px;
-  padding-#{$top}: 30px;
-  @extend %shadow;
-}
-#maintable {
-  margin-#{$top}: 30px;
-  padding-#{$top}: 10px;
-  @extend %shadow;
-}
-.notice {
-  margin-right: 15px;
-  padding: auto;
-  font-size: 22px;
-  line-height: 110px;
-  height: 110px;
-  width: 400px;
-}
-.el-row {
-  display: flex;
-}
 .main {
   display: flex;
   flex-direction: column;
   .el-table .cell {
     text-align: center;
   }
-  .el-table__row {
-    .cell {
+
+  .task-table {
+    width: 70%;
+    font-family: verdana, arial, sans-serif;
+    color: #333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+    background-color: #fff;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 16px;
+    th {
+      padding: 4px;
+    }
+    td {
+      padding: 6px;
+    }
+    .num {
       color: red;
     }
   }
-  .task-table {
-    background-color: transparent;
+
+  .el-step__description.is-wait {
+    color: #000;
   }
 }
 </style>
