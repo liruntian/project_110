@@ -4,11 +4,13 @@
     <div class="card1 bbxx" style="width: 100%">
       <div class="chartUser">
 
-        <el-button @click="newFont()" type="primary">重填</el-button>
-        <el-button @click="newFont()" type="primary">暂存</el-button>
-        <el-button class="subBtn" type="primary" v-on:click="declareFormed">提交</el-button>
         <el-button @click="returnMainIndex()" type="primary">返回</el-button>
-        <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
+        <el-form :model="declareForm"
+                 status-icon label-width="30px"
+                 class="demo-ruleForm"
+                 style="padding-right: 30px"
+                 enctype='multipart/form-data'
+                 disabled="true">
           <div class="helpinfo">
             <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
             <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
