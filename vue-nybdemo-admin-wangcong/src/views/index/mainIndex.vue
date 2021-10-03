@@ -49,7 +49,7 @@
       <el-step title="已完成" description="这段就没那么长了"></el-step>
     </el-steps>
 
-    <h1 style="margin-bottom: 16px; margin-top: 16px">本年度申请情况</h1>
+    <h1 style="margin-bottom: 16px; margin-top: 16px">所有年度申请情况</h1>
     <el-steps>
       <el-step
         title="待审核"
@@ -128,7 +128,12 @@ export default {
       location.reload();
     },
     toDetailCheck() {
-      this.$router.push({ path: "/detail" });
+      this.$router.push({
+        path: "/detail",
+        query: {
+          value: 1,
+        },
+      });
     },
     toEasyCheck() {
       this.$router.push({ path: "/easy" });

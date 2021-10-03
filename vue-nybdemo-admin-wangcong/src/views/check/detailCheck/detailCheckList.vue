@@ -22,15 +22,15 @@
         <div class="filter-state">
       <h3 class="title">状态</h3>
       <el-checkbox-group v-model="checkList">
-        <el-checkbox label="首次申报待审批"></el-checkbox>
-        <el-checkbox label="再次申报待审批"></el-checkbox>
+        <!-- <el-checkbox label="首次申报待审批"></el-checkbox>
+        <el-checkbox label="再次申报待审批"></el-checkbox> -->
         <el-checkbox label="待修改"></el-checkbox>
         <el-checkbox label="待总结"></el-checkbox>
         <el-checkbox label="已完成"></el-checkbox>
       </el-checkbox-group>
     </div>
 
-    <bea-table :data="detailForm" :nextPath="nextPath"></bea-table>
+    <bea-table :data="detailForm" :nextPath="nextPath" :checkType="checkType"></bea-table>
     <!-- <easy-check-item v-for="(item,index) in easyForm" :key="index" :item="item"/> -->
     <!-- <easy-check-item />
      <easy-check-item />
@@ -55,7 +55,8 @@ export default {
       detailForm: [],
       hostComp: "",
       exportName: "",
-      checkList: ["复选框 A"],
+      checkList: [],
+      checkType:null,
       nextPath: "/detailCheck/",
     };
   },
@@ -67,13 +68,15 @@ export default {
   methods: {},
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
+    this.checkType = this.$route.query.value && this.$route.query.value;
     getdetailFormdata().then((res) => {
-      console.log(res);
       this.detailForm = res.data;
 
       for (let item of this.detailForm) {
         item.checkState =
           item.checkState == 0 ? "待审核" : "已通过，展会计划待过会";
+          item.createTime = item.createTime.slice(0,10)
+          console.log(item);
       }
     });
   },

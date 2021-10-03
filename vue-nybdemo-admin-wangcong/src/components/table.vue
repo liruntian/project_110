@@ -5,6 +5,7 @@
       :data="data"
       :context="self"
       :nextPath="nextPath"
+      size="large"
     ></Table>
     <div style="margin: 10px; overflow: hidden">
       <div style="float: right">
@@ -29,12 +30,41 @@ export default {
         return "/";
       },
     },
+    checkType: {
+      type: Number,
+      default() {
+        return 1;
+      },
+    },
   },
   data() {
     return {
       self: this,
       state: 1,
       columns1: [
+        {
+          title: "申报类型",
+          key: "type",
+          filters: [
+            {
+              label: "首次申报",
+              value: 1,
+            },
+            {
+              label: "再次申报",
+              value: 2,
+            },
+          ],
+          filteredValue: [this.checkType],
+          filterMultiple: false,
+          filterMethod(value, row) {
+            if (value == 1) {
+              return row.age > 25;
+            } else if (value == 2) {
+              return row.age < 25;
+            }
+          },
+        },
         {
           title: "展会ID",
           key: "id",
@@ -205,8 +235,8 @@ export default {
     },
     changePage() {
       // 这里直接更改了模拟的数据，真实使用场景应该从服务端获取数据
-    //   this.tableData1 = this.mockTableData1();
-    console.log('新的数据');
+      //   this.tableData1 = this.mockTableData1();
+      console.log("新的数据");
     },
   },
 };
