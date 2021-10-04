@@ -1,67 +1,183 @@
 <template>
   <div class="main">
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div
-          style="
-            width: 340px;
-            display: inline-block;
-            margin-left: 20px;
-            float: left;
-          "
-        >
-          <div class="card kjfs">
-            <p class="title"><i class="fa fa-th-large fa-lg"></i>快捷方式</p>
+    <el-col>
+<!--      <el-row></el-row>-->
+      <el-row>
+        <el-col  >
+          <p>进行中申报</p>
+<!--        <el-row>-->
+          <el-table v-if="completeState == 1"
+            :data="tableData1"
+            style="width: 100%"
+            height="150">
+            <el-table-column
+              fixed
+              prop="name"
+              label="展会名称"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="place"
+              label="举办地点"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="date"
+              label="开始时间"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="state"
+              label="申报状态"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="500">
+              <template slot-scope="scope">
+                <el-button
+                  @click="fontView()"
+                  type="text"
+                  size="small">
+                  查看申报
+                </el-button>
+                <el-button
+                  @click.native.prevent="deleteRow(scope.$index, tableData)"
+                  type="text"
+                  size="small">
+                  撤回
+                </el-button>
+                <el-button
+                  @click.native.prevent="deleteRow(scope.$index, tableData)"
+                  type="text"
+                  size="small">
+                  修改
+                </el-button>
+                <el-button
+                  @click="handIn()"
+                  type="text"
+                  size="small">
+                  填写总结
+                </el-button>
+                <el-button
+                  @click.native.prevent="deleteRow(scope.$index, tableData)"
+                  type="text"
+                  size="small">
+                  处理记录
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-button v-else @click="newFont()" type="primary">填写申报</el-button>
+<!--        </el-row>-->
+        </el-col>
+<!--        <el-col >-->
+<!--          -->
+<!--        </el-col>-->
 
-            <ul>
-              <li>
-                <router-link to="/setPassword" class="kjfs kjfs-grennn"
-                  ><span><i class="fa fa-wpforms fa-2x"></i></span
-                  ><span>修改密码</span></router-link
-                >
-              </li>
-              <li>
-                <router-link to="/handin" class="kjfs kjfs-pinkk"
-                  ><span><i class="fa fa-leanpub fa-2x"></i></span
-                  ><span>上报总结</span></router-link
-                >
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <router-link to="/haveread" class="kjfs kjfs-purplee"
-                  ><span><i class="fa fa-question-circle-o fa-2x"></i></span
-                  ><span>已读消息</span></router-link
-                >
-              </li>
-              <li v-on:click="logout">
-                <router-link to="/" class="kjfs kjfs-lightBluee"
-                  ><span><i class="fa fa-sign-out fa-2x"></i></span
-                  ><span>退出系统</span></router-link
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <detail-exhi-list></detail-exhi-list>
-      </el-col>
-      <el-col :span="11">
-        <not-read></not-read>
-      </el-col>
-      <!-- <el-col :span="7">
-        <easy-exhi-list></easy-exhi-list>
-      </el-col> -->
-      <!-- <el-col :span="2">
-        <div @click="msgLook" class="msg">
-          <img src="~assets/message.svg" :class="{ active: this.msgCount }" />
-          <span class="count" v-show="this.msgCount">+{{ this.msgCount }}</span>
-        </div>
-      </el-col> -->
-    </el-row>
+      </el-row>
+<!--      <el-row></el-row>-->
+      <el-row>
+        <el-col>
+          <span>历史申报</span>
+          <el-table
+            :data="tableData2"
+            style="width: 100%"
+            height="500">
+            <el-table-column
+              fixed
+              prop="name"
+              label="展会名称"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="place"
+              label="举办地点"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="date"
+              label="开始时间"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="state"
+              label="申报状态"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="operation"
+              label="操作"
+              width="300">
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+    </el-col>
+
+
+<!--    <el-row :gutter="20">-->
+<!--      <el-col :span="6">-->
+<!--        <div-->
+<!--          style="-->
+<!--            width: 340px;-->
+<!--            display: inline-block;-->
+<!--            margin-left: 20px;-->
+<!--            float: left;-->
+<!--          "-->
+<!--        >-->
+<!--          <div class="card kjfs">-->
+<!--            <p class="title"><i class="fa fa-th-large fa-lg"></i>快捷方式</p>-->
+
+<!--            <ul>-->
+<!--              <li>-->
+<!--                <router-link to="/setPassword" class="kjfs kjfs-grennn"-->
+<!--                  ><span><i class="fa fa-wpforms fa-2x"></i></span-->
+<!--                  ><span>修改密码</span></router-link-->
+<!--                >-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <router-link to="/handin" class="kjfs kjfs-pinkk"-->
+<!--                  ><span><i class="fa fa-leanpub fa-2x"></i></span-->
+<!--                  ><span>上报总结</span></router-link-->
+<!--                >-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--            <ul>-->
+<!--              <li>-->
+<!--                <router-link to="/haveread" class="kjfs kjfs-purplee"-->
+<!--                  ><span><i class="fa fa-question-circle-o fa-2x"></i></span-->
+<!--                  ><span>已读消息</span></router-link-->
+<!--                >-->
+<!--              </li>-->
+<!--              <li v-on:click="logout">-->
+<!--                <router-link to="/" class="kjfs kjfs-lightBluee"-->
+<!--                  ><span><i class="fa fa-sign-out fa-2x"></i></span-->
+<!--                  ><span>退出系统</span></router-link-->
+<!--                >-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="6">-->
+<!--        <detail-exhi-list></detail-exhi-list>-->
+<!--      </el-col>-->
+<!--      <el-col :span="11">-->
+<!--        <not-read></not-read>-->
+<!--      </el-col>-->
+<!--      &lt;!&ndash; <el-col :span="7">-->
+<!--        <easy-exhi-list></easy-exhi-list>-->
+<!--      </el-col> &ndash;&gt;-->
+<!--      &lt;!&ndash; <el-col :span="2">-->
+<!--        <div @click="msgLook" class="msg">-->
+<!--          <img src="~assets/message.svg" :class="{ active: this.msgCount }" />-->
+<!--          <span class="count" v-show="this.msgCount">+{{ this.msgCount }}</span>-->
+<!--        </div>-->
+<!--      </el-col> &ndash;&gt;-->
+<!--    </el-row>-->
   </div>
-  
 </template>
 
 <script>
@@ -74,67 +190,136 @@ import {getDetail} from '../../network/getForm';
 
 import { getNotLookCount } from "network/message.js";
 
-
 export default {
-  name: "mainIndex",
-  mounted() {
-    this.selfAdaption();
+  name:'mainIndex',
+  methods: {
+    handleClick(row) {
+      console.log(row);
+    },
+    newFont() {
+      this.$router.push('/easyfont')
+    },
+    handIn() {
+      this.$router.push('/handin')
+    },
+    fontView() {
+      this.$router.push('/easyfontview')
+    },
   },
+
   data() {
     return {
-      msgCount: 1,
-
-    };
-  },
-  components: {
-    detailExhiList,
-    easyExhiList,
-    notRead
-  },
-
-  watch:{
-    '$store.getters.checkState':function(){ //监听vuex
-      if(this.$store.getters.flash == false) {
-        this.$store.dispatch("setFlash", true);
-        location.reload();
-      }
+      completeState: 2,
+      tableData1: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }],
+      tableData2: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        place: '上海',
+        state: '普陀区',
+      }]
     }
-  },
-
-  created() {
-
-    getNotLookCount(this.$store.getters.token).then((res) => {
-      //   console.log(res)
-      this.msgCount = res.data;
-    });
-
-  },
-
-  destroyed() {},
-
-  methods: {
-    logout() {
-      Cookies.remove("token");
-      Cookies.remove("face");
-      Cookies.remove("checkState");
-      location.reload();
-    },
-    // echart自适应
-    selfAdaption() {
-      let that = this;
-      setTimeout(() => {
-        window.onresize = function () {
-          if (that.$refs.echarts) {
-            that.$refs.echarts.chart.resize();
-          }
-        };
-      }, 10);
-    },
-    msgLook() {
-      this.$router.push("/notread").catch(() => {});
-    },
-  },
-};
+  }
+}
+// export default {
+//   name: "mainIndex",
+//   mounted() {
+//     this.selfAdaption();
+//   },
+//   data() {
+//     return {
+//       msgCount: 1,
+//
+//     };
+//   },
+//   components: {
+//     detailExhiList,
+//     easyExhiList,
+//     notRead
+//   },
+//
+//   watch:{
+//     '$store.getters.checkState':function(){ //监听vuex
+//       if(this.$store.getters.flash == false) {
+//         this.$store.dispatch("setFlash", true);
+//         location.reload();
+//       }
+//     }
+//   },
+//
+//   created() {
+//
+//     getNotLookCount(this.$store.getters.token).then((res) => {
+//       //   console.log(res)
+//       this.msgCount = res.data;
+//     });
+//
+//   },
+//
+//   destroyed() {},
+//
+//   methods: {
+//     logout() {
+//       Cookies.remove("token");
+//       Cookies.remove("face");
+//       Cookies.remove("checkState");
+//       location.reload();
+//     },
+//     // echart自适应
+//     selfAdaption() {
+//       let that = this;
+//       setTimeout(() => {
+//         window.onresize = function () {
+//           if (that.$refs.echarts) {
+//             that.$refs.echarts.chart.resize();
+//           }
+//         };
+//       }, 10);
+//     },
+//     msgLook() {
+//       this.$router.push("/notread").catch(() => {});
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss">
