@@ -1,182 +1,102 @@
 <template>
   <div class="main">
-    <el-col>
-<!--      <el-row></el-row>-->
-      <el-row>
-        <el-col  >
+    <div class="all-info">
+      <div class="current-font">
+        <div class="new-font">
           <p>进行中申报</p>
-<!--        <el-row>-->
-          <el-table v-if="completeState == 1"
-            :data="tableData1"
-            style="width: 100%"
-            height="150">
-            <el-table-column
-              fixed
-              prop="name"
-              label="展会名称"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="place"
-              label="举办地点"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="date"
-              label="开始时间"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="state"
-              label="申报状态"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              fixed="right"
-              label="操作"
-              width="500">
-              <template slot-scope="scope">
-                <el-button
-                  @click="fontView()"
-                  type="text"
-                  size="small">
-                  查看申报
-                </el-button>
-                <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
-                  type="text"
-                  size="small">
-                  撤回
-                </el-button>
-                <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
-                  type="text"
-                  size="small">
-                  修改
-                </el-button>
-                <el-button
-                  @click="handIn()"
-                  type="text"
-                  size="small">
-                  填写总结
-                </el-button>
-                <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
-                  type="text"
-                  size="small">
-                  处理记录
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-button v-else @click="newFont()" type="primary">填写申报</el-button>
-<!--        </el-row>-->
-        </el-col>
-<!--        <el-col >-->
-<!--          -->
-<!--        </el-col>-->
-
-      </el-row>
-<!--      <el-row></el-row>-->
-      <el-row>
-        <el-col>
-          <span>历史申报</span>
-          <el-table
-            :data="tableData2"
-            style="width: 100%"
-            height="500">
-            <el-table-column
-              fixed
-              prop="name"
-              label="展会名称"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="place"
-              label="举办地点"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="date"
-              label="开始时间"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="state"
-              label="申报状态"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="operation"
-              label="操作"
-              width="300">
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-    </el-col>
-
-
-<!--    <el-row :gutter="20">-->
-<!--      <el-col :span="6">-->
-<!--        <div-->
-<!--          style="-->
-<!--            width: 340px;-->
-<!--            display: inline-block;-->
-<!--            margin-left: 20px;-->
-<!--            float: left;-->
-<!--          "-->
-<!--        >-->
-<!--          <div class="card kjfs">-->
-<!--            <p class="title"><i class="fa fa-th-large fa-lg"></i>快捷方式</p>-->
-
-<!--            <ul>-->
-<!--              <li>-->
-<!--                <router-link to="/setPassword" class="kjfs kjfs-grennn"-->
-<!--                  ><span><i class="fa fa-wpforms fa-2x"></i></span-->
-<!--                  ><span>修改密码</span></router-link-->
-<!--                >-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                <router-link to="/handin" class="kjfs kjfs-pinkk"-->
-<!--                  ><span><i class="fa fa-leanpub fa-2x"></i></span-->
-<!--                  ><span>上报总结</span></router-link-->
-<!--                >-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--            <ul>-->
-<!--              <li>-->
-<!--                <router-link to="/haveread" class="kjfs kjfs-purplee"-->
-<!--                  ><span><i class="fa fa-question-circle-o fa-2x"></i></span-->
-<!--                  ><span>已读消息</span></router-link-->
-<!--                >-->
-<!--              </li>-->
-<!--              <li v-on:click="logout">-->
-<!--                <router-link to="/" class="kjfs kjfs-lightBluee"-->
-<!--                  ><span><i class="fa fa-sign-out fa-2x"></i></span-->
-<!--                  ><span>退出系统</span></router-link-->
-<!--                >-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </el-col>-->
-<!--      <el-col :span="6">-->
-<!--        <detail-exhi-list></detail-exhi-list>-->
-<!--      </el-col>-->
-<!--      <el-col :span="11">-->
-<!--        <not-read></not-read>-->
-<!--      </el-col>-->
-<!--      &lt;!&ndash; <el-col :span="7">-->
-<!--        <easy-exhi-list></easy-exhi-list>-->
-<!--      </el-col> &ndash;&gt;-->
-<!--      &lt;!&ndash; <el-col :span="2">-->
-<!--        <div @click="msgLook" class="msg">-->
-<!--          <img src="~assets/message.svg" :class="{ active: this.msgCount }" />-->
-<!--          <span class="count" v-show="this.msgCount">+{{ this.msgCount }}</span>-->
-<!--        </div>-->
-<!--      </el-col> &ndash;&gt;-->
-<!--    </el-row>-->
+          <div class="new-font-btn" v-if="completeState==2" @click="newFont()">
+            <img :src="addBtn" alt="">
+            <span>新建申报</span>
+          </div>
+          <div class="current-font-data" v-else>
+            <table border="1" cellspacing="0">
+              <tr>
+                <td>展会名称</td>
+                <td>举办地点</td>
+                <td>举办时间</td>
+                <td>申报状态</td>
+                <td>操作</td>
+              </tr>
+              <tr>
+                <td>中国（海南）国际热带农产品冬季交易会 世界中国茶艺博览会</td>
+                <td>中国 海南 三亚</td>
+                <td>2020-12-25</td>
+                <td>待总结</td>
+                <td>
+                  <span>
+                    <router-link to="/easyfontview">查看申报</router-link>
+                  </span>
+                  <span>撤回</span>
+                  <span>修改</span>
+                  <span>填写总结</span>
+                  <span>处理记录</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="history-font">
+        <div>
+          <p>历史申报</p>
+          <div class="history-font-data">
+            <table border="1" cellspacing="0">
+              <thead>
+                <td>展会名称</td>
+                <td>举办地点</td>
+                <td>举办时间</td>
+                <td>申报状态</td>
+                <td>操作</td>
+              </thead>
+              <tr v-for="(item,index) in tableData2" :key="index">
+                <td>{{ item.name }}</td>
+                <td>{{ item.place }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.state }}</td>
+                <td>
+                  <span>
+                    查看申报
+                  </span>
+                  <span>查看总结</span>
+                  <span>处理记录</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+<!--          <el-table-->
+<!--            :data="tableData2"-->
+<!--            style="width: 100%"-->
+<!--            height="500">-->
+<!--            <el-table-column-->
+<!--              fixed-->
+<!--              prop="name"-->
+<!--              label="展会名称"-->
+<!--              width="150">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="place"-->
+<!--              label="举办地点"-->
+<!--              width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="date"-->
+<!--              label="开始时间"-->
+<!--              width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="state"-->
+<!--              label="申报状态"-->
+<!--              width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="operation"-->
+<!--              label="操作"-->
+<!--              width="300">-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -192,23 +112,9 @@ import { getNotLookCount } from "network/message.js";
 
 export default {
   name:'mainIndex',
-  methods: {
-    handleClick(row) {
-      console.log(row);
-    },
-    newFont() {
-      this.$router.push('/easyfont')
-    },
-    handIn() {
-      this.$router.push('/handin')
-    },
-    fontView() {
-      this.$router.push('/easyfontview')
-    },
-  },
-
-  data() {
+  data () {
     return {
+      addBtn: require('../../assets/icons/add_btn.svg'),
       completeState: 2,
       tableData1: [{
         date: '2016-05-02',
@@ -223,7 +129,7 @@ export default {
         state: '普陀区',
       }, {
         date: '2016-05-02',
-        name: '王小虎',
+        name: '世界中国茶艺博览会',
         place: '上海',
         state: '普陀区',
       }, {
@@ -233,24 +139,9 @@ export default {
         state: '普陀区',
       }, {
         date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
+        name: '中国（海南）国际热带农产品冬季交易会 世界中国茶艺博览会',
+        place: '中国 海南 三亚',
+        state: '已完成',
       }, {
         date: '2016-05-02',
         name: '王小虎',
@@ -258,7 +149,21 @@ export default {
         state: '普陀区',
       }]
     }
-  }
+  },
+  methods: {
+    handleClick(row) {
+      console.log(row);
+    },
+    newFont() {
+      this.$router.push('/easyfont')
+    },
+    handIn() {
+      this.$router.push('/handin')
+    },
+    fontView() {
+      this.$router.push('/easyfontview')
+    },
+  },
 }
 // export default {
 //   name: "mainIndex",
@@ -538,12 +443,103 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 }
 .el-col {
   margin-right: 5px;
+  background-color: #fff;
 }
 .main {
   width: 100%;
+  height: 100%;
   display: flex;
 }
 .el-row{
   display: flex;
+}
+.all-info{
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+}
+.current-font{
+  p{
+    font-size: 24px;
+    color: black;
+    margin: 50px 0px 20px 60px;
+  }
+  .current-font-data{
+    font-size: 16px;
+    width: 80%;
+    height: 120px;
+    margin-left: 60px;
+    table{
+      width: 100%;
+      text-align: center;
+      tr{
+        height: 50px;
+        tr :last-child{
+          display: flex;
+          justify-content: center;
+        }
+        td{
+          span{
+            color: #409EFF;
+          }
+        }
+      }
+    }
+  }
+  //.new-font{
+  //  text-align: center;
+  //}
+  .new-font-btn{
+    height: 120px;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //border: #8c939d solid 1px;
+    box-shadow: 2px 2px 2px 2px #cccdce, -2px -2px 2px 2px #cccdce, 2px -2px 2px 2px #cccdce, -2px 2px 2px 2px #cccdce;
+    img{
+      height: 100px;
+      width: 100px;
+    }
+    span{
+      font-size: 24px;
+      color: black;
+      margin-left: 30px;
+    }
+  }
+}
+
+.history-font{
+  p{
+    font-size: 24px;
+    color: black;
+    margin: 50px 0px 20px ;
+  }
+  font-size: 16px;
+  width: 80%;
+  height: 120px;
+  margin-left: 60px;
+  table{
+    width: 100%;
+    text-align: center;
+    thead{
+      font-size: 22px;
+      height: 60px;
+      font-weight: bold;
+    }
+    tr{
+      height: 50px;
+      tr :last-child{
+        display: flex;
+        justify-content: center;
+      }
+      td{
+        span{
+          color: #409EFF;
+        }
+      }
+    }
+  }
 }
 </style>
