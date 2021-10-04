@@ -55,7 +55,7 @@ export default {
               value: 2,
             },
           ],
-          filteredValue: [this.checkType],
+          // filteredValue: [this.checkType],
           filterMultiple: false,
           filterMethod(value, row) {
             if (value == 1) {
