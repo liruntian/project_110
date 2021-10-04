@@ -292,7 +292,7 @@ import { getEasy } from "../../network/getForm";
 import { getDetail } from "../../network/getForm";
 
 import chooseCity from "../../components/common/chooseCity/chooseCity";
-import mainIndex from '../index/mainIndex';
+import mainIndex from '../index/mainIndex111';
 export default {
   name: "easyfont",
   data() {

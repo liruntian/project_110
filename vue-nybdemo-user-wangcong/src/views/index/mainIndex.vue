@@ -4,10 +4,10 @@
       <div class="current-font">
         <div class="new-font">
           <p>进行中申报</p>
-          <div class="new-font-btn" v-if="completeState==2" @click="newFont()">
+          <a class="new-font-btn" v-if="completeState==1" @click="newFont()">
             <img :src="addBtn" alt="">
             <span>新建申报</span>
-          </div>
+          </a>
           <div class="current-font-data" v-else>
             <table border="1" cellspacing="0">
               <tr>
@@ -42,11 +42,11 @@
           <div class="history-font-data">
             <table border="1" cellspacing="0">
               <thead>
-                <td>展会名称</td>
-                <td>举办地点</td>
-                <td>举办时间</td>
-                <td>申报状态</td>
-                <td>操作</td>
+              <td>展会名称</td>
+              <td>举办地点</td>
+              <td>举办时间</td>
+              <td>申报状态</td>
+              <td>操作</td>
               </thead>
               <tr v-for="(item,index) in tableData2" :key="index">
                 <td>{{ item.name }}</td>
@@ -63,37 +63,6 @@
               </tr>
             </table>
           </div>
-<!--          <el-table-->
-<!--            :data="tableData2"-->
-<!--            style="width: 100%"-->
-<!--            height="500">-->
-<!--            <el-table-column-->
-<!--              fixed-->
-<!--              prop="name"-->
-<!--              label="展会名称"-->
-<!--              width="150">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              prop="place"-->
-<!--              label="举办地点"-->
-<!--              width="120">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              prop="date"-->
-<!--              label="开始时间"-->
-<!--              width="120">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              prop="state"-->
-<!--              label="申报状态"-->
-<!--              width="120">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              prop="operation"-->
-<!--              label="操作"-->
-<!--              width="300">-->
-<!--            </el-table-column>-->
-<!--          </el-table>-->
         </div>
       </div>
     </div>
@@ -101,15 +70,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import detailExhiList from "../../components/common/exhiList/detailExhiList";
-import easyExhiList from "../../components/common/exhiList/easyExhiList";
-import notRead from '../message/notread';
-
-import {getDetail} from '../../network/getForm';
-
-import { getNotLookCount } from "network/message.js";
-
 export default {
   name:'mainIndex',
   data () {
@@ -165,292 +125,12 @@ export default {
     },
   },
 }
-// export default {
-//   name: "mainIndex",
-//   mounted() {
-//     this.selfAdaption();
-//   },
-//   data() {
-//     return {
-//       msgCount: 1,
-//
-//     };
-//   },
-//   components: {
-//     detailExhiList,
-//     easyExhiList,
-//     notRead
-//   },
-//
-//   watch:{
-//     '$store.getters.checkState':function(){ //监听vuex
-//       if(this.$store.getters.flash == false) {
-//         this.$store.dispatch("setFlash", true);
-//         location.reload();
-//       }
-//     }
-//   },
-//
-//   created() {
-//
-//     getNotLookCount(this.$store.getters.token).then((res) => {
-//       //   console.log(res)
-//       this.msgCount = res.data;
-//     });
-//
-//   },
-//
-//   destroyed() {},
-//
-//   methods: {
-//     logout() {
-//       Cookies.remove("token");
-//       Cookies.remove("face");
-//       Cookies.remove("checkState");
-//       location.reload();
-//     },
-//     // echart自适应
-//     selfAdaption() {
-//       let that = this;
-//       setTimeout(() => {
-//         window.onresize = function () {
-//           if (that.$refs.echarts) {
-//             that.$refs.echarts.chart.resize();
-//           }
-//         };
-//       }, 10);
-//     },
-//     msgLook() {
-//       this.$router.push("/notread").catch(() => {});
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss">
-$top: top;
-$bottom: bottom;
-$left: left;
-$right: right;
-$leftright: ($left, $right);
-$pinkk: #eec2d3;
-$bluee: #409eff;
-$yelloww: #f4d884;
-$grennn: #89dda0;
-$purplee: #78a2ea;
-$lightBluee: #b8d6ff;
-
-$list: bluee pinkk yelloww grennn purplee lightBluee;
-$list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
-
-%shadow {
-  background: #fff;
-  -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
-  box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.2);
-  border-color: rgba(0, 0, 0, 0.2);
-
-  .title {
-    font-size: 14px;
-    padding: 10px;
-
-    i {
-      margin-#{$right}: 5px;
-    }
-  }
-}
-
-@mixin flex($direction: row, $content: space-between) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $content;
-}
-
-.photo {
-  height: 200px;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card {
-  color: #666;
-  @extend %shadow;
-
-  ul {
-    @include flex;
-
-    li {
-      flex: 1;
-
-      a {
-        color: #666666;
-        align-items: center;
-        padding-#{$top}: 20px;
-        padding-#{$bottom}: 20px;
-        @include flex(column);
-
-        span {
-          height: 44px;
-        }
-
-        .num {
-          line-height: 44px;
-          font-size: 42px;
-          color: $bluee;
-          margin: 0px;
-        }
-      }
-
-      .kjfs-bluee {
-        color: $bluee;
-      }
-
-      .kjfs-pinkk {
-        color: $pinkk;
-      }
-
-      .kjfs-yelloww {
-        color: $yelloww;
-      }
-
-      .kjfs-grennn {
-        color: $grennn;
-      }
-
-      .kjfs-purplee {
-        color: $purplee;
-      }
-
-      .kjfs-lightBluee {
-        color: $lightBluee;
-      }
-
-      &:hover {
-        .kjfs-bluee {
-          color: #ffffff;
-          background: $bluee;
-        }
-
-        .kjfs-pinkk {
-          color: #ffffff;
-          background: $pinkk;
-        }
-
-        .kjfs-yelloww {
-          color: #ffffff;
-          background: $yelloww;
-        }
-
-        .kjfs-grennn {
-          color: #ffffff;
-          background: $grennn;
-        }
-
-        .kjfs-purplee {
-          color: #ffffff;
-          background: $purplee;
-        }
-
-        .kjfs-lightBluee {
-          color: #ffffff;
-          background: $lightBluee;
-        }
-      }
-    }
-  }
-
-  .table {
-    padding: 21px;
-
-    p {
-      height: 52px;
-      line-height: 52px;
-      border: 1px solid #cccccc;
-      overflow: hidden;
-      border-#{$top}: none;
-      @include flex(null, start);
-
-      &:first-child {
-        border-#{$top}: 1px solid #cccccc;
-      }
-
-      // span {}
-
-      .tit {
-        width: 180px;
-        min-width: 180px;
-        height: 100%;
-        text-align: center;
-        border-#{$right}: 1px solid #cccccc;
-        margin-#{$right}: 18px;
-      }
-
-      span.gitbox {
-        flex: 1;
-        height: 100%;
-        overflow: hidden;
-        @include flex(row, start);
-
-        a {
-          &:first-child {
-            margin-#{$right}: 30px;
-          }
-        }
-      }
-    }
-  }
-}
-
-#lineEcharts {
-  margin-#{$top}: 30px;
-  padding-#{$top}: 30px;
-  @extend %shadow;
-}
-
-#maintable {
-  margin-#{$top}: 30px;
-  padding-#{$top}: 10px;
-  @extend %shadow;
-}
-.msg {
-  position: relative;
-}
-
-.msg:hover {
-  cursor: pointer;
-}
-
-.count {
-  position: absolute;
-  top: 1.3rem;
-  left: 1.5rem;
-
-  font-size: 20px;
-
-  color: red;
-}
-.active {
-  background-color: #eec2d3;
-}
-
-.msg > img {
-  width: 50px;
-  height: 50px;
-  float: right;
-  margin-right: 20px;
-}
-.el-col {
-  margin-right: 5px;
-  background-color: #fff;
-}
 .main {
   width: 100%;
   height: 100%;
-  display: flex;
-}
-.el-row{
   display: flex;
 }
 .all-info{
@@ -466,7 +146,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   }
   .current-font-data{
     font-size: 16px;
-    width: 80%;
+    width: 90%;
     height: 120px;
     margin-left: 60px;
     table{
@@ -517,7 +197,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     margin: 50px 0px 20px ;
   }
   font-size: 16px;
-  width: 80%;
+  width: 90%;
   height: 120px;
   margin-left: 60px;
   table{
