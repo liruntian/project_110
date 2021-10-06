@@ -1,12 +1,12 @@
 <template>
     <div class="chooseCity">
-      <Select  v-model="model1" style="min-width:10px;max-width: 100px;" @on-change="deleteModel(1)">
+      <Select  v-model="model1" style="min-width:60px;max-width: 120px;height: 40px" @on-change="deleteModel(1)">
         <Option class="choose"  v-for="item in firstFloorDatas" :value="item.id" :key="item.id">{{ item.name }}</Option>
       </Select>
-      <Select v-model="model2" style="min-width:10px;max-width: 140px;" v-if="showSecond" @on-change="deleteModel(2)">
+      <Select v-model="model2" style="min-width:100px;max-width: 140px;height: 40px" v-if="showSecond" @on-change="deleteModel(2)">
         <Option v-for="item in secondFloorDatas" :value="item.id" :key="item.id">{{ item.name }}</Option>
       </Select>
-      <Select v-model="model3" style="min-width:150px;max-width: 180px;" v-if="showThird" >
+      <Select v-model="model3" style="min-width:150px;max-width: 180px;height: 40px" v-if="showThird" >
         <Option v-for="item in thirdFloorDatas" :value="item.id" :key="item.id">{{ item.name }}</Option>
       </Select>
     </div>
@@ -154,5 +154,8 @@
       background-color: rgb(226, 95, 29);
       width: 300px;
       overflow: auto;
+  }
+  .ivu-select-selection{
+    height: 40px !important;
   }
 </style>

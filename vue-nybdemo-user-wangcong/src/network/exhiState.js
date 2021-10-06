@@ -18,3 +18,22 @@ export function getEasyExhiState(userId) {
   }
   })
 }
+export function getAllFirstFontData (meetAddr) {
+  return request({
+    url: "/search/getDetailByMeetAddr",
+    method: "post",
+    data: {
+      meetAddr
+    }
+  })
+}
+
+export function getAllNotFirstFontData (meetAddr) {
+  return request({
+    url: "/search/getEasyByMeetAddr",
+    method: "post",
+    data: {
+      meetAddr
+    }
+  })
+}
