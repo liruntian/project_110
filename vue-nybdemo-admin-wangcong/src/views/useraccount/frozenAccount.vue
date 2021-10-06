@@ -22,17 +22,34 @@
     </div>
 
     <Table border :columns="columns7" :data="data6"></Table>
+    <div style="margin: 10px; overflow: hidden">
+      <div style="float: right">
+        <Page
+          :total="data.length"
+          :current="1"
+          show-total
+          show-sizer
+          @on-change="changePage"
+          @on-page-size-change="changePageSize"
+        ></Page>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { getAllUsers, freeze } from "../../network/freeze";
+
 export default {
   data() {
     return {
+      exportName: "",
+      hostComp: "",
+      pageSize: 10,
       columns7: [
         {
           title: "展会名称",
-          key: "exhiName",
+          key: "name",
         },
         {
           title: "处室负责人",
@@ -58,7 +75,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.frozen(params.index);
+                      this.frozen(params.row.meetAddr);
                     },
                   },
                 },
@@ -68,6 +85,7 @@ export default {
           },
         },
       ],
+      data: [],
       data6: [
         {
           exhiName: "John Brown",
@@ -78,7 +96,11 @@ export default {
     };
   },
   created() {
-    this.data6 = res.data;
+    getAllUsers().then((res) => {
+      console.log("allusers", res.data);
+      this.data = res.data;
+      this.changePage(1);
+    });
   },
   methods: {
     show(index) {
@@ -87,9 +109,22 @@ export default {
         content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`,
       });
     },
-    frozen(index) {
-      // this.data6.splice(index, 1);
-      alert(this.data6[index].exhiName);
+    frozen(meetAddr) {
+      console.log(meetAddr);
+      freeze(meetAddr).then(res => {
+        console.log('res',res);
+      })
+    },
+    changePageSize(size) {
+      this.pageSize = size;
+      this.changePage(1);
+
+    },
+    changePage(res) {
+      // 这里直接更改了模拟的数据，真实使用场景应该从服务端获取数据
+      //   this.tableData1 = this.mockTableData1();
+      this.data6 = this.data.slice((res - 1) * this.pageSize, res * this.pageSize);
+      console.log("新的数据", res);
     },
   },
 };
@@ -102,6 +137,6 @@ export default {
   margin-bottom: 16px;
 }
 .search-button {
-    margin-left: 16px;
+  margin-left: 16px;
 }
 </style>

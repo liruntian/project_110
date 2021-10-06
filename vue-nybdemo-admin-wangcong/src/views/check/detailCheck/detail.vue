@@ -1,5 +1,5 @@
 <template>
-  <div class="detailCkeck">
+  <div class="detailCheck">
     <div class="card kjfs">
       <div
         id="pdfDom"
@@ -16,7 +16,8 @@
           <colgroup span="8" width="200"></colgroup>
           <!-- <colgroup span="1" width="200"></colgroup> -->
           <tr align="center">
-            <th colspan="8">展会首次申报审核</th>
+            <th colspan="8" v-if="isFirstApply">展会首次申报审核</th>
+            <th colspan="8" v-if="!isFirstApply">展会再次申报审核</th>
           </tr>
           <tr align="center">
             <td>展会名称</td>
@@ -42,13 +43,13 @@
             <td v-if="!detailForm.authNum">无</td>
             <td>举办地点</td>
             <td>{{ detailForm.chooseCity }}-{{ detailForm.place }}</td>
-            <td>举办面积</td>
+            <td>举办面积(㎡)</td>
             <td>{{ detailForm.area }}</td>
           </tr>
 
           <tr align="center">
             <td>举办时间</td>
-            <td>{{ detailForm.startTime }}—{{ detailForm.endTime }}</td>
+            <td>{{ detailForm.startTime.slice(0,10) }}—{{ detailForm.endTime.slice(0,10) }}</td>
             <td>举办周期</td>
             <td>{{ detailForm.cycle }}</td>
             <td>是否邀请境外有关机构及参展商</td>
@@ -58,6 +59,16 @@
               是否有参展商：<span>{{ getView1 }}</span>
               <br />是否有消费者：<span>{{ getView2 }}</span>
             </td>
+          </tr>
+          <tr align="center">
+            <td>填报单位</td>
+            <td>{{ detailForm.writeObject }}</td>
+            <td>负责处室</td>
+            <td>{{ detailForm.department }}</td>
+            <td>处室负责人</td>
+            <td>{{ detailForm.charger }}</td>
+            <td>手机号</td>
+            <td>{{ detailForm.teleNum }}</td>
           </tr>
           <tr align="center">
             <td>展会内容</td>
@@ -70,34 +81,24 @@
           <tr align="center">
             <td>经费来源</td>
             <td colspan="7">
-              财政资金：<span>{{ detailForm.finanFund }}元<br /></span>
+              财政资金：<span>{{ detailForm.finanFund }} 元<br /></span>
               自筹资金:
-              <span>{{ detailForm.selfFund }}元</span>
+              <span>{{ detailForm.selfFund }} 元</span>
             </td>
           </tr>
           <tr align="center">
             <td>领导出席情况</td>
             <td colspan="7">
               是否邀请党和国家领导人出席：<span>{{ getLeaderN }} </span><br />
-              有关司局和事业单位负责人<span>{{ getLeaderD }}</span
+              有关司局和事业单位负责人： <span>{{ getLeaderD }}</span
               ><br />
-              省部级以上领导<span>{{ getLeaderP }}</span
+              省部级以上领导： <span>{{ getLeaderP }}</span
               ><br />
-              国家级行业协会负责人<span>{{ getLeaderA }}</span
+              国家级行业协会负责人： <span>{{ getLeaderA }}</span
               ><br />
               是否有国外政府官员含驻华使馆：<span>{{ getLeaderF }}</span
               ><br />
             </td>
-          </tr>
-          <tr align="center">
-            <td>填报单位</td>
-            <td>{{ detailForm.writeObject }}</td>
-            <td>负责处室</td>
-            <td>{{ detailForm.department }}</td>
-            <td>处室负责人</td>
-            <td>{{ detailForm.charger }}</td>
-            <td>手机号</td>
-            <td>{{ detailForm.teleNum }}</td>
           </tr>
           <tr align="center">
             <td v-if="isFirstApply">批准审核文件</td>
@@ -211,6 +212,9 @@ export default {
   },
   created() {
     this.detailForm = this.$route.query.item;
+    if(this.$route.query.checkType==2) {
+      this.isFirstApply = false;
+    }
     this.pdfTitle = `${
       this.detailForm ? this.detailForm.name : "未命名展会"
     }申报文件`;
@@ -476,17 +480,17 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   font-family: 华文细黑;
 }
 
-.detailCkeck {
+.detailCheck {
   color: #666;
 }
 table {
-  font-size: 14px;
+  font-size: 16px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   margin: auto;
 }
 
 td > span {
-  color: #fa5a5a;
+  color: #3399ff;
 }
 
 th {

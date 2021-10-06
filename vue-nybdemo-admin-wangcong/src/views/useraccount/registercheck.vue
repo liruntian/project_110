@@ -29,6 +29,7 @@
 <script>
 import { addUser } from "../../network/addUser";
 export default {
+  inject: ["reload"],
   data() {
     return {
       formInline: {
@@ -90,8 +91,15 @@ export default {
       ).then((successResponse) => {
         console.log(successResponse);
         if (successResponse.code === 0) {
-          alert("添加成功");
-          this.$router.push({ path: "/" });
+          this.$Notice.success({
+            title: "添加成功",
+          });
+          this.reload();
+        } else {
+          this.$Notice.error({
+            title: "添加失败",
+            desc: successResponse.msg ? successResponse.msg : "添加失败",
+          });
         }
       });
     },
@@ -105,5 +113,5 @@ export default {
   background-color: #ffffff;
   height: 100%;
   padding: 25px;
-}                         
+}
 </style>

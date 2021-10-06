@@ -1,6 +1,6 @@
 import {request} from "./request";
 
-export function getdetailFormdata() {
+export async function getdetailFormdata() {
   return request({
     url: '/check/detailList  ',
     method: "post",
@@ -29,11 +29,17 @@ export function checkPass(id,adminId,checkState) {
       id : id,
       adminId:adminId,
       checkState:checkState
-
-
     }
+  })
+}
 
-
+export function historyHandles(id) {
+  return request({
+    url: '/search/checkInfo',
+    method: "post",
+    data:{
+      id : id,
+    }
   })
 }
 

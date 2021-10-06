@@ -35,7 +35,7 @@
       </tr>
     </table>
 
-    <h1 style="margin-bottom: 16px">本年度申请情况</h1>
+    <h1 style="margin-bottom: 16px">进行中的申请情况</h1>
     <el-steps>
       <el-step
         title="待审核"
@@ -49,7 +49,7 @@
       <el-step title="已完成" description="这段就没那么长了"></el-step>
     </el-steps>
 
-    <h1 style="margin-bottom: 16px; margin-top: 16px">所有年度申请情况</h1>
+    <h1 style="margin-bottom: 16px; margin-top: 16px">历史申请情况</h1>
     <el-steps>
       <el-step
         title="待审核"
@@ -136,7 +136,13 @@ export default {
       });
     },
     toEasyCheck() {
-      this.$router.push({ path: "/easy" });
+      // this.$router.push({ path: "/easy" });
+      this.$router.push({
+        path: "/detail",
+        query: {
+          value: 2,
+        },
+      });
     },
 
     // echart自适应

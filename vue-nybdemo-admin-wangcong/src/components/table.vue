@@ -7,6 +7,40 @@
       :nextPath="nextPath"
       size="large"
     ></Table>
+    <!-- <Modal
+      v-model="showHandleHistory"
+      title="审核历史记录查看"
+      cancel-text="返回"
+      ok-text=''
+
+    >
+      <p>对话框内容</p>
+      <p>对话框内容</p>
+      <p>对话框内容</p>
+    </Modal> -->
+    <el-dialog
+      title="审核历史记录查看"
+      :visible.sync="showHandleHistory"
+      width="30%"
+    >
+      <el-timeline :reverse="true">
+        <el-timeline-item
+          v-for="(activity, index) in handleRecords"
+          :key="index"
+          placement="top"
+          :color = "color"
+          :timestamp="activity.createTime"
+        >
+          <el-card>
+            <h4>{{ activity.adminId }}: 干了什么操作</h4>
+            <p>{{ activity.content }}</p>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showHandleHistory = false">返 回</el-button>
+      </span>
+    </el-dialog>
     <div style="margin: 10px; overflow: hidden">
       <div style="float: right">
         <Page :total="100" :current="1" @on-change="changePage"></Page>
@@ -15,6 +49,7 @@
   </div>
 </template>
 <script>
+import { historyHandles } from "../network/detailCheck";
 export default {
   name: "beaTable",
   props: {
@@ -31,40 +66,20 @@ export default {
       },
     },
     checkType: {
-      type: Number,
+      type: String,
       default() {
-        return 1;
+        return "1";
       },
     },
   },
   data() {
     return {
+      color:'#0bbd87',
       self: this,
+      showHandleHistory: false,
+      handleRecords: [],
       state: 1,
       columns1: [
-        {
-          title: "申报类型",
-          key: "type",
-          filters: [
-            {
-              label: "首次申报",
-              value: 1,
-            },
-            {
-              label: "再次申报",
-              value: 2,
-            },
-          ],
-          // filteredValue: [this.checkType],
-          filterMultiple: false,
-          filterMethod(value, row) {
-            if (value == 1) {
-              return row.age > 25;
-            } else if (value == 2) {
-              return row.age < 25;
-            }
-          },
-        },
         {
           title: "展会ID",
           key: "id",
@@ -209,7 +224,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.removeButton(params.row);
+                      this.getHandleRecords(params.row.id);
                     },
                   },
                 },
@@ -225,17 +240,23 @@ export default {
   },
   methods: {
     check(data) {
-      // console.log(this.nextPath)
+      console.log("data", data);
       this.$router.push({
         path: this.nextPath,
         query: {
           item: data,
+          checkType: this.checkType,
         },
       });
     },
+    getHandleRecords(id) {
+      this.showHandleHistory = true;
+      historyHandles(id).then((res) => {
+        // console.log("res", res.data);
+        this.handleRecords = res.data;
+      });
+    },
     changePage() {
-      // 这里直接更改了模拟的数据，真实使用场景应该从服务端获取数据
-      //   this.tableData1 = this.mockTableData1();
       console.log("新的数据");
     },
   },

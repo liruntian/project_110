@@ -1,8 +1,8 @@
 import {request} from "./request.js"
 
-export function getEasyFormdata(){
+export async function getEasyFormdata(){
 	return request({
-		url: '/check/easylist',
+		url: '/check/easyList',
 		methods:"post"
 	})
 }
@@ -13,7 +13,6 @@ export function getEasyFile(fileId) {
 	  responseType:'blob',
 	  data:{
 		fileId : fileId,
-  
 	  }
 	  
   
