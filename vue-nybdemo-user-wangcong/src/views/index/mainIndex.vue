@@ -4,7 +4,7 @@
       <div class="current-font">
         <div class="new-font">
           <p>进行中申报</p>
-          <a class="new-font-btn" v-if="completeState==1" @click="newFont()">
+          <a class="new-font-btn" v-if="!hasCurrentFont" @click="newFont()">
             <img :src="addBtn" alt="">
             <span>新建申报</span>
           </a>
@@ -18,16 +18,18 @@
                 <td>操作</td>
               </tr>
               <tr>
-                <td>中国（海南）国际热带农产品冬季交易会 世界中国茶艺博览会</td>
-                <td>中国 海南 三亚</td>
-                <td>2020-12-25</td>
-                <td>待总结</td>
+                <td>{{ currentFont.name }}</td>
+                <td>{{ place }}</td>
+                <td>{{ time }}</td>
+                <td>{{ checkState }}</td>
                 <td>
                   <span>
                     <router-link to="/easyfontview">查看申报</router-link>
                   </span>
                   <span>撤回</span>
-                  <span>修改</span>
+                  <span>
+                    <router-link to="/easyfont">修改</router-link>
+                  </span>
                   <span>填写总结</span>
                   <span>处理记录</span>
                 </td>
@@ -42,17 +44,20 @@
           <div class="history-font-data">
             <table border="1" cellspacing="0">
               <thead>
-              <td>展会名称</td>
-              <td>举办地点</td>
-              <td>举办时间</td>
-              <td>申报状态</td>
-              <td>操作</td>
+                <td>展会名称</td>
+                <td>举办地点</td>
+                <td>举办时间</td>
+                <td>申报状态</td>
+                <td>操作</td>
               </thead>
-              <tr v-for="(item,index) in tableData2" :key="index">
+              <tr v-if="historyFontData.length === 0">
+                <td colspan="5">暂无历史申报数据</td>
+              </tr>
+              <tr v-for="(item,index) in historyFontData" v-else :key="index">
                 <td>{{ item.name }}</td>
-                <td>{{ item.place }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.state }}</td>
+                <td>{{ item.chooseCity + "-" + item.place }}</td>
+                <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
+                <td>{{ item.checkState }}</td>
                 <td>
                   <span>
                     查看申报
@@ -70,47 +75,73 @@
 </template>
 
 <script>
+import { getAllFirstFontData, getAllNotFirstFontData } from "../../network/exhiState"
 export default {
   name:'mainIndex',
   data () {
     return {
       addBtn: require('../../assets/icons/add_btn.svg'),
-      completeState: 2,
-      tableData1: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }],
-      tableData2: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '世界中国茶艺博览会',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }, {
-        date: '2016-05-02',
-        name: '中国（海南）国际热带农产品冬季交易会 世界中国茶艺博览会',
-        place: '中国 海南 三亚',
-        state: '已完成',
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        place: '上海',
-        state: '普陀区',
-      }]
+      historyFontData: []
+    }
+  },
+  created () {
+    this.getHistoryFontData()
+  },
+  computed: {
+    isFirstFont () {
+      return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont):this.$store.state.isFirstFont
+    },
+    hasCurrentFont () {
+      return typeof (this.$store.state.hasCurrentFont) === "string" ? JSON.parse(this.$store.state.hasCurrentFont):this.$store.state.hasCurrentFont
+    },
+    currentFont () {
+      return typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont):this.$store.state.currentFont
+    },
+    place () {
+      return this.currentFont.chooseCity + "-" + this.currentFont.place
+    },
+    time () {
+      return this.currentFont.startTime.slice(0, 10) + " 至 " + this.currentFont.endTime.slice(0, 10)
+    },
+    checkState () {
+      let checkState = ""
+      switch (this.currentFont.checkState) {
+        case 0:
+          checkState = "待审核"
+            break
+        case 1:
+          checkState = "待总结"
+          break
+        case 2:
+          checkState = "待修改"
+          break
+        case 9:
+          checkState = "草稿"
+          break
+      }
+      return checkState
     }
   },
   methods: {
+    getHistoryFontData () {
+      getAllFirstFontData(this.currentFont.meetAddr).then(res => {
+        console.log(res.data);
+        this.historyFontData = []
+        for (let font of res.data) {
+          if (font.checkState === 3 || font.checkState === 4 || font.checkState === 5){
+            this.historyFontData.push(font)
+          }
+        }
+        getAllNotFirstFontData(this.currentFont.meetAddr).then(res => {
+          console.log(res.data);
+          for (let font of res.data) {
+            if (font.checkState === 3 || font.checkState === 4 || font.checkState === 5){
+              this.historyFontData.push(font)
+            }
+          }
+        })
+      })
+    },
     handleClick(row) {
       console.log(row);
     },

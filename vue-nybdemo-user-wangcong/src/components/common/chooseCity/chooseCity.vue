@@ -1,6 +1,6 @@
 <template>
     <div class="chooseCity">
-      <Select  v-model="model1" style="min-width:100px;max-width: 140px;height: 40px" @on-change="deleteModel(1)">
+      <Select  v-model="model1" style="min-width:60px;max-width: 120px;height: 40px" @on-change="deleteModel(1)">
         <Option class="choose"  v-for="item in firstFloorDatas" :value="item.id" :key="item.id">{{ item.name }}</Option>
       </Select>
       <Select v-model="model2" style="min-width:100px;max-width: 140px;height: 40px" v-if="showSecond" @on-change="deleteModel(2)">

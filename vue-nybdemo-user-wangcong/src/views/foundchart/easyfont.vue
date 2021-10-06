@@ -77,7 +77,10 @@
               </el-row>
               <el-form-item enctype="multipart/form-data">
                 <div class="authorizeFile">
-                  <label class="xrequired">去年审批文件</label><br />
+                  <label class="xrequired">
+                    <span v-if="isFirstFont">批准审核文件</span>
+                    <span v-else>去年审批文件</span>
+                  </label><br />
                   <input type="file" ref="authorizeFile" accept=".pdf" name="authorizeFile"></input>
                 </div>
               </el-form-item>
@@ -91,10 +94,10 @@
                   <el-form-item>
                     <label class="xrequired">举办地点</label>
                     <div style="display:flex">
-                      <div style="width: 520px">
+                      <div style="width: 70%">
                         <choose-city ref='chooseCity' :cityData = 'this.chooseCityTag'></choose-city>
                       </div>
-                      <el-input type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
+                      <el-input style="width: 30%" type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
                     </div>
                   </el-form-item>
                   <el-form-item>
@@ -243,22 +246,6 @@
                     <label class="xrequired">处室负责人</label>
                     <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
                   </el-form-item>
-                  <el-form-item enctype="multipart/form-data">
-                    <div class="filePlc">
-                      <div class="inputFile1">
-                        <label class="xrequired">展会工作方案</label><br />
-                        <input type="file" ref="inputFile1"
-                               accept=".pdf" name="preExpoFile"></input>
-                      </div>
-
-                      <div class="inputFile2">
-                        <label class="xrequired">招展招商方案</label><br/>
-                        <input type="file" ref="inputFile2"  accept=".pdf" name="investmentPlanFile"></input>
-                      </div>
-                    </div>
-
-
-                  </el-form-item>
                 </el-col>
                 <el-col>
                   <el-form-item>
@@ -270,9 +257,39 @@
                     <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
                               oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
                   </el-form-item>
-                  <el-form-item style="padding-bottom:30px; padding-right: 30px" enctype='multipart/form-data'>
-
-                    <!--            <el-button class="subBtn" type="primary" v-on:click="declareFormed">提交</el-button>-->
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="6">
+                  <el-form-item enctype="multipart/form-data">
+                    <div class="inputFile1">
+                      <label class="xrequired">展会工作方案</label><br />
+                      <input type="file" ref="inputFile1" accept=".pdf" name="preExpoFile"></input>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item enctype="multipart/form-data">
+                    <div class="inputFile2">
+                      <label class="xrequired">招展招商方案</label><br/>
+                      <input type="file" ref="inputFile2"  accept=".pdf" name="investmentPlanFile"></input>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6" v-show="isFirstFont">
+                  <el-form-item enctype="multipart/form-data">
+                    <div class="inputFile3" >
+                      <label class="xrequired">可行性报告</label><br />
+                      <input type="file" ref="inputFile3" accept=".pdf" name=""></input>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6" v-show="isFirstFont">
+                  <el-form-item enctype="multipart/form-data">
+                    <div class="inputFile4" >
+                      <label class="xrequired">承办单位办展条件说明</label><br />
+                      <input type="file" ref="inputFile4" accept=".pdf" name=""></input>
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -285,8 +302,8 @@
 </template>
 
 <script>
-import { getEasy } from "../../network/getForm";
-import { getDetail } from "../../network/getForm";
+// import { getEasy } from "../../network/getForm";
+// import { getDetail } from "../../network/getForm";
 
 import chooseCity from "../../components/common/chooseCity/chooseCity";
 import mainIndex from '../index/mainIndex111';
@@ -336,66 +353,15 @@ export default {
         leaderA: false,
         // 是否有国外政府官员含驻华使馆
         leaderF: false,
-
-
-
       },
     };
   },
   components: {
     chooseCity,
   },
-  created() {
-    getEasy(this.$store.getters.token).then((res) => {
-      console.log(res.data)
-      if (res.data) {
-        if (!res.data.summaryDone & res.data.checkState == 2) {
-          alert("请先完成上报总结");
-          this.$router.push("handin");
-        }
-        (this.declareForm = res.data),
-          (this.declareForm.leaderN = parseInt(res.data.leaderState.toString()[0])),
-          (this.declareForm.leaderD = parseInt(
-            res.data.leaderState.toString()[1]
-          )),
-          (this.declareForm.leaderP = parseInt(
-            res.data.leaderState.toString()[2]
-          )),
-          (this.declareForm.leaderA = parseInt(
-            res.data.leaderState.toString()[3]
-          )),
-          (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
-          (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
-          (this.chooseCityTag = res.data.chooseCity);
-        console.log(this.declareForm);
-      } else {
-        getDetail(this.$store.getters.token).then((res) => {
-          if (res.data) {
-            if (!res.data.summaryDone & res.data.checkState == 2) {
-              alert("请先完成上报总结");
-              this.$router.push("handin");
-            }
-            (this.declareForm = res.data),
-              (this.declareForm.leaderN = parseInt(
-                res.data.leaderState.toString()[0]
-              )),
-              (this.declareForm.leaderD = parseInt(
-                res.data.leaderState.toString()[1]
-              )),
-              (this.declareForm.leaderP = parseInt(
-                res.data.leaderState.toString()[2]
-              )),
-              (this.declareForm.leaderA = parseInt(
-                res.data.leaderState.toString()[3]
-              )),
-              (this.declareForm.leaderF = parseInt(res.data.leaderState.toString()[4])),
-              (this.declareForm.Times = [res.data.startTime, res.data.endTime]),
-              (this.chooseCityTag = res.data.chooseCity);
-              console.log(this.declareForm);
-          }
-        });
-      }
-    });
+  created () {
+    console.log(this.$store.state.currentFont)
+    this.declareForm = JSON.parse(this.$store.state.currentFont)
   },
   computed: {
     leaderPresent() {
@@ -406,6 +372,9 @@ export default {
         (this.declareForm.leaderA & 1).toString() +
         (this.declareForm.leaderF & 1).toString()
       );
+    },
+    isFirstFont () {
+      return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont):this.$store.state.isFirstFont
     },
   },
   methods: {
@@ -537,15 +506,33 @@ export default {
       let ip0 = this.$refs.authorizeFile;
       let ip1 = this.$refs.inputFile1;
       let ip2 = this.$refs.inputFile2;
+      let ip3 = {}
+      let ip4 = {}
+      if (this.isFirstFont) {
+        ip3 = this.$refs.inputFile3;
+        ip4 = this.$refs.inputFile4;
+      }
       var formdata = new FormData();
-      if (!ip0.files[0]) {
-        this.$message({
-          showClose: true,
-          message: "请填写去年审批文件！",
-          type: "error",
-        });
-        this.$refs.authorizeFile.focus();
-        return false;
+      if (this.isFirstFont){
+        if (!ip0.files[0]) {
+          this.$message({
+            showClose: true,
+            message: "请填写批准审核文件！",
+            type: "error",
+          });
+          this.$refs.authorizeFile.focus();
+          return false;
+        }
+      } else {
+        if (!ip0.files[0]) {
+          this.$message({
+            showClose: true,
+            message: "请填写去年审批文件！",
+            type: "error",
+          });
+          this.$refs.authorizeFile.focus();
+          return false;
+        }
       }
       if (!ip1.files[0]) {
         this.$message({
@@ -564,6 +551,26 @@ export default {
         });
         this.$refs.inputFile2.focus();
         return false;
+      }
+      if (this.isFirstFont) {
+        if (!ip3.files[0]) {
+          this.$message({
+            showClose: true,
+            message: "请填写可行性报告！",
+            type: "error",
+          });
+          this.$refs.inputFile3.focus();
+          return false;
+        }
+        if (!ip4.files[0]) {
+          this.$message({
+            showClose: true,
+            message: "请填写承办单位办展条件说明！",
+            type: "error",
+          });
+          this.$refs.inputFile4.focus();
+          return false;
+        }
       }
       //展会简称
       formdata.append("meetAddr", this.$store.getters.token);
@@ -621,6 +628,12 @@ export default {
       formdata.append("meetPlanFile", ip1.files[0]);
       //招展招商方案文档
       formdata.append("investmentPlanFile", ip2.files[0]);
+      if (this.isFirstFont) {
+        //可行性报告文档
+        formdata.append("feasibilityFile", ip3.files[0]);
+        //承办单位办展条件说明
+        formdata.append("conditionStateFile", ip4.files[0]);
+      }
       //上级单位审核意见
       formdata.append("authFile", ip0.files[0]);
       //是否采购商参加
@@ -646,20 +659,35 @@ export default {
       //   .catch((failResponse) => {});
 
       var axios = require("axios");
-      axios
-        .post("http://8.140.21.128:8445/api/handin/easy", formdata)
-        .then((successResponse) => {
-          if (successResponse.data.code === 0) {
-            this.$router.push("/").catch(() => {});
-          } else {
-            this.$message({
-              showClose: true,
-              message: "提交失败！",
-              type: "error",
-            });
-          }
-        })
-        .catch((failResponse) => {});
+      if (this.isFirstFont){
+        axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
+          .then((successResponse) => {
+            if (successResponse.data.code === 0) {
+              this.$router.push("/").catch(() => {});
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          })
+          .catch((failResponse) => {});
+      }else {
+        axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
+          .then((successResponse) => {
+            if (successResponse.data.code === 0) {
+              this.$router.push("/").catch(() => {});
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          })
+          .catch((failResponse) => {});
+      }
     },
   },
 };

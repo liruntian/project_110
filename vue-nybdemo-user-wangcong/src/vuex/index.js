@@ -11,9 +11,12 @@ const store = new Vuex.Store({
   state: {
     token: Cookies.get("token"),
     flash: Cookies.get("flash"),
-    userKind:Cookies.get("userKind"),
+    userKind: Cookies.get("userKind"),
     // checkState:null
-    checkState:Cookies.get("checkState")
+    checkState: Cookies.get("checkState"),
+    isFirstFont: Cookies.get("isFirstFont"),
+    hasCurrentFont: Cookies.get("hasCurrentFont"),
+    currentFont: Cookies.get("currentFont")
   },
   mutations: {
     setToken (state, token) {
@@ -33,7 +36,18 @@ const store = new Vuex.Store({
       state.checkState = checkState
       Cookies.set("checkState", checkState, { expires: 1 / 24 })
     },
-
+    setIsFirstFont (state, isFirstFont) {
+      state.isFirstFont = isFirstFont
+      Cookies.set("isFirstFont", isFirstFont, { expires: 1 / 24 })
+    },
+    setHasCurrentFont (state, hasCurrentFont) {
+      state.hasCurrentFont = hasCurrentFont
+      Cookies.set("hasCurrentFont", hasCurrentFont, { expires: 1 / 24 })
+    },
+    setCurrentFont (state, currentFont) {
+      state.currentFont = currentFont
+      Cookies.set("currentFont", currentFont, { expires: 1/24 })
+    }
   },
   actions: {
     setToken ({commit}, token) {
@@ -59,9 +73,30 @@ const store = new Vuex.Store({
         commit("setState", checkState)
         resolve()
       })
+    },
+    setIsFirstFont ({commit}, isFirstFont) {
+      return new Promise((resolve, reject) => {
+        commit("setIsFirstFont", isFirstFont)
+        resolve()
+      })
+    },
+    setHasCurrentFont ({commit}, hasCurrentFont) {
+      return new Promise((resolve, reject) => {
+        commit("setHasCurrentFont", hasCurrentFont)
+        resolve()
+      })
+    },
+    setCurrentFont ({commit}, currentFont) {
+      return new Promise((resolve, reject) => {
+        commit("setCurrentFont", currentFont)
+        resolve()
+      })
     }
   },
   getters: {
+    isFirstFont: state => state.isFirstFont,
+    hasCurrentFont: state => state.hasCurrentFont,
+    currentFont: state => state.currentFont,
     checkState: state => state.checkState,
     addRouters: state => state.routerData.addRouters,
     token: state => state.token,
