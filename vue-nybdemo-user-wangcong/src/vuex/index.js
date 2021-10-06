@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   state: {
     token: Cookies.get("token"),
     flash: Cookies.get("flash"),
+    userId: Cookies.get("userId"),
     userKind: Cookies.get("userKind"),
     // checkState:null
     checkState: Cookies.get("checkState"),
@@ -47,6 +48,10 @@ const store = new Vuex.Store({
     setCurrentFont (state, currentFont) {
       state.currentFont = currentFont
       Cookies.set("currentFont", currentFont, { expires: 1/24 })
+    },
+    setUserId (state, userId) {
+      state.userId = userId
+      Cookies.set("userId", userId, { expires: 1/24 })
     }
   },
   actions: {
@@ -91,6 +96,12 @@ const store = new Vuex.Store({
         commit("setCurrentFont", currentFont)
         resolve()
       })
+    },
+    setUserId ({commit}, userId) {
+      return new Promise((resolve, reject) => {
+        commit("setUserId", userId)
+        resolve()
+      })
     }
   },
   getters: {
@@ -98,6 +109,7 @@ const store = new Vuex.Store({
     hasCurrentFont: state => state.hasCurrentFont,
     currentFont: state => state.currentFont,
     checkState: state => state.checkState,
+    userId: state => state.userId,
     addRouters: state => state.routerData.addRouters,
     token: state => state.token,
     userKind: state => state.userKind,

@@ -110,42 +110,42 @@ export default {
           })
           .then((successResponse) => {
             console.log(successResponse.data.data);
-            getAllNotFirstFontData(successResponse.data.data.meetAddr).then(res=>{
-              console.log(res);})
-            getAllFirstFontData(successResponse.data.data.meetAddr).then(res => {
-              console.log(res.data);
-              if (res.data.length === 0) {
-                console.log("首次");
-                that.$store.dispatch("setIsFirstFont", true)
-                that.$store.dispatch("setHasCurrentFont", false)
-              } else {
-                for (let item of res.data) {
-                  if (item.checkState === 3) {
-                    that.$store.dispatch("setIsFirstFont", false)
-                    getAllNotFirstFontData(successResponse.data.data.meetAddr).then(res => {
-                      console.log(res.data);
-                      if (res.data.length === 0) {
-                        that.$store.dispatch("setHasCurrentFont", false)
-                      } else {
-                        for (let item of res.data) {
-                          if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-                            that.$store.dispatch("setHasCurrentFont", true)
-                            that.$store.dispatch("setCurrentFont", item)
-                          }
-                        }
-                      }
-                    })
-                    break
-                  } else {
-                    that.$store.dispatch("setIsFirstFont", true)
-                    if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-                      that.$store.dispatch("setHasCurrentFont", true)
-                      that.$store.dispatch("setCurrentFont", item)
-                    }
-                  }
-                }
-              }
-            })
+            // getAllNotFirstFontData(successResponse.data.data.meetAddr).then(res=>{
+            //   console.log(res);})
+            // getAllFirstFontData(successResponse.data.data.meetAddr).then(res => {
+            //   console.log(res.data);
+            //   if (res.data.length === 0) {
+            //     console.log("首次");
+            //     that.$store.dispatch("setIsFirstFont", true)
+            //     that.$store.dispatch("setHasCurrentFont", false)
+            //   } else {
+            //     for (let item of res.data) {
+            //       if (item.checkState === 3) {
+            //         that.$store.dispatch("setIsFirstFont", false)
+            //         getAllNotFirstFontData(successResponse.data.data.meetAddr).then(res => {
+            //           console.log(res.data);
+            //           if (res.data.length === 0) {
+            //             that.$store.dispatch("setHasCurrentFont", false)
+            //           } else {
+            //             for (let item of res.data) {
+            //               if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
+            //                 that.$store.dispatch("setHasCurrentFont", true)
+            //                 that.$store.dispatch("setCurrentFont", item)
+            //               }
+            //             }
+            //           }
+            //         })
+            //         break
+            //       } else {
+            //         that.$store.dispatch("setIsFirstFont", true)
+            //         if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
+            //           that.$store.dispatch("setHasCurrentFont", true)
+            //           that.$store.dispatch("setCurrentFont", item)
+            //         }
+            //       }
+            //     }
+            //   }
+            // })
             if (successResponse.data.code === 0) {
               if (successResponse.data.data.isFreeze) {
                 alert("该账号已被冻结，请联系管理人员进行处理");
@@ -155,7 +155,7 @@ export default {
                   successResponse.data.data.kind
                 );
                 that.$store.dispatch("setFlash", false);
-
+                that.$store.dispatch("setUserId", successResponse.data.data.id)
                 // 将 id 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
                 that.$store
                   .dispatch("setToken", that.loginForm.meetAddr)

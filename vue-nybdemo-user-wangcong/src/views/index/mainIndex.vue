@@ -26,11 +26,15 @@
                   <span>
                     <router-link to="/easyfontview">查看申报</router-link>
                   </span>
-                  <span>撤回</span>
+                  <span>
+                    <a @click="centerDialogVisible = true">撤回</a>
+                  </span>
                   <span>
                     <router-link to="/easyfont">修改</router-link>
                   </span>
-                  <span>填写总结</span>
+                  <span>
+                    <router-link to="/handin">填写总结</router-link>
+                  </span>
                   <span>处理记录</span>
                 </td>
               </tr>
@@ -57,7 +61,11 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
-                <td>{{ item.checkState }}</td>
+                <td>
+                  <span v-show="item.checkState === 3">已完成</span>
+                  <span v-show="item.checkState === 4">已撤销</span>
+                  <span v-show="item.checkState === 5">已驳回</span>
+                </td>
                 <td>
                   <span>
                     查看申报
@@ -70,22 +78,33 @@
           </div>
         </div>
       </div>
+      <el-dialog
+        title="提示"
+        :visible.sync="centerDialogVisible"
+        width="30%">
+        <span>确认撤回申报？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="cancelFont()">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getAllFirstFontData, getAllNotFirstFontData } from "../../network/exhiState"
+import { getAllFirstFontData, getAllNotFirstFontData, changeDetailCheckState, changeEasyCheckState } from "../../network/exhiState"
 export default {
   name:'mainIndex',
   data () {
     return {
       addBtn: require('../../assets/icons/add_btn.svg'),
-      historyFontData: []
+      historyFontData: [],
+      centerDialogVisible: false
     }
   },
   created () {
-    this.getHistoryFontData()
+    this.getAllFontData()
   },
   computed: {
     isFirstFont () {
@@ -123,6 +142,74 @@ export default {
     }
   },
   methods: {
+    getAllFontData () {
+      const that = this
+      getAllFirstFontData(that.$store.state.token).then(res => {
+        console.log(res.data);
+        this.historyFontData = []
+        if (res.data.length === 0) {
+          console.log("首次");
+          that.$store.dispatch("setIsFirstFont", true)
+          that.$store.dispatch("setHasCurrentFont", false)
+        } else {
+          for (let item of res.data) {
+            if (item.checkState === 3) {
+              that.historyFontData.push(item)
+              that.$store.dispatch("setIsFirstFont", false)
+            } else if (item.checkState === 4 || item.checkState === 5) {
+              that.historyFontData.push(item)
+              that.$store.dispatch("setIsFirstFont", true)
+              that.$store.dispatch("setHasCurrentFont", false)
+            } else {
+              that.$store.dispatch("setIsFirstFont", true)
+              that.$store.dispatch("setHasCurrentFont", true)
+              that.$store.dispatch("setCurrentFont", item)
+            }
+
+            // if (item.checkState === 3) {
+            //   that.$store.dispatch("setIsFirstFont", false)
+            //   getAllNotFirstFontData(that.$store.state.token).then(res => {
+            //     console.log(res.data);
+            //     if (res.data.length === 0) {
+            //       that.$store.dispatch("setHasCurrentFont", false)
+            //     } else {
+            //       for (let item of res.data) {
+            //         if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
+            //           that.$store.dispatch("setHasCurrentFont", true)
+            //           that.$store.dispatch("setCurrentFont", item)
+            //         }
+            //       }
+            //     }
+            //   })
+            //   break
+            // } else {
+            //   that.$store.dispatch("setIsFirstFont", true)
+            //   if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
+            //     that.$store.dispatch("setHasCurrentFont", true)
+            //     that.$store.dispatch("setCurrentFont", item)
+            //   }
+            // }
+          }
+          getAllNotFirstFontData(that.$store.state.token).then(res => {
+            console.log(res.data)
+            if (res.data.length === 0) {
+              if (!that.hasCurrentFont) {
+                that.$store.dispatch("setHasCurrentFont", false)
+              }
+            } else {
+              for (let item of res.data) {
+                if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
+                  that.$store.dispatch("setHasCurrentFont", true)
+                  that.$store.dispatch("setCurrentFont", item)
+                } else {
+                  that.historyFontData.push(item)
+                }
+              }
+            }
+          })
+        }
+      })
+    },
     getHistoryFontData () {
       getAllFirstFontData(this.currentFont.meetAddr).then(res => {
         console.log(res.data);
@@ -141,6 +228,28 @@ export default {
           }
         })
       })
+    },
+    cancelFont () {
+      console.log("撤销申报")
+      let cancelForm = {
+        id: this.currentFont.id,
+        adminId: this.$store.state.userId * 1,
+        checkState: 4
+      }
+      console.log(cancelForm)
+      if (this.isFirstFont) {
+        changeDetailCheckState(cancelForm).then(res => {
+          this.centerDialogVisible = false
+          console.log(res);
+          this.getAllFontData()
+        })
+      } else {
+        changeEasyCheckState(cancelForm).then(res => {
+          this.centerDialogVisible = false
+          console.log(res);
+          this.getAllFontData()
+        })
+      }
     },
     handleClick(row) {
       console.log(row);

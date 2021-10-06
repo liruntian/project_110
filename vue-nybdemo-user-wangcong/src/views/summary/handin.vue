@@ -1,11 +1,10 @@
 <!--  -->
 <template>
-<div class='handin'>
-  <provin-handin v-if="kind==0"></provin-handin>
-  <firm-handin v-if="kind == 1"></firm-handin>
-  <foreign-handin v-if="kind == 2"></foreign-handin>
-
-</div>
+  <div class='handin'>
+    <provin-handin v-if="kind==0"></provin-handin>
+    <firm-handin v-if="kind == 1"></firm-handin>
+    <foreign-handin v-if="kind == 2"></foreign-handin>
+  </div>
 </template>
 
 <script>
@@ -27,12 +26,16 @@ components: {
 data() {
 //这里存放数据
 return {
-  kind : 1
+  // kind : 1
 
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+  kind () {
+    return this.$store.getters.userKind
+  }
+},
 //监控data中的数据变化
 watch: {},
 //方法集合
@@ -44,7 +47,7 @@ created() {
   console.log("jinlail");
   console.log(this.$store.getters.userKind)
 
-    this.kind = this.$store.getters.userKind
+    // this.kind = this.$store.getters.userKind
 
 
 },
@@ -63,5 +66,8 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.handin{
+  width: 100%;
+}
 
 </style>
