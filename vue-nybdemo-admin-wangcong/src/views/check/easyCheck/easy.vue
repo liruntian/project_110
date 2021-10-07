@@ -156,7 +156,7 @@
 
 <script>
 import { getUserId, send } from "../../../network/sendMessage";
-import { getEasyFile, checkPass } from "../../../network/easyCheck";
+import { getEasyFile, checkPassEasy } from "../../../network/easyCheck";
 
 export default {
   name: "detail",
@@ -230,7 +230,7 @@ export default {
       history.go(-1);
     },
     enrol() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 2).then(
+      checkPassEasy(this.detailForm.id, this.$store.getters.token, 2).then(
         (successResponse) => {
           if (successResponse.data.code === 0) {
           } else {
@@ -245,7 +245,7 @@ export default {
       history.go(-1);
     },
     Pass() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 2).then(
+      checkPassEasy(this.detailForm.id, this.$store.getters.token, 2).then(
         (successResponse) => {
           if (successResponse.data.code === 0) {
           } else {
@@ -317,7 +317,7 @@ export default {
       });
     },
     reject() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 3).then(
+      checkPassEasy(this.detailForm.id, this.$store.getters.token, 3).then(
         (successResponse) => {
           if (successResponse.data.code === 0) {
           } else {

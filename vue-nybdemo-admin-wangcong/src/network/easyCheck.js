@@ -19,7 +19,7 @@ export function getEasyFile(fileId) {
 	})
   }
 
-  export function checkPass(id,adminId,checkState) {
+  export function checkPassEasy(id,adminId,checkState) {
 	return request({
 	  url: '/check/easy',
 	  method: "post",

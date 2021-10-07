@@ -10,7 +10,7 @@ export async function getdetailFormdata() {
 }
 export function getdetailFile(fileId) {
   return request({
-    url: '/check/detailFile',
+    url: '/check/downloadFile',
     method: "post",
     responseType:'blob',
     data:{
@@ -21,7 +21,7 @@ export function getdetailFile(fileId) {
   })
 }
 
-export function checkPass(id,adminId,checkState) {
+export function checkPassDetail(id,adminId,checkState) {
   return request({
     url: '/check/detail',
     method: "post",

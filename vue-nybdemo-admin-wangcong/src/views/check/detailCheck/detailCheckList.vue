@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div class="easyCheckList">
+  <div class="detailCheckList">
     <div class="search-content">
       <h3 style="margin-right: 16px">展会名称</h3>
       <el-input
@@ -16,19 +16,25 @@
       ></el-input>
     </div>
     <div class="search-button">
-      <el-button type="primary" icon="el-icon-search" size="small"
+      <el-button type="primary" icon="el-icon-search" size="small" @click="search"
         >查询</el-button
       >
-      <el-button size="small">重置</el-button>
+      <el-button size="small" @click="reset">重置</el-button>
     </div>
     <div class="filter-state">
       <h3 class="title">状态</h3>
-      <el-checkbox-group v-model="checkList" @change="checkListChange">
-        <el-checkbox label="待审核"></el-checkbox>
-        <el-checkbox label="待修改"></el-checkbox>
-        <el-checkbox label="待总结"></el-checkbox>
-        <el-checkbox label="已完成"></el-checkbox>
-      </el-checkbox-group>
+      <div>
+        <el-checkbox-group
+          v-model="checkList"
+          @change="checkListChange"
+          :min="1"
+        >
+          <el-checkbox label="待审核"></el-checkbox>
+          <el-checkbox label="待修改"></el-checkbox>
+          <el-checkbox label="待总结"></el-checkbox>
+          <el-checkbox label="已完成"></el-checkbox>
+        </el-checkbox-group>
+      </div>
     </div>
     <div class="check-type">
       <h3 style="margin-right: 16px">申报类型</h3>
@@ -41,7 +47,11 @@
         <el-radio label="2" border>再次申报</el-radio>
       </el-radio-group>
     </div>
-    <bea-table :data="datalist" :nextPath="nextPath" :checkType="checkType"></bea-table>
+    <bea-table
+      :data="datalist"
+      :nextPath="nextPath"
+      :checkType="checkType"
+    ></bea-table>
   </div>
 </template>
 
@@ -51,6 +61,7 @@
 import { getdetailFormdata } from "../../../network/detailCheck";
 import { getEasyFormdata } from "../../../network/easyCheck";
 import beaTable from "../../../components/table";
+const statesOptions = ["待审核", "待修改", "待总结", "已完成"];
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
@@ -63,10 +74,13 @@ export default {
       detailForm: [],
       easyForm: [],
       datalist: [],
+      allAdataList: [],
       hostComp: "",
       exportName: "",
-      checkList: [],
+      checkList: ["待审核"],
       checkType: 1,
+      checkAll: true,
+      isIndeterminate: true,
       nextPath: "/detailCheck/",
     };
   },
@@ -77,7 +91,7 @@ export default {
   //方法集合
   methods: {
     async getdetailList() {
-      getdetailFormdata().then((res) => {
+      await getdetailFormdata().then((res) => {
         this.detailForm = res.data;
         this.checkStateToString(this.detailForm);
       });
@@ -86,18 +100,21 @@ export default {
       await getEasyFormdata().then((res) => {
         this.easyForm = res.data;
         this.checkStateToString(this.easyForm);
-
       });
     },
     checkTypeChange(v) {
       if (v == 1) {
-        this.datalist = this.detailForm;
+        this.allAdataList = this.detailForm;
       } else {
-        this.datalist = this.easyForm;
+        this.allAdataList = this.easyForm;
       }
+      this.datalist = this.allAdataList;
     },
-    checkListChange(v) {
-      console.log("v", v);
+    checkListChange(value) {
+       this.datalist = [];
+      for(let item of this.checkList) {
+        this.datalist = this.datalist.concat(this.allAdataList.filter(v => v.checkState == item));
+      }
     },
     checkStateToString(items) {
       for (let item of items) {
@@ -120,18 +137,27 @@ export default {
         }
       }
     },
+    search() {
+      this.checkList=['待审核'];
+    },
+    reset() {
+      this.exportName = '';
+      this.hostComp = '';
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   async created() {
-    this.checkType = this.$route.query.value ? this.$route.query.value : '1';
-    this.getdetailList();
+    this.checkType = this.$route.query.value ? this.$route.query.value : "1";
+    await this.getdetailList();
     await this.getEasyList();
     if (this.checkType == 1) {
-      this.datalist = this.detailForm;
+      this.allAdataList = this.detailForm;
+      console.log('allAdataList',this.allAdataList);
     } else {
       console.log("this.datalist", this.datalist);
-      this.datalist = this.easyForm;
+      this.allAdataList = this.easyForm;
     }
+    this.datalist = this.allAdataList.filter(v => v.checkState == '待审核');
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -151,9 +177,13 @@ export default {
   width: 200px;
   color: grey;
 }
+.detailCheckList {
+  background-color: #fff;
+  padding: 20px;
+}
 .filter-state {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 16px;
   .title {
     margin-right: 16px;

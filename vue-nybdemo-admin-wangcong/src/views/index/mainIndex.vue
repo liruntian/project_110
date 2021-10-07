@@ -28,47 +28,58 @@
           >
         </td>
         <td>
-          <el-button plain class="num-button" type="info">{{
-            easyNum
+          <el-button plain class="num-button" type="info" disabled>{{
+            summaryNum
           }}</el-button>
         </td>
       </tr>
     </table>
 
-    <h1 style="margin-bottom: 16px">进行中的申请情况</h1>
-    <el-steps>
+    <h1 style="margin-bottom: 16px">进行中的申报情况</h1>
+    <el-steps :space="400" :active="3" align-center>
       <el-step
         title="待审核"
-        :description="this.detailNum.toString()"
+        icon="el-icon-edit"
+        :description="this.waitCheck.toString()"
       ></el-step>
       <el-step
         title="待修改"
-        description="这是一段很长很长很长的描述性文字"
+        icon="el-icon-document-delete"
+        :description="this.waitChange.toString()"
       ></el-step>
-      <el-step title="待总结" description="这段就没那么长了"></el-step>
-      <el-step title="已完成" description="这段就没那么长了"></el-step>
+      <el-step
+        title="待总结"
+        :description="this.summaryNum.toString()"
+        icon="el-icon-upload"
+      ></el-step>
     </el-steps>
 
-    <h1 style="margin-bottom: 16px; margin-top: 16px">历史申请情况</h1>
-    <el-steps>
-      <el-step
-        title="待审核"
-        :description="this.detailNum.toString()"
-      ></el-step>
-      <el-step
-        title="待修改"
-        description="这是一段很长很长很长的描述性文字"
-      ></el-step>
-      <el-step title="待总结" description="这段就没那么长了"></el-step>
-      <el-step title="已完成" description="这段就没那么长了"></el-step>
-    </el-steps>
+    <h1 style="margin-bottom: 16px; margin-top: 16px">历史申报情况</h1>
+    <i-circle
+      :size="250"
+      :trail-width="4"
+      :stroke-width="5"
+      :percent="75"
+      stroke-linecap="square"
+      stroke-color="#43a3fb"
+    >
+      <div class="demo-i-circle-custom">
+        <h1>{{finishedApply}}</h1>
+        <p>已经完成的申报</p>
+        <!-- <span>
+          总占人数
+          <i>75%</i>
+        </span> -->
+      </div>
+    </i-circle>
   </div>
 </template>
 
 <script>
 import LineEcharts from "../../components/ECharts/lineEcharts";
 import Cookies from "js-cookie";
-
+import { getdetailFormdata } from "../../network/detailCheck";
+import { getEasyFormdata } from "../../network/easyCheck";
 export default {
   name: "mainIndex",
   components: { LineEcharts },
@@ -78,17 +89,22 @@ export default {
   data() {
     return {
       imgUrl: require("../../assets/photo.jpeg"),
-
-      efcheck: false,
-      easyNum: "",
-      detailNum: "",
-      summaryNum: "",
+      detailForm: [],
+      easyForm: [],
+      easyNum: 0,
+      detailNum: 0,
+      summaryNum: 0,
+      waitCheck: 0,
+      waitChange: 0,
+      finishedApply: 0,
     };
   },
 
-  created() {
+  async created() {
+    await this.getdetailList();
+    await this.getEasyList();
     console.log(this.$store);
-    this.$axios
+    await this.$axios
       .post("/message/easyNum", {})
       .then((successResponse) => {
         if (successResponse.data.code === 0) {
@@ -103,7 +119,7 @@ export default {
       })
       .catch((failResponse) => {});
 
-    this.$axios
+    await this.$axios
       .post("/message/detailNum", {})
       .then((successResponse) => {
         if (successResponse.data.code === 0) {
@@ -117,8 +133,10 @@ export default {
         }
       })
       .catch((failResponse) => {});
-  },
 
+    this.waitCheck = this.easyNum + this.detailNum;
+  },
+  computed: {},
   destroyed() {},
 
   methods: {
@@ -155,6 +173,34 @@ export default {
           }
         };
       }, 10);
+    },
+    async getdetailList() {
+      getdetailFormdata().then((res) => {
+        this.detailForm = res.data;
+        this.summaryNum += this.detailForm.filter(
+          (item) => item.checkState == 1
+        ).length;
+        this.waitChange += this.detailForm.filter(
+          (item) => item.checkState == 2
+        ).length;
+        this.finishedApply += this.detailForm.filter(
+          (item) => item.checkState == 3
+        ).length;
+      });
+    },
+    async getEasyList() {
+      await getEasyFormdata().then((res) => {
+        this.easyForm = res.data;
+        this.summaryNum += this.easyForm.filter(
+          (item) => item.checkState == 1
+        ).length;
+        this.waitChange += this.easyForm.filter(
+          (item) => item.checkState == 2
+        ).length;
+        this.finishedApply += this.easyForm.filter(
+          (item) => item.checkState == 3
+        ).length;
+      });
     },
   },
 };
@@ -197,6 +243,8 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 
 .main {
   display: flex;
+  background-color: #fff;
+  padding: 20px;
   flex-direction: column;
   .el-table .cell {
     text-align: center;
@@ -212,7 +260,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     background-color: #fff;
     text-align: center;
     font-size: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 32px;
     th {
       padding: 4px;
     }
@@ -233,5 +281,40 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   .el-step__description.is-wait {
     color: #000;
   }
+}
+.demo-i-circle-custom {
+  & h1 {
+    color: #3f414d;
+    font-size: 28px;
+    font-weight: normal;
+  }
+  & p {
+    color: #657180;
+    font-size: 14px;
+    margin: 10px 0 15px;
+  }
+  & span {
+    display: block;
+    padding-top: 15px;
+    color: #657180;
+    font-size: 14px;
+    &:before {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 1px;
+      margin: 0 auto;
+      background: #e0e3e6;
+      position: relative;
+      top: -15px;
+    }
+  }
+  & span i {
+    font-style: normal;
+    color: #3f414d;
+  }
+}
+.ivu-chart-circle {
+  margin-left: 15%;
 }
 </style>

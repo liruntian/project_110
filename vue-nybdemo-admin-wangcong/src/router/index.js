@@ -65,22 +65,22 @@ let defaultRouter = [
     component: Layout,
     alone: true,
     children: [
-      {
-        path: "/easy",
-        iconCls: "fa fa-leanpub", // 图标样式class
-        name: routeName.easy,
-        component: Easy,
-        children: [
+      // {
+      //   path: "/easy",
+      //   iconCls: "fa fa-leanpub", // 图标样式class
+      //   name: routeName.easy,
+      //   component: Easy,
+      //   children: [
 
-        ]
-      },
-      {
-        path: "/easyCheck",
-        component: EasyCheck,
-        name: "EasyCheck",
-        hidden: true,
-        children: []
-      },
+      //   ]
+      // },
+      // {
+      //   path: "/easyCheck",
+      //   component: EasyCheck,
+      //   name: "EasyCheck",
+      //   hidden: true,
+      //   children: []
+      // },
 
       {
         path: "/detail",

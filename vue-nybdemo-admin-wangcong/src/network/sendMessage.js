@@ -7,7 +7,6 @@ export function getUserId(meetAddr) {
     data:{
         meetAddr:meetAddr
     }
-
   })
 }
 export function send(adminId,userId,title,content) {
@@ -21,5 +20,17 @@ export function send(adminId,userId,title,content) {
         content:content
       }
   
+    })
+  }
+  export function sendAmendments(adminId, meetId, content, fileId) {
+    return request({
+      url: '/handin/checkInfo',
+      method: "post",
+      data:{
+        adminId: adminId,
+        meetId:meetId,
+        content: content,
+        fileId: fileId
+      }
     })
   }

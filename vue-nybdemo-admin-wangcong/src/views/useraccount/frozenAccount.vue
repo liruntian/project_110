@@ -66,21 +66,38 @@ export default {
           align: "center",
           render: (h, params) => {
             return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "error",
-                    size: "small",
-                  },
-                  on: {
-                    click: () => {
-                      this.frozen(params.row.meetAddr);
+              params.row.isFreeze
+                ? h(
+                    "Button",
+                    {
+                      props: {
+                        type: "primary",
+                        size: "small",
+                        disabled: true,
+                      },
+                      on: {
+                        click: () => {
+                          this.frozen(params.row.meetAddr);
+                        },
+                      },
                     },
-                  },
-                },
-                "冻结"
-              ),
+                    "已冻结"
+                  )
+                : h(
+                    "Button",
+                    {
+                      props: {
+                        type: "error",
+                        size: "small",
+                      },
+                      on: {
+                        click: () => {
+                          this.frozen(params.row.meetAddr);
+                        },
+                      },
+                    },
+                    "冻结"
+                  ),
             ]);
           },
         },
@@ -111,20 +128,19 @@ export default {
     },
     frozen(meetAddr) {
       console.log(meetAddr);
-      freeze(meetAddr).then(res => {
-        console.log('res',res);
-      })
+      freeze(meetAddr).then((res) => {
+        console.log("res", res);
+      });
     },
     changePageSize(size) {
       this.pageSize = size;
       this.changePage(1);
-
     },
     changePage(res) {
-      // 这里直接更改了模拟的数据，真实使用场景应该从服务端获取数据
-      //   this.tableData1 = this.mockTableData1();
-      this.data6 = this.data.slice((res - 1) * this.pageSize, res * this.pageSize);
-      console.log("新的数据", res);
+      this.data6 = this.data.slice(
+        (res - 1) * this.pageSize,
+        res * this.pageSize
+      );
     },
   },
 };

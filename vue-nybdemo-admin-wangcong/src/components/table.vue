@@ -7,29 +7,19 @@
       :nextPath="nextPath"
       size="large"
     ></Table>
-    <!-- <Modal
-      v-model="showHandleHistory"
-      title="审核历史记录查看"
-      cancel-text="返回"
-      ok-text=''
-
-    >
-      <p>对话框内容</p>
-      <p>对话框内容</p>
-      <p>对话框内容</p>
-    </Modal> -->
     <el-dialog
       title="审核历史记录查看"
       :visible.sync="showHandleHistory"
       width="30%"
     >
+      <el-empty description="暂无处理记录" v-if="handleRecords.length==0"></el-empty>
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in handleRecords"
           :key="index"
           placement="top"
-          :color = "color"
-          :timestamp="activity.createTime"
+          :color="color"
+          :timestamp="activity.createTime.slice(0,10) +' ' + activity.createTime.slice(11,19)"
         >
           <el-card>
             <h4>{{ activity.adminId }}: 干了什么操作</h4>
@@ -43,13 +33,22 @@
     </el-dialog>
     <div style="margin: 10px; overflow: hidden">
       <div style="float: right">
-        <Page :total="100" :current="1" @on-change="changePage"></Page>
+        <Page
+          :total="data.length"
+          :current="1"
+          show-total
+          show-sizer
+          @on-change="changePage"
+          @on-page-size-change="changePageSize"
+        ></Page>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { historyHandles } from "../network/detailCheck";
+
+import { historyHandles, checkPassDetail } from "../network/detailCheck";
+import { checkPassEasy } from "../network/easyCheck";
 export default {
   name: "beaTable",
   props: {
@@ -74,11 +73,11 @@ export default {
   },
   data() {
     return {
-      color:'#0bbd87',
+      color: "#0bbd87",
       self: this,
+      pageSize: 10,
       showHandleHistory: false,
       handleRecords: [],
-      state: 1,
       columns1: [
         {
           title: "展会ID",
@@ -103,7 +102,6 @@ export default {
         {
           title: "审核状态",
           key: "checkState",
-          //   className: "demo-table-info-column",
         },
         {
           title: "操作",
@@ -113,7 +111,7 @@ export default {
           align: "center",
           render: (h, params) => {
             return h("div", [
-              this.state == 1
+              params.row.checkState == '待审核'
                 ? h(
                     "Button",
                     {
@@ -145,14 +143,12 @@ export default {
                       on: {
                         click: () => {
                           this.check(params.row);
-                          // this.editorButton(params.row)
-                          console.log(params);
                         },
                       },
                     },
                     "查看"
                   ),
-              this.state == 3
+              params.row.checkState == '待总结'
                 ? h(
                     "Button",
                     {
@@ -165,15 +161,14 @@ export default {
                       },
                       on: {
                         click: () => {
-                          // this.editorButton(params.row)
-                          console.log(params);
+                          this.rejected(params.row)
                         },
                       },
                     },
                     "驳回"
                   )
                 : null,
-              this.state == 4
+              params.row.checkState == '已完成'
                 ? h(
                     "Button",
                     {
@@ -186,8 +181,7 @@ export default {
                       },
                       on: {
                         click: () => {
-                          // this.editorButton(params.row)
-                          console.log(params);
+                          this.check(params.row); 
                         },
                       },
                     },
@@ -206,7 +200,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.removeButton(params.row);
+                      // this.removeButton(params.row);
                     },
                   },
                 },
@@ -234,18 +228,54 @@ export default {
           },
         },
       ],
-      data1: [{ id: "1111", name: "weqe", checkState: "审核中" }],
-      //   @on-row-click="check"
     };
   },
   methods: {
+    changePageSize(size) {
+      this.pageSize = size;
+      this.changePage(1);
+    },
+    changePage(res) {
+      this.data = this.data.slice((res - 1) * this.pageSize, res * this.pageSize);
+    },
+    rejected(item) {
+      this.checkType == 1
+        ? checkPassDetail(
+            item.id,
+            this.$store.getters.token,
+            5
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          })
+        : checkPassEasy(
+            item.id,
+            this.$store.getters.token,
+            5
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          });
+    },
     check(data) {
-      console.log("data", data);
       this.$router.push({
         path: this.nextPath,
         query: {
           item: data,
           checkType: this.checkType,
+          checkState: data.checkState
         },
       });
     },

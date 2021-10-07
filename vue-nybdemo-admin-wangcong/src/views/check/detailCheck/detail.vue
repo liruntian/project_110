@@ -1,7 +1,12 @@
 <template>
   <div class="detailCheck">
     <div class="card kjfs">
+      <el-button type="primary" round @click="back" class="back"
+        >返回</el-button
+      >
+
       <div
+        v-if="!(checkState == '待总结')"
         id="pdfDom"
         style="
           padding-top: 55px;
@@ -49,7 +54,11 @@
 
           <tr align="center">
             <td>举办时间</td>
-            <td>{{ detailForm.startTime.slice(0,10) }}—{{ detailForm.endTime.slice(0,10) }}</td>
+            <td>
+              {{ detailForm.startTime.slice(0, 10) }}—{{
+                detailForm.endTime.slice(0, 10)
+              }}
+            </td>
             <td>举办周期</td>
             <td>{{ detailForm.cycle }}</td>
             <td>是否邀请境外有关机构及参展商</td>
@@ -143,8 +152,98 @@
           </tr>
         </table>
       </div>
+      <div
+        id="pdfDom"
+        style="
+          padding-top: 55px;
+          padding-left: 24px;
+          padding-right: 24px;
+          background-color: #fff;
+          margin: auto;
+          width: fit-content;
+        "
+        v-if="checkState == '待总结'"
+      >
+        <table border="1px" cellspacing="0">
+          <colgroup span="8" width="200"></colgroup>
+          <!-- <colgroup span="1" width="200"></colgroup> -->
+          <tr align="center">
+            <th colspan="8">{{ detailForm.name }}上报总结</th>
+          </tr>
+          <tr align="center">
+            <td>展会名称</td>
+            <td colspan="7">{{ detailForm.name }}</td>
+          </tr>
+          <tr align="center">
+            <td>展览面积</td>
+            <td>{{ detailForm.area }}</td>
+            <td>参展国家和地区数量</td>
+            <td>{{ detailForm.countryNum }}</td>
+            <td>参展省市自治区情况</td>
+            <td>{{ detailForm.provinceState }}</td>
+            <td>参展企业数量</td>
+            <td>{{ detailForm.companyNum }}</td>
+          </tr>
+          <tr align="center">
+            <td>采购商数量</td>
+            <td>{{ detailForm.buyerNum }}</td>
+            <td>参展产品数量</td>
+            <td>{{ detailForm.displayObj }}</td>
+            <td>同期活动数量</td>
+            <td>{{ detailForm.activityNum }}</td>
+            <td>宣传媒体数</td>
+            <td>{{ detailForm.mediaNum }}</td>
+          </tr>
+
+          <tr align="center">
+            <td>线下成交额（含意向）</td>
+            <td>{{ detailForm.turnover }}</td>
+            <td>线上成交额</td>
+            <td>{{ detailForm.onlineTurnover }}</td>
+            <td>线下参展人数</td>
+            <td>{{ getForign }}</td>
+            <td>{{ detailForm.viewerNum }}</td>
+            <td>{{ detailForm.onlineViewerNum }}</td>
+          </tr>
+          <tr align="center">
+            <td>填报单位</td>
+            <td>{{ detailForm.writeObject }}</td>
+            <td>负责处室</td>
+            <td>{{ detailForm.department }}</td>
+            <td>处室负责人</td>
+            <td>{{ detailForm.charger }}</td>
+            <td>手机号</td>
+            <td>{{ detailForm.teleNum }}</td>
+          </tr>
+          <tr align="center">
+            <td>展会亮点(200字以内)</td>
+            <td colspan="7">{{ detailForm.meetHighlight }}</td>
+          </tr>
+          <tr align="center">
+            <td>下一步工作计划(200字以内)</td>
+            <td colspan="7">{{ detailForm.nextWorkPlan }}</td>
+          </tr>
+
+          <tr align="center">
+            <td>总结报告全文</td>
+            <td colspan="7" style="font-size: 10px">
+              <div class="down" @click="downSummaryFile">
+                <img src="../../../assets/file.svg" />点击下载
+              </div>
+            </td>
+          </tr>
+          <tr align="center">
+            <td>单位主要负责同志签发页</td>
+            <td colspan="7" style="font-size: 10px">
+              <div class="down" @click="downHosterSignFile">
+                <img src="../../../assets/file.svg" />点击下载
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <br />
-      <div class="check">
+      <div class="check" v-if="checkState == '待审核'">
         <button class="pass" @click="Pass" style="cursor: pointer">
           审核通过
         </button>
@@ -167,8 +266,8 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-upload
+        <el-form-item enctype="multipart/form-data">
+          <!-- <el-upload
             class="upload-demo"
             ref="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -180,7 +279,9 @@
             <el-button slot="trigger" size="small" type="primary"
               >上传附件</el-button
             >
-          </el-upload>
+          </el-upload> -->
+          <label class="xrequired">上传附件</label><br />
+          <input type="file" ref="adviceFile" accept=".pdf" name="adviceFile" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -188,12 +289,15 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </span>
     </el-dialog>
+    <div class="summary"></div>
   </div>
 </template>
 
 <script>
 import { getUserId, send } from "../../../network/sendMessage";
-import { getdetailFile, checkPass } from "../../../network/detailCheck";
+import { getdetailFile, checkPassDetail } from "../../../network/detailCheck";
+import { checkPassEasy } from "../../../network/easyCheck";
+import { sendAmendments } from "../../../network/sendMessage";
 export default {
   name: "detail",
   data() {
@@ -212,7 +316,9 @@ export default {
   },
   created() {
     this.detailForm = this.$route.query.item;
-    if(this.$route.query.checkType==2) {
+    this.checkState = this.$route.query.checkState;
+    // this.checkState = '待总结';
+    if (this.$route.query.checkType == 2) {
       this.isFirstApply = false;
     }
     this.pdfTitle = `${
@@ -260,49 +366,42 @@ export default {
     },
   },
   methods: {
+    back() {
+      history.go(-1);
+    },
     rejected() {
       // this.reject();
       this.centerDialogVisible = true;
-      // this.$router.push({
-      //   path: "/send",
-      //   query: {
-      //     meetAddr: this.detailForm.meetAddr,
-      //   },
-      // });
-    },
-    cancel() {
-      this.reject();
-      history.go(-1);
-    },
-    enrol() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 2).then(
-        (successResponse) => {
-          if (successResponse.data.code === 0) {
-          } else {
-            console.log(successResponse);
-            this.$message({
-              showClose: true,
-              message: "提交失败！",
-              type: "error",
-            });
-          }
-        }
-      );
-      history.go(-1);
     },
     Pass() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 2).then(
-        (successResponse) => {
-          if (successResponse.data.code === 0) {
-          } else {
-            this.$message({
-              showClose: true,
-              message: "提交失败！",
-              type: "error",
-            });
-          }
-        }
-      );
+      this.isFirstApply
+        ? checkPassDetail(
+            this.detailForm.id,
+            this.$store.getters.token,
+            1
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          })
+        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 1).then(
+            (successResponse) => {
+              if (successResponse.data.code === 0) {
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "提交失败！",
+                  type: "error",
+                });
+              }
+            }
+          );
+      //todo 自动发送处理成功消息
       getUserId(this.detailForm.meetAddr).then((res) => {
         this.detailForm.userId = res.data;
         send(
@@ -316,34 +415,41 @@ export default {
     },
     submitForm() {
       this.$refs.upload.submit();
-      this.centerDialogVisible = false;
+      let ip = this.$refs.adviceFile;
+      console.log("ip", ip.files[0]);
+      let formdata = new FormData();
+      formdata.append("adminId", this.$store.getters.token);
+      formdata.append("meetId", this.detailForm.id);
+      formdata.append("content", this.form.content);
+      formdata.append("fileId", ip.files[0]);
+      console.log("formdata", formdata.values());
+      // this.centerDialogVisible = false;
+      // sendAmendments(formdata).then((res) => {
+      //   console.log(res);
+      // });
+      // var axios = require("axios");
+      // axios
+      //   .post("http://8.140.21.128:8445/api/handin/checkInfo", formdata)
+      //   .then((successResponse) => {
+      //     if (successResponse.data.code === 0) {
+      //       this.history.go(-1).catch(() => {});
+      //     } else if (successResponse.data.code === 6001) {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "展会信息id有误！",
+      //         type: "error",
+      //       });
+      //       this.$refs.detailId.focus();
+      //     }
+      //   })
+      //   .catch((failResponse) => {});
     },
     handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
+      console.log(file, fileList);
+    },
     handlePreview(file) {
-        console.log(file);
-      },
-    // checkPass() {
-    //   this.$axios
-    //     .post("/check/detail", {
-    //       id: this.detailForm.id,
-    //       adminId: this.$store.getters.token,
-    //       checkState: 1,
-    //     })
-    //     .then((successResponse) => {
-    //       if (successResponse.data.code === 0) {
-    //       } else {
-    //         this.$message({
-    //           showClose: true,
-    //           message: "提交失败！",
-    //           type: "error",
-    //         });
-    //       }
-    //     })
-    //     .catch((failResponse) => {});
-    //   history.go(-1);
-    // },
+      console.log(file);
+    },
     downAuthorizeFile() {
       getdetailFile(this.detailForm.authFileId).then((res) => {
         const blob = new Blob([res]); //处理文档流
@@ -422,18 +528,35 @@ export default {
       });
     },
     reject() {
-      checkPass(this.detailForm.id, this.$store.getters.token, 3).then(
-        (successResponse) => {
-          if (successResponse.data.code === 0) {
-          } else {
-            this.$message({
-              showClose: true,
-              message: "提交失败！",
-              type: "error",
-            });
-          }
-        }
-      );
+      this.isFirstApply
+        ? checkPassDetail(
+            this.detailForm.id,
+            this.$store.getters.token,
+            2
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          })
+        : checkPassEasy(
+            this.detailForm.id,
+            this.$store.getters.token,
+            2
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error",
+              });
+            }
+          });
     },
   },
 };
@@ -655,5 +778,8 @@ img {
 }
 .el-dialog__body {
   padding: 0 20px;
+}
+.back {
+  float: right;
 }
 </style>
