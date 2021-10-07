@@ -261,6 +261,7 @@
           <el-input
             type="textarea"
             :rows="3"
+            ref='content'
             placeholder="请输入内容"
             v-model="form.content"
           >
@@ -370,7 +371,6 @@ export default {
       history.go(-1);
     },
     rejected() {
-      // this.reject();
       this.centerDialogVisible = true;
     },
     Pass() {
@@ -414,35 +414,54 @@ export default {
       history.go(-1);
     },
     submitForm() {
-      this.$refs.upload.submit();
       let ip = this.$refs.adviceFile;
       console.log("ip", ip.files[0]);
       let formdata = new FormData();
       formdata.append("adminId", this.$store.getters.token);
       formdata.append("meetId", this.detailForm.id);
       formdata.append("content", this.form.content);
-      formdata.append("fileId", ip.files[0]);
+      formdata.append("file", ip.files[0]);
       console.log("formdata", formdata.values());
-      // this.centerDialogVisible = false;
-      // sendAmendments(formdata).then((res) => {
-      //   console.log(res);
-      // });
+      if (!this.form.content) {
+        this.$notify({
+          title: "请输入修改意见",
+          type: "warning",
+        });
+        this.$refs.content.focus();
+        return false;
+      }
+      if (!ip.files[0]) {
+        this.$notify({
+          title: "请提交意见附件",
+          type: "warning",
+        });
+        this.$refs.adviceFile.focus();
+        return false;
+      }
       // var axios = require("axios");
-      // axios
-      //   .post("http://8.140.21.128:8445/api/handin/checkInfo", formdata)
-      //   .then((successResponse) => {
-      //     if (successResponse.data.code === 0) {
-      //       this.history.go(-1).catch(() => {});
-      //     } else if (successResponse.data.code === 6001) {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "展会信息id有误！",
-      //         type: "error",
-      //       });
-      //       this.$refs.detailId.focus();
-      //     }
-      //   })
-      //   .catch((failResponse) => {});
+      this.$axios
+        .post(this.GLOBAL.BASE_URL+"/handin/checkInfo", formdata)
+        .then((successResponse) => {
+          console.log("successResponse", successResponse);
+          if (successResponse.data.code == 0) {
+            this.$notify({
+              title: "返回修改成功",
+              message: "该条申报将返回给用户进行修改",
+              type: "success",
+            });
+            this.centerDialogVisible = false;
+            history.go(-1).catch(() => {}
+            );
+          } else {
+            this.$message({
+              showClose: true,
+              message: "返回失败",
+              type: "error",
+            });
+          }
+        })
+        .catch((failResponse) => {});
+        this.reject();
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -543,20 +562,18 @@ export default {
               });
             }
           })
-        : checkPassEasy(
-            this.detailForm.id,
-            this.$store.getters.token,
-            2
-          ).then((successResponse) => {
-            if (successResponse.data.code === 0) {
-            } else {
-              this.$message({
-                showClose: true,
-                message: "提交失败！",
-                type: "error",
-              });
+        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 2).then(
+            (successResponse) => {
+              if (successResponse.data.code === 0) {
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "提交失败！",
+                  type: "error",
+                });
+              }
             }
-          });
+          );
     },
   },
 };

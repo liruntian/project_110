@@ -282,7 +282,6 @@ export default {
     getHandleRecords(id) {
       this.showHandleHistory = true;
       historyHandles(id).then((res) => {
-        // console.log("res", res.data);
         this.handleRecords = res.data;
       });
     },

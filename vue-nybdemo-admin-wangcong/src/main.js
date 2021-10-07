@@ -34,9 +34,13 @@ import 'video.js/dist/video-js.css'
 import 'videojs-flash'
 Vue.use(VideoPlayer)
 
+import global_ from './Base.vue'
 var axios = require('axios')
+Vue.prototype.$ajax = axios;
 // axios.defaults.baseURL = 'http://192.168.1.101:8445/api'
-axios.defaults.baseURL = 'http://8.140.21.128:8445/api'
+// axios.defaults.baseURL = 'http://8.140.21.128:8445/api'
+Vue.prototype.GLOBAL = global_;
+axios.defaults.baseURL = global_.BASE_URL
 Vue.prototype.$axios = axios
 
 NProgress.inc(0.2)

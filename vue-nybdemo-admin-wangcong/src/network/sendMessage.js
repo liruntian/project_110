@@ -22,7 +22,7 @@ export function send(adminId,userId,title,content) {
   
     })
   }
-  export function sendAmendments(adminId, meetId, content, fileId) {
+  export function sendAmendments(adminId, meetId, content, file) {
     return request({
       url: '/handin/checkInfo',
       method: "post",
@@ -30,7 +30,7 @@ export function send(adminId,userId,title,content) {
         adminId: adminId,
         meetId:meetId,
         content: content,
-        fileId: fileId
+        file: file
       }
     })
   }
