@@ -361,7 +361,7 @@ export default {
   },
   created () {
     console.log(this.$store.state.currentFont)
-    this.declareForm = JSON.parse(this.$store.state.currentFont)
+    this.declareForm = typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont) : this.$store.state.currentFont
   },
   computed: {
     leaderPresent() {

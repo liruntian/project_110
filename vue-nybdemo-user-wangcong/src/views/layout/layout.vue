@@ -34,40 +34,40 @@ export default {
     layoutAside
   },
 
-  created () {
-    Cookies.remove("checkState");
-    // getDetail(this.$store.getters.token).then(res => {
-    //   if(res.data){
-    //     this.$store.dispatch('setState', res.data.checkState)
-    //   }else{
-    //     this.$store.dispatch('setState', 0)
-    //   }
-    //   console.log(this.$store.getters.checkState);
-    // });
-    // console.log(this.$store.getters.checkState);
+  /*created () {*/
+  /*  Cookies.remove("checkState");*/
+  /*  // getDetail(this.$store.getters.token).then(res => {*/
+  /*  //   if(res.data){*/
+  /*  //     this.$store.dispatch('setState', res.data.checkState)*/
+  /*  //   }else{*/
+  /*  //     this.$store.dispatch('setState', 0)*/
+  /*  //   }*/
+  /*  //   console.log(this.$store.getters.checkState);*/
+  /*  // });*/
+  /*  // console.log(this.$store.getters.checkState);*/
 
-    let that = this
+  /*  let that = this*/
 
-    that.$axios
-      .post("/search/detail", {
-        meetAddr: that.$store.getters.token,
-      })
-      .then((res) => {
-        if(res.data.data){
-          that.$store.dispatch('setState', res.data.data.checkState)
-        }else{
-          that.$store.dispatch('setState', 0)
-        }
-      })
-      .catch((failResponse) => {});
-    // var sleep = function(time) {
-    //   var startTime = new Date().getTime() + parseInt(time, 10);
-    //   while(new Date().getTime() < startTime) {}
-    // };
-    // sleep(1000); // 延时函数，单位ms
-    console.log(that.$store.getters.checkState);
-
-  }
+  /*  that.$axios*/
+  /*    .post("/search/detail", {*/
+  /*      meetAddr: that.$store.getters.token,*/
+  /*    })*/
+  /*    .then((res) => {*/
+  /*      if(res.data.data){*/
+  /*        that.$store.dispatch('setState', res.data.data.checkState)*/
+  /*      }else{*/
+  /*        that.$store.dispatch('setState', 0)*/
+  /*      }*/
+  /*    })*/
+  /*    .catch((failResponse) => {});*/
+  //   // var sleep = function(time) {
+  //   //   var startTime = new Date().getTime() + parseInt(time, 10);
+  //   //   while(new Date().getTime() < startTime) {}
+  //   // };
+  //   // sleep(1000); // 延时函数，单位ms
+  //   console.log(that.$store.getters.checkState);
+  //
+  // }
 
 }
 </script>
