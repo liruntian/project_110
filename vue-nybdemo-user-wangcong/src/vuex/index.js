@@ -17,7 +17,8 @@ const store = new Vuex.Store({
     checkState: Cookies.get("checkState"),
     isFirstFont: Cookies.get("isFirstFont"),
     hasCurrentFont: Cookies.get("hasCurrentFont"),
-    currentFont: Cookies.get("currentFont")
+    currentFont: Cookies.get("currentFont"),
+    prefillFont: Cookies.get("prefillFont")
   },
   mutations: {
     setToken (state, token) {
@@ -52,6 +53,10 @@ const store = new Vuex.Store({
     setUserId (state, userId) {
       state.userId = userId
       Cookies.set("userId", userId, { expires: 1/24 })
+    },
+    setPrefillFont (state, prefillFont) {
+      state.prefillFont = prefillFont
+      Cookies.set("prefillFont", prefillFont, { expires: 1/24 })
     }
   },
   actions: {
@@ -102,6 +107,12 @@ const store = new Vuex.Store({
         commit("setUserId", userId)
         resolve()
       })
+    },
+    setPrefillFont ({commit}, prefillFont){
+      return new Promise((resolve, reject) =>{
+        commit("setPrefillFont", prefillFont)
+        resolve()
+      })
     }
   },
   getters: {
@@ -110,6 +121,7 @@ const store = new Vuex.Store({
     currentFont: state => state.currentFont,
     checkState: state => state.checkState,
     userId: state => state.userId,
+    prefillFont: state => state.prefillFont,
     addRouters: state => state.routerData.addRouters,
     token: state => state.token,
     userKind: state => state.userKind,

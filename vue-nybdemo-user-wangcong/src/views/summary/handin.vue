@@ -1,9 +1,9 @@
 <!--  -->
 <template>
   <div class='handin'>
-    <provin-handin v-if="kind==0"></provin-handin>
-    <firm-handin v-if="kind == 1"></firm-handin>
-    <foreign-handin v-if="kind == 2"></foreign-handin>
+    <provin-handin :id="id" v-if="kind==0"></provin-handin>
+    <firm-handin :id="id" v-if="kind == 1"></firm-handin>
+    <foreign-handin :id="id" v-if="kind == 2"></foreign-handin>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ data() {
 //这里存放数据
 return {
   // kind : 1
-
+  id: ""
 };
 },
 //监听属性 类似于data概念
@@ -44,12 +44,8 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-  console.log("jinlail");
-  console.log(this.$store.getters.userKind)
-
-    // this.kind = this.$store.getters.userKind
-
-
+  console.log(this.$route.params.id)
+  this.id = this.$route.params.id
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {

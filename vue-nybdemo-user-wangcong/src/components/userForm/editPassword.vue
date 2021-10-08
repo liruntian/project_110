@@ -110,6 +110,7 @@ export default {
       })
     },
     resetForm (formName) {
+      console.log(this.$refs[formName])
       this.$refs[formName].resetFields()
     }
   }

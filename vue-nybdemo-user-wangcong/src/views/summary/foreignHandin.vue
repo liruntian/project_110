@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="11">
           <div class="function-btns">
-            <el-button @click="newFont()" type="primary">重填</el-button>
+            <el-button @click="clearForm()" type="primary">重填</el-button>
             <el-button @click="newFont()" type="primary">暂存</el-button>
             <el-button class="subBtn" type="primary" v-on:click="declareFormed">提交</el-button>
             <el-button @click="returnMainIndex()" type="primary">返回</el-button>
@@ -17,77 +17,77 @@
         </el-col>
       </el-row>
       <el-row :gutter="40" style="margin: 0">
-        <el-form :model="declareForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;height: 100%;width: 100%" enctype='multipart/form-data'>
+        <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;height: 100%;width: 100%" enctype='multipart/form-data'>
           <el-col :span="11">
-            <el-form-item style="margin-top: 20px">
+            <el-form-item style="margin-top: 20px" prop="detailId">
               <label class="xrequired">展会名称</label>
               <el-input type="text" ref="detailId" v-model="declareForm.detailId" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="companyNum">
               <label class="xrequired">参展企业数量</label>
               <el-input type="number" ref="companyNum" v-model="declareForm.companyNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="displayObj">
               <label class="xrequired">参展产品数量</label>
               <el-input type="number" ref=" displayObj" v-model="declareForm.displayObj" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="mediaNum">
               <label class="xrequired">宣传媒体数</label>
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="onlineTurnover">
               <label class="xrequired">线上成交额</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="onlineViewerNum">
               <label class="xrequired">线上参展人数</label>
               <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="meetHighlight">
               <label class="xrequired">下一步工作计划(200字以内)</label>
               <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
                         placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="writeObject">
               <label class="xrequired">填报单位</label>
               <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="charger">
               <label class="xrequired">处室负责人</label>
               <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item style="margin-top: 20px">
+            <el-form-item style="margin-top: 20px" prop="area">
               <label class="xrequired">展览面积</label>
               <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="buyerNum">
               <label class="xrequired">采购商数量</label>
               <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="activityNum">
               <label class="xrequired">同期活动数量</label>
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="turnover">
               <label class="xrequired">线下成交额（含意向）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="viewerNum">
               <label class="xrequired">线下参展人数</label>
               <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="nextWorkPlan">
               <label class="xrequired">展会亮点(200字以内)</label>
               <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
                         placeholder=""></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="department">
               <label class="xrequired">责任处室</label>
               <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="teleNum">
               <label class="xrequired">负责人手机号</label>
               <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off" oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
             </el-form-item>
@@ -118,11 +118,14 @@
 
 <script>
 import { warningOpen, errorOpen, successOpen } from "../../utils/message";
-
+import { getLatestSummary } from "../../network/exhiState"
 const cityOptions = ["北京市", "河北省", "山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","上海市","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","广西壮族自治区","海南省","重庆市","四川省","贵州省","云南省","西藏自治区","陕西省","甘肃省","青海省","宁夏回族自治区","新疆维吾尔自治区","台湾省","香港特别行政区","澳门特别行政区"];
 export default {
-  name: "userfont",
+  name: "foreignHandin",
   components: {},
+  props: {
+    id: ""
+  },
   data() {
     return {
       checkAll: false,
@@ -160,10 +163,16 @@ export default {
       },
     };
   },
-  computed:{
-
+  created() {
+    console.log(this.id)
+    this.getLatestSummaryData(this.id)
   },
   methods: {
+    getLatestSummaryData (id) {
+      getLatestSummary(id).then(res => {
+        console.log(res);
+      })
+    },
     handleCheckAllChange(val) {
       this.checkedCities = val ? cityOptions : [];
       this.isIndeterminate = false;
@@ -275,7 +284,7 @@ export default {
         this.$refs.hosterSignFile.focus();
         return false;
       }
-      formdata.append("meetId", JSON.parse(this.$store.state.currentFont).id);
+      formdata.append("meetId", this.declareForm.meetId);
       //总结类型（事业单位提交[0]，省部级提交[1]，涉外展会负责单位提交[2]）
       formdata.append("kind", this.$store.getters.userKind);
       formdata.append("detailId", this.declareForm.detailId);
@@ -330,6 +339,7 @@ export default {
         .then((successResponse) => {
           if (successResponse.data.code === 0) {
             this.$router.push("/").catch(() => {});
+            this.$message.success("提交成功")
           } else if (successResponse.data.code === 6001) {
             this.$message({
               showClose: true,
@@ -343,6 +353,11 @@ export default {
     },
     returnMainIndex () {
       this.$router.back()
+    },
+    clearForm () {
+      this.$refs.summaryForm.resetFields()
+      this.$refs.summaryFile.value = ""
+      this.$refs.hosterSignFile.value = ""
     }
   },
 };
@@ -393,7 +408,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   transform: translateY(24%);
   margin: 10px 10px 10px 0px;
   padding: 10px;
-  width: 100%;
+  //width: 100%;
   font-size: 16px;
   //box-sizing: inherit;
 }

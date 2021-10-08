@@ -21,21 +21,26 @@
                 <td>{{ currentFont.name }}</td>
                 <td>{{ place }}</td>
                 <td>{{ time }}</td>
-                <td>{{ checkState }}</td>
+                <td style="color: #515A6E">{{ checkState }}</td>
                 <td>
                   <span>
                     <router-link to="/easyfontview">查看申报</router-link>
                   </span>
                   <span>
-                    <a @click="centerDialogVisible = true">撤回</a>
+                    <a v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</a>
+                    <span v-else style="color: #515A6E">撤回</span>
                   </span>
                   <span>
-                    <router-link to="/easyfont">修改</router-link>
+                    <a v-if="currentFont.checkState === 2" @click="modifyFont()">修改</a>
+                    <span v-else style="color: #515A6E">修改</span>
                   </span>
                   <span>
-                    <router-link to="/handin">填写总结</router-link>
+                    <a v-if="currentFont.checkState === 1" @click="handinSummary()">填写总结</a>
+                    <span v-else style="color: #515A6E">填写总结</span>
                   </span>
-                  <span>处理记录</span>
+                  <span>
+                    <a @click="seeHandleRecord(currentFont.id)">处理记录</a>
+                  </span>
                 </td>
               </tr>
             </table>
@@ -62,16 +67,21 @@
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
                 <td>
-                  <span v-show="item.checkState === 3">已完成</span>
-                  <span v-show="item.checkState === 4">已撤销</span>
-                  <span v-show="item.checkState === 5">已驳回</span>
+                  <span style="color: #515A6E" v-show="item.checkState === 3">已完成</span>
+                  <span style="color: #515A6E" v-show="item.checkState === 4">已撤销</span>
+                  <span style="color: #515A6E" v-show="item.checkState === 5">已驳回</span>
                 </td>
                 <td>
                   <span>
-                    查看申报
+                    <a @click="seefont (item.id)">查看申报</a>
                   </span>
-                  <span>查看总结</span>
-                  <span>处理记录</span>
+                  <span>
+                    <a v-if="item.checkState === 3">查看总结</a>
+                    <span v-else>查看总结</span>
+                  </span>
+                  <span>
+                    <a @click="seeHandleRecord(item.id)">处理记录</a>
+                  </span>
                 </td>
               </tr>
             </table>
@@ -80,12 +90,40 @@
       </div>
       <el-dialog
         title="提示"
-        :visible.sync="centerDialogVisible"
+        :visible.sync="centerCancelDialogVisible"
         width="30%">
         <span>确认撤回申报？</span>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">取 消</el-button>
+          <el-button @click="centerCancelDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="cancelFont()">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog
+        title="处理记录"
+        :visible.sync="handleRecordDialogVisible"
+        width="30%"
+      >
+        <span v-show="handleRecord.length === 0">暂无处理记录</span>
+        <el-timeline :reverse="true">
+          <el-timeline-item
+            v-for="(record, index) in handleRecord"
+            :key="index"
+            placement="top"
+            color="#0bbd87"
+            :timestamp="record.createTime.replace('T',' ')">
+            <el-card>
+              <span>处理意见：{{record.content}}</span>
+              <span>
+                <a style="margin-left: 15px" @click="downloadFile(record.fileId)">
+                  <img style="height: 30px;width: 30px" :src="downloadIcon" alt="">
+                  点击下载附件
+                </a>
+              </span>
+            </el-card>
+          </el-timeline-item>
+        </el-timeline>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="handleRecordDialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
     </div>
@@ -93,14 +131,25 @@
 </template>
 
 <script>
-import { getAllFirstFontData, getAllNotFirstFontData, changeDetailCheckState, changeEasyCheckState } from "../../network/exhiState"
+import {
+  getAllFirstFontData,
+  getAllNotFirstFontData,
+  changeDetailCheckState,
+  changeEasyCheckState,
+  getHandleRecord,
+  downloadFile } from "../../network/exhiState"
 export default {
   name:'mainIndex',
   data () {
     return {
       addBtn: require('../../assets/icons/add_btn.svg'),
+      downloadIcon: require('../../assets/icons/file.svg'),
       historyFontData: [],
-      centerDialogVisible: false
+      centerCancelDialogVisible: false,
+      handleRecordDialogVisible: false,
+      handleRecord: [],
+      hasCurrentFont: false,
+      currentFont: {},
     }
   },
   created () {
@@ -110,12 +159,12 @@ export default {
     isFirstFont () {
       return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont):this.$store.state.isFirstFont
     },
-    hasCurrentFont () {
-      return typeof (this.$store.state.hasCurrentFont) === "string" ? JSON.parse(this.$store.state.hasCurrentFont):this.$store.state.hasCurrentFont
-    },
-    currentFont () {
-      return typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont):this.$store.state.currentFont
-    },
+    // hasCurrentFont () {
+    //   return typeof (this.$store.state.hasCurrentFont) === "string" ? JSON.parse(this.$store.state.hasCurrentFont):this.$store.state.hasCurrentFont
+    // },
+    // currentFont () {
+    //   return typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont):this.$store.state.currentFont
+    // },
     place () {
       return this.currentFont.chooseCity + "-" + this.currentFont.place
     },
@@ -150,7 +199,7 @@ export default {
         if (res.data.length === 0) {
           console.log("首次");
           that.$store.dispatch("setIsFirstFont", true)
-          that.$store.dispatch("setHasCurrentFont", false)
+          // that.$store.dispatch("setHasCurrentFont", false)
         } else {
           for (let item of res.data) {
             if (item.checkState === 3) {
@@ -159,10 +208,12 @@ export default {
             } else if (item.checkState === 4 || item.checkState === 5) {
               that.historyFontData.push(item)
               that.$store.dispatch("setIsFirstFont", true)
-              that.$store.dispatch("setHasCurrentFont", false)
+              // that.$store.dispatch("setHasCurrentFont", false)
             } else {
               that.$store.dispatch("setIsFirstFont", true)
-              that.$store.dispatch("setHasCurrentFont", true)
+              // that.$store.dispatch("setHasCurrentFont", true)
+              that.hasCurrentFont = true
+              that.currentFont = item
               that.$store.dispatch("setCurrentFont", item)
             }
 
@@ -194,13 +245,16 @@ export default {
             console.log(res.data)
             if (res.data.length === 0) {
               if (!that.hasCurrentFont) {
-                that.$store.dispatch("setHasCurrentFont", false)
+                // that.$store.dispatch("setHasCurrentFont", false)
+                that.hasCurrentFont = false
               }
             } else {
               for (let item of res.data) {
                 if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-                  that.$store.dispatch("setHasCurrentFont", true)
-                  that.$store.dispatch("setCurrentFont", item)
+                  // that.$store.dispatch("setHasCurrentFont", true)
+                  that.hasCurrentFont = true
+                  that.currentFont = item
+                  // that.$store.dispatch("setCurrentFont", item)
                 } else {
                   that.historyFontData.push(item)
                 }
@@ -237,19 +291,58 @@ export default {
         checkState: 4
       }
       console.log(cancelForm)
+      console.log(this.isFirstFont)
       if (this.isFirstFont) {
         changeDetailCheckState(cancelForm).then(res => {
-          this.centerDialogVisible = false
+          this.centerCancelDialogVisible = false
           console.log(res);
           this.getAllFontData()
         })
       } else {
         changeEasyCheckState(cancelForm).then(res => {
-          this.centerDialogVisible = false
+          this.centerCancelDialogVisible = false
           console.log(res);
           this.getAllFontData()
         })
       }
+    },
+    modifyFont () {
+      this.$router.push({
+        path: `/modifyfont/${this.currentFont.id}`
+      })
+    },
+    handinSummary () {
+      this.$router.push({
+        path: `/handin/${this.currentFont.id}`
+      })
+    },
+    seeHandleRecord (id) {
+      getHandleRecord(id).then(res => {
+        console.log(res.data)
+        this.handleRecord = res.data
+        this.handleRecordDialogVisible = true
+      })
+    },
+    downloadFile (fileId) {
+      downloadFile(fileId).then(res => {
+        console.log(res);
+        const blob = new Blob([res]); //处理文档流
+        const fileName =  "处理意见.pdf";
+        const elink = document.createElement("a");
+        elink.setAttribute("download", decodeURIComponent(fileName));
+        elink.download = fileName;
+        elink.style.display = "none";
+        elink.href = URL.createObjectURL(blob);
+        document.body.appendChild(elink);
+        elink.click();
+        URL.revokeObjectURL(elink.href); // 释放URL 对象
+        document.body.removeChild(elink);
+      })
+    },
+    seefont (id) {
+      this.$router.push({
+        path: `/seefont/${id}`
+      })
     },
     handleClick(row) {
       console.log(row);
