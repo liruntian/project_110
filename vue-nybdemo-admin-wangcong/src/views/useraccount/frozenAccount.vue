@@ -41,6 +41,7 @@
 import { getAllUsers, freeze } from "../../network/freeze";
 
 export default {
+  inject: ["reload"],
   data() {
     return {
       exportName: "",
@@ -92,7 +93,7 @@ export default {
                       },
                       on: {
                         click: () => {
-                          this.frozen(params.row.meetAddr);
+                          this.frozen(params.row);
                         },
                       },
                     },
@@ -114,7 +115,6 @@ export default {
   },
   created() {
     getAllUsers().then((res) => {
-      console.log("allusers", res.data);
       this.data = res.data;
       this.changePage(1);
     });
@@ -126,11 +126,16 @@ export default {
         content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`,
       });
     },
-    frozen(meetAddr) {
-      console.log(meetAddr);
-      freeze(meetAddr).then((res) => {
-        console.log("res", res);
+    frozen(account) {
+      freeze(account.meetAddr).then((res) => {
+        this.$notify({
+          title: '冻结成功',
+          message: `成功将"${account.name}"的账号冻结`,
+          type: 'success'
+        });
       });
+      this.reload();
+
     },
     changePageSize(size) {
       this.pageSize = size;

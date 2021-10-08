@@ -257,11 +257,11 @@ export default {
           }
         }
       );
-      console.log(this.detailForm.meetAddr);
-      console.log(this.$store.getters.token);
+      // console.log(this.detailForm.meetAddr);
+      // console.log(this.$store.getters.token);
       getUserId(this.detailForm.meetAddr).then((res) => {
         this.detailForm.userId = res.data;
-        console.log(this.detailForm.userId);
+        // console.log(this.detailForm.userId);
         send(
           this.$store.getters.token,
           this.detailForm.userId,

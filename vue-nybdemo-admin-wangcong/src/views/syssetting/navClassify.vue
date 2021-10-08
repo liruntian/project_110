@@ -66,7 +66,6 @@ export default {
             navClassifyData: formData
           })
             .then(response => {
-              console.log(response)
               that.$message({
                 showClose: true,
                 message: response.data.msg,
@@ -74,7 +73,6 @@ export default {
               })
             })
             .catch(err => {
-              console.log(err)
               that.$message({
                 showClose: true,
                 message: err,

@@ -103,7 +103,6 @@ export default {
   async created() {
     await this.getdetailList();
     await this.getEasyList();
-    console.log(this.$store);
     await this.$axios
       .post("/message/easyNum", {})
       .then((successResponse) => {

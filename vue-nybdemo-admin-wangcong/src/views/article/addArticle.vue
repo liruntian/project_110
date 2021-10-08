@@ -44,7 +44,6 @@ export default {
   components: {Markdown},
   methods: {
     change () {
-      console.log(arguments[0], this.article)
       this.article.content = arguments[0]
     },
     querySearch (queryString, cb) {
@@ -65,14 +64,14 @@ export default {
       ]
     },
     handleSelect (item) {
-      console.log(item)
+      // console.log(item)
     },
     submitArticle () {
       this.$axios.post("/api/addArticle", {
         data: this.article
       })
         .then(function (response) {
-          console.log(response)
+          // console.log(response)
         })
         .catch(function (error) {
           console.log(error)

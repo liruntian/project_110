@@ -89,7 +89,6 @@ export default {
         this.formInline.meetAddr,
         this.formInline.kind
       ).then((successResponse) => {
-        console.log(successResponse);
         if (successResponse.code === 0) {
           this.$Notice.success({
             title: "添加成功",

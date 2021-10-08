@@ -2,7 +2,8 @@ import {request} from "./request";
 
 export async function getdetailFormdata() {
   return request({
-    url: '/check/detailList  ',
+    // url: '/check/detailList  ',
+    url: '/search/allDetailMeet  ',
     method: "post",
     // responseType: 'blob',
 

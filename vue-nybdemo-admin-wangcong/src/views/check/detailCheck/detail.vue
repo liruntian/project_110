@@ -415,13 +415,11 @@ export default {
     },
     submitForm() {
       let ip = this.$refs.adviceFile;
-      console.log("ip", ip.files[0]);
       let formdata = new FormData();
       formdata.append("adminId", this.$store.getters.token);
       formdata.append("meetId", this.detailForm.id);
       formdata.append("content", this.form.content);
       formdata.append("file", ip.files[0]);
-      console.log("formdata", formdata.values());
       if (!this.form.content) {
         this.$notify({
           title: "请输入修改意见",
@@ -463,12 +461,12 @@ export default {
         .catch((failResponse) => {});
         this.reject();
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
+    // handleRemove(file, fileList) {
+    //   console.log(file, fileList);
+    // },
+    // handlePreview(file) {
+    //   console.log(file);
+    // },
     downAuthorizeFile() {
       getdetailFile(this.detailForm.authFileId).then((res) => {
         const blob = new Blob([res]); //处理文档流

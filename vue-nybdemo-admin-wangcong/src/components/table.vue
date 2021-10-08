@@ -22,8 +22,8 @@
           :timestamp="activity.createTime.slice(0,10) +' ' + activity.createTime.slice(11,19)"
         >
           <el-card>
-            <h4>{{ activity.adminId }}: 干了什么操作</h4>
-            <p>{{ activity.content }}</p>
+            <h4>{{ activity.adminId }}: 返回修改</h4>
+            <p>修改建议： {{ activity.content }}</p>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -107,7 +107,7 @@ export default {
           title: "操作",
           key: "action",
           fixed: "right",
-          width: 280,
+          width: 300,
           align: "center",
           render: (h, params) => {
             return h("div", [
@@ -284,9 +284,6 @@ export default {
       historyHandles(id).then((res) => {
         this.handleRecords = res.data;
       });
-    },
-    changePage() {
-      console.log("新的数据");
     },
   },
 };

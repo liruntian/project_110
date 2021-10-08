@@ -170,7 +170,6 @@ export default {
         }
         that.$request.fetchGetUserInfoId({id: userId})
           .then(function (res) {
-            console.log(res)
             res.data.password = ""
             if (res.data.status === "1") {
               res.data.status = true

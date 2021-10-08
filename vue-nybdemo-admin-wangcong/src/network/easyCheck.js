@@ -2,7 +2,8 @@ import {request} from "./request.js"
 
 export async function getEasyFormdata(){
 	return request({
-		url: '/check/easyList',
+		// url: '/check/easyList',
+		url: 'search/allEasyMeet',
 		methods:"post"
 	})
 }

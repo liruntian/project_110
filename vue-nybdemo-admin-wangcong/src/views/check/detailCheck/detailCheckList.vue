@@ -108,7 +108,9 @@ export default {
       } else {
         this.allAdataList = this.easyForm;
       }
-      this.datalist = this.allAdataList;
+      this.checkList = ['待审核']
+      this.datalist = this.allAdataList.filter(v => v.checkState == '待审核');
+
     },
     checkListChange(value) {
        this.datalist = [];
@@ -118,6 +120,7 @@ export default {
     },
     checkStateToString(items) {
       for (let item of items) {
+        item.createTime = item.createTime.slice(0,10);
         switch (item.checkState) {
           case 0:
             item.checkState = "待审核";
@@ -152,9 +155,8 @@ export default {
     await this.getEasyList();
     if (this.checkType == 1) {
       this.allAdataList = this.detailForm;
-      console.log('allAdataList',this.allAdataList);
+      // console.log('allAdataList',this.allAdataList);
     } else {
-      console.log("this.datalist", this.datalist);
       this.allAdataList = this.easyForm;
     }
     this.datalist = this.allAdataList.filter(v => v.checkState == '待审核');
