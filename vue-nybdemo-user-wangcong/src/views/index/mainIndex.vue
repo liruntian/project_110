@@ -12,6 +12,7 @@
             <table border="1" cellspacing="0">
               <tr>
                 <td>展会名称</td>
+                <td>是否首次申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
                 <td>申报状态</td>
@@ -19,12 +20,13 @@
               </tr>
               <tr>
                 <td>{{ currentFont.name }}</td>
+                <td>{{ currentFont.isFirstFont ? "是" : "否" }}</td>
                 <td>{{ place }}</td>
                 <td>{{ time }}</td>
                 <td style="color: #515A6E">{{ checkState }}</td>
                 <td>
                   <span>
-                    <router-link to="/easyfontview">查看申报</router-link>
+                    <a @click="seefont (currentFont.id, currentFont.isFirstFont)">查看申报</a>
                   </span>
                   <span>
                     <a v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</a>
@@ -54,6 +56,7 @@
             <table border="1" cellspacing="0">
               <thead>
                 <td>展会名称</td>
+                <td>是否首次申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
                 <td>申报状态</td>
@@ -64,6 +67,7 @@
               </tr>
               <tr v-for="(item,index) in historyFontData" v-else :key="index">
                 <td>{{ item.name }}</td>
+                <td>{{ item.isFirstFont ? "是" : "否" }}</td>
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
                 <td>
@@ -73,11 +77,11 @@
                 </td>
                 <td>
                   <span>
-                    <a @click="seefont (item.id)">查看申报</a>
+                    <a @click="seefont (item.id, item.isFirstFont)">查看申报</a>
                   </span>
                   <span>
-                    <a v-if="item.checkState === 3">查看总结</a>
-                    <span v-else>查看总结</span>
+                    <a v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</a>
+                    <span v-else style="color: #515A6E">查看总结</span>
                   </span>
                   <span>
                     <a @click="seeHandleRecord(item.id)">处理记录</a>
@@ -137,7 +141,9 @@ import {
   changeDetailCheckState,
   changeEasyCheckState,
   getHandleRecord,
+  getLatestSummary,
   downloadFile } from "../../network/exhiState"
+import Vue from "vue"
 export default {
   name:'mainIndex',
   data () {
@@ -199,62 +205,34 @@ export default {
         if (res.data.length === 0) {
           console.log("首次");
           that.$store.dispatch("setIsFirstFont", true)
-          // that.$store.dispatch("setHasCurrentFont", false)
         } else {
           for (let item of res.data) {
+            Vue.set(item, "isFirstFont", true)
             if (item.checkState === 3) {
               that.historyFontData.push(item)
               that.$store.dispatch("setIsFirstFont", false)
             } else if (item.checkState === 4 || item.checkState === 5) {
               that.historyFontData.push(item)
               that.$store.dispatch("setIsFirstFont", true)
-              // that.$store.dispatch("setHasCurrentFont", false)
             } else {
               that.$store.dispatch("setIsFirstFont", true)
-              // that.$store.dispatch("setHasCurrentFont", true)
               that.hasCurrentFont = true
               that.currentFont = item
               that.$store.dispatch("setCurrentFont", item)
             }
-
-            // if (item.checkState === 3) {
-            //   that.$store.dispatch("setIsFirstFont", false)
-            //   getAllNotFirstFontData(that.$store.state.token).then(res => {
-            //     console.log(res.data);
-            //     if (res.data.length === 0) {
-            //       that.$store.dispatch("setHasCurrentFont", false)
-            //     } else {
-            //       for (let item of res.data) {
-            //         if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-            //           that.$store.dispatch("setHasCurrentFont", true)
-            //           that.$store.dispatch("setCurrentFont", item)
-            //         }
-            //       }
-            //     }
-            //   })
-            //   break
-            // } else {
-            //   that.$store.dispatch("setIsFirstFont", true)
-            //   if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-            //     that.$store.dispatch("setHasCurrentFont", true)
-            //     that.$store.dispatch("setCurrentFont", item)
-            //   }
-            // }
           }
           getAllNotFirstFontData(that.$store.state.token).then(res => {
             console.log(res.data)
             if (res.data.length === 0) {
               if (!that.hasCurrentFont) {
-                // that.$store.dispatch("setHasCurrentFont", false)
                 that.hasCurrentFont = false
               }
             } else {
               for (let item of res.data) {
+                Vue.set(item, "isFirstFont", false)
                 if (item.checkState === 0 || item.checkState === 1 || item.checkState === 2 || item.checkState === 9){
-                  // that.$store.dispatch("setHasCurrentFont", true)
                   that.hasCurrentFont = true
                   that.currentFont = item
-                  // that.$store.dispatch("setCurrentFont", item)
                 } else {
                   that.historyFontData.push(item)
                 }
@@ -264,27 +242,7 @@ export default {
         }
       })
     },
-    getHistoryFontData () {
-      getAllFirstFontData(this.currentFont.meetAddr).then(res => {
-        console.log(res.data);
-        this.historyFontData = []
-        for (let font of res.data) {
-          if (font.checkState === 3 || font.checkState === 4 || font.checkState === 5){
-            this.historyFontData.push(font)
-          }
-        }
-        getAllNotFirstFontData(this.currentFont.meetAddr).then(res => {
-          console.log(res.data);
-          for (let font of res.data) {
-            if (font.checkState === 3 || font.checkState === 4 || font.checkState === 5){
-              this.historyFontData.push(font)
-            }
-          }
-        })
-      })
-    },
     cancelFont () {
-      console.log("撤销申报")
       let cancelForm = {
         id: this.currentFont.id,
         adminId: this.$store.state.userId * 1,
@@ -294,15 +252,17 @@ export default {
       console.log(this.isFirstFont)
       if (this.isFirstFont) {
         changeDetailCheckState(cancelForm).then(res => {
+          this.$message.success("撤回成功")
           this.centerCancelDialogVisible = false
-          console.log(res);
           this.getAllFontData()
+          location.reload()
         })
       } else {
         changeEasyCheckState(cancelForm).then(res => {
+          this.$message.success("撤回成功")
           this.centerCancelDialogVisible = false
-          console.log(res);
           this.getAllFontData()
+          location.reload()
         })
       }
     },
@@ -339,9 +299,26 @@ export default {
         document.body.removeChild(elink);
       })
     },
-    seefont (id) {
+    seefont (id, isFirst) {
       this.$router.push({
-        path: `/seefont/${id}`
+        path: "/seefont",
+        query: {
+          id,
+          isFirst
+        }
+      })
+    },
+    seeSummary (id) {
+      console.log(id);
+      for (let font of this.historyFontData){
+        getLatestSummary(font.id).then(res => {
+          console.log(res)
+          console.log(res.data)
+        })
+      }
+      getLatestSummary(this.currentFont.id).then(res => {
+        console.log(res)
+        console.log(res.data)
       })
     },
     handleClick(row) {

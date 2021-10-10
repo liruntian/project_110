@@ -363,11 +363,11 @@ export default {
   computed: {
     leaderPresent() {
       return (
-        (this.declareForm.leaderN & 1).toString() +
-        (this.declareForm.leaderD & 1).toString() +
-        (this.declareForm.leaderP & 1).toString() +
-        (this.declareForm.leaderA & 1).toString() +
-        (this.declareForm.leaderF & 1).toString()
+        (this.declareForm.leaderN ? 1 : 0).toString() +
+        (this.declareForm.leaderD ? 1 : 0).toString() +
+        (this.declareForm.leaderP ? 1 : 0).toString() +
+        (this.declareForm.leaderA ? 1 : 0).toString() +
+        (this.declareForm.leaderF ? 1 : 0).toString()
       );
     },
     isFirstFont () {
@@ -626,7 +626,7 @@ export default {
       // 自筹资金数额
       formdata.append("selfFund", this.declareForm.selfFund);
       //出席领导情况
-      formdata.append("leaderState", this.leaderPresent);
+      formdata.append("leaderState", this.leaderPresent.toString());
       //同期活动
       formdata.append("activityBrief", this.declareForm.activityBrief);
       //填报单位
@@ -654,6 +654,7 @@ export default {
       //是否消费者参加
       formdata.append("view2", this.declareForm.view2);
       console.log(this.leaderPresent);
+      console.log(typeof this.leaderPresent);
       console.log(formdata);
       // console.log(formdata);
       // console.log(formdata.get("finanFrom"));

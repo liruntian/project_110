@@ -202,7 +202,7 @@ let defaultRouter = [
     hidden: true,
     children: [
       {
-        path: "/seefont/:id",
+        path: "/seefont",
         name: routeName.seefont,
         component: seefont,
         hidden: false,

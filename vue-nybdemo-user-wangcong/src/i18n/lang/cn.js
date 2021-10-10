@@ -39,6 +39,8 @@ const cn = {
     userfond: "展会申报",
     detafond: "首次申报",
     easyfond: "再次申报",
+    modifyfont: "修改申报",
+    seefont: "查看申报",
     message:"消息邮箱",
     haveRead: "已读信息",
     notRead: "未读信息",
