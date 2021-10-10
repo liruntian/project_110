@@ -6,7 +6,6 @@ export async function getdetailFormdata() {
     url: '/search/allDetailMeet  ',
     method: "post",
     // responseType: 'blob',
-
   })
 }
 export function getdetailFile(fileId) {
@@ -37,6 +36,43 @@ export function checkPassDetail(id,adminId,checkState) {
 export function historyHandles(id) {
   return request({
     url: '/search/checkInfo',
+    method: "post",
+    data:{
+      id : id,
+    }
+  })
+}
+export function getSummary(id) {
+  return request({
+    url: '/search/latestSummary',
+    method: "post",
+    data:{
+      id : id,
+    }
+  })
+}
+
+export async function getDeatilByMeetName(meetName) {
+  return request({
+    url: '/search/getDetailByMeetName',
+    method: "post",
+    data:{
+      meetName : meetName,
+    }
+  })
+}
+export async function getDeatilByMeetAddr(meetAddr) {
+  return request({
+    url: '/search/getDetailByMeetAddr',
+    method: "post",
+    data:{
+      meetAddr : meetAddr,
+    }
+  })
+}
+export async function getDeatilById(id) {
+  return request({
+    url: '/search/getDetailById',
     method: "post",
     data:{
       id : id,

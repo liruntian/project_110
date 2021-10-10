@@ -8,6 +8,12 @@
         placeholder="请输入展会名称"
         style="width: 200px; margin-right: 48px"
       ></el-input>
+      <h3 style="margin-right: 16px">展会简称</h3>
+      <el-input
+        v-model="exportAddr"
+        placeholder="请输入展会简称"
+        style="width: 200px; margin-right: 48px"
+      ></el-input>
       <h3 style="margin-right: 16px">主办方</h3>
       <el-input
         v-model="hostComp"
@@ -16,7 +22,11 @@
       ></el-input>
     </div>
     <div class="search-button">
-      <el-button type="primary" icon="el-icon-search" size="small" @click="search"
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        size="small"
+        @click="search"
         >查询</el-button
       >
       <el-button size="small" @click="reset">重置</el-button>
@@ -58,8 +68,18 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import { getdetailFormdata } from "../../../network/detailCheck";
-import { getEasyFormdata } from "../../../network/easyCheck";
+import {
+  getdetailFormdata,
+  getDeatilByMeetName,
+  getDeatilByMeetAddr,
+  getDeatilById,
+} from "../../../network/detailCheck";
+import {
+  getEasyFormdata,
+  getEasyByMeetName,
+  getEasyByMeetAddr,
+  getEasyById,
+} from "../../../network/easyCheck";
 import beaTable from "../../../components/table";
 const statesOptions = ["待审核", "待修改", "待总结", "已完成"];
 export default {
@@ -77,6 +97,7 @@ export default {
       allAdataList: [],
       hostComp: "",
       exportName: "",
+      exportAddr: "",
       checkList: ["待审核"],
       checkType: 1,
       checkAll: true,
@@ -108,19 +129,20 @@ export default {
       } else {
         this.allAdataList = this.easyForm;
       }
-      this.checkList = ['待审核']
-      this.datalist = this.allAdataList.filter(v => v.checkState == '待审核');
-
+      this.checkList = ["待审核"];
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
     },
     checkListChange(value) {
-       this.datalist = [];
-      for(let item of this.checkList) {
-        this.datalist = this.datalist.concat(this.allAdataList.filter(v => v.checkState == item));
+      this.datalist = [];
+      for (let item of this.checkList) {
+        this.datalist = this.datalist.concat(
+          this.allAdataList.filter((v) => v.checkState == item)
+        );
       }
     },
     checkStateToString(items) {
       for (let item of items) {
-        item.createTime = item.createTime.slice(0,10);
+        item.createTime = item.createTime.slice(0, 10);
         switch (item.checkState) {
           case 0:
             item.checkState = "待审核";
@@ -140,13 +162,67 @@ export default {
         }
       }
     },
-    search() {
-      this.checkList=['待审核'];
+    async search() {
+      if (!(this.exportName || this.exportAddr || this.hostComp)) {
+        this.$message({
+          message: "请至少输入一个查询条件",
+          type: "warning",
+        });
+        return;
+      }
+      this.checkList = ["待审核"];
+      this.allAdataList = [];
+      if(this.checkType == 1){
+        if (this.exportName) {
+          await getDeatilByMeetName(this.exportName).then((res) => {
+            this.allAdataList = this.allAdataList.concat(res.data);
+            this.checkStateToString(this.allAdataList);
+          });
+        }
+        if (this.exportAddr) {
+          await getDeatilByMeetAddr(this.exportAddr).then((res) => {
+            this.allAdataList  = this.allAdataList.concat(res.data);
+            this.checkStateToString(this.allAdataList);
+          });
+        }
+        if (this.hostComp) {
+          console.log("根据主办方查询");
+        }
+      } else {
+      if (this.exportName) {
+        await getEasyByMeetName(this.exportName).then((res) => {
+          this.allAdataList = this.allAdataList.concat(res.data);
+          this.checkStateToString(this.allAdataList);
+        });
+      }
+      if (this.exportAddr) {
+        await getEasyByMeetAddr(this.exportAddr).then((res) => {
+          this.allAdataList = this.allAdataList.concat(res.data);
+          this.checkStateToString(this.allAdataList);
+        });
+      }
+      if (this.hostComp) {
+        console.log("根据主办方查询");
+      }
+      }
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
+
+
     },
-    reset() {
-      this.exportName = '';
-      this.hostComp = '';
-    }
+    async reset() {
+      this.exportName = "";
+      this.exportAddr= "";
+      this.hostComp = "";
+      await this.getdetailList();
+      await this.getEasyList();
+      if (this.checkType == 1) {
+        this.allAdataList = this.detailForm;
+        // console.log('allAdataList',this.allAdataList);
+      } else {
+        this.allAdataList = this.easyForm;
+      }
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   async created() {
@@ -159,7 +235,7 @@ export default {
     } else {
       this.allAdataList = this.easyForm;
     }
-    this.datalist = this.allAdataList.filter(v => v.checkState == '待审核');
+    this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},

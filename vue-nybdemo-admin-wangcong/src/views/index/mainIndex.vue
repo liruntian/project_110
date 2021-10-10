@@ -59,7 +59,7 @@
       :size="250"
       :trail-width="4"
       :stroke-width="5"
-      :percent="75"
+      :percent="100"
       stroke-linecap="square"
       stroke-color="#43a3fb"
     >

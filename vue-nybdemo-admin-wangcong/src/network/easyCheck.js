@@ -34,3 +34,31 @@ export function getEasyFile(fileId) {
   
 	})
   }
+
+  export async function getEasyByMeetName(meetName) {
+	return request({
+	  url: '/search/getEasyByMeetName',
+	  method: "post",
+	  data:{
+		meetName : meetName,
+	  }
+	})
+  }
+  export async function getEasyByMeetAddr(meetAddr) {
+	return request({
+	  url: '/search/getEasyByMeetAddr',
+	  method: "post",
+	  data:{
+		meetAddr : meetAddr,
+	  }
+	})
+  }
+  export async function getEasyById(id) {
+	return request({
+	  url: '/search/getEasyById',
+	  method: "post",
+	  data:{
+		id : id,
+	  }
+	})
+  }

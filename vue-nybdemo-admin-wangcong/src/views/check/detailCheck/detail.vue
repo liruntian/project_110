@@ -6,7 +6,7 @@
       >
 
       <div
-        v-if="!(checkState == '待总结')"
+        v-if="!(checkState == '已完成')"
         id="pdfDom"
         style="
           padding-top: 55px;
@@ -162,7 +162,7 @@
           margin: auto;
           width: fit-content;
         "
-        v-if="checkState == '待总结'"
+        v-if="checkState == '已完成'"
       >
         <table border="1px" cellspacing="0">
           <colgroup span="8" width="200"></colgroup>
@@ -296,7 +296,7 @@
 
 <script>
 import { getUserId, send } from "../../../network/sendMessage";
-import { getdetailFile, checkPassDetail } from "../../../network/detailCheck";
+import { getdetailFile, checkPassDetail, getSummary } from "../../../network/detailCheck";
 import { checkPassEasy } from "../../../network/easyCheck";
 import { sendAmendments } from "../../../network/sendMessage";
 export default {
@@ -317,7 +317,12 @@ export default {
   },
   created() {
     this.detailForm = this.$route.query.item;
+    getSummary(this.detailForm.id).then(res => {
+      console.log('res',res);
+    })
+    console.log('detailForm',this.detailForm);
     this.checkState = this.$route.query.checkState;
+    console.log('this.checkState',this.checkState);
     // this.checkState = '待总结';
     if (this.$route.query.checkType == 2) {
       this.isFirstApply = false;
@@ -367,6 +372,13 @@ export default {
     },
   },
   methods: {
+    downSummaryFile(){
+      console.log("下载总结报告全文");
+    },
+    downHosterSignFile(){
+      console.log("下载单位主要负责同志签发页");
+
+    },
     back() {
       history.go(-1);
     },
