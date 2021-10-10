@@ -56,7 +56,7 @@ import {setPassword} from '../network/setPassword';
           callback(new Error('请输入密码'));
         } else {
             var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}');
-            if (!pwdRegex.test(value)) 
+            if (!pwdRegex.test(value))
             {
                 callback(new Error("您的密码复杂度太低（密码中必须包含字母、数字），请及时修改密码！"));
             }
@@ -108,7 +108,7 @@ import {setPassword} from '../network/setPassword';
                 }
             else if (successResponse.code === 6002) {
                 alert("当前密码输入有误，请重新输入")
-                
+
                 }
             })
           } else {
@@ -118,7 +118,9 @@ import {setPassword} from '../network/setPassword';
         });
       },
       resetForm(formName) {
+        console.log(JSON.parse(JSON.stringify(this.ruleForm)))
         this.$refs[formName].resetFields();
+        console.log(JSON.parse(JSON.stringify(this.ruleForm)))
       }
     }
   }

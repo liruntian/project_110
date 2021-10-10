@@ -120,6 +120,7 @@
                     <p style="padding-left: 30px"><label  class="xrequired">观众构成</label></p>
                     <el-form-item style="width: 30%;margin:5px 0 0 0" prop="view1">
                       <label style="vertical-align:middle;">是否有采购商参加</label>
+
                       <input style="vertical-align:middle;" ref="view1" type="checkbox" v-model="declareForm.view1" name="views" auto-complete="off"
                              placeholder=""></input>
                     </el-form-item>
@@ -194,7 +195,7 @@
                     <input style="vertical-align:middle;" ref="leaderN" type="checkbox" v-model="declareForm.leaderN" name="leaderN" auto-complete="off"
                            placeholder=""></input>
                   </p>
-              </el-form-item>
+                </el-form-item>
               <el-form-item style="margin-bottom: 0" prop="leaderD">
                   <p style="font-size: 10px">
                     <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
@@ -294,13 +295,10 @@
 </template>
 
 <script>
-// import { getEasy } from "../../network/getForm";
-// import { getDetail } from "../../network/getForm";
-import { getAllFirstFontData, getAllNotFirstFontData } from "../../network/exhiState"
+import { getAllFirstFontData, getAllNotFirstFontData, getEasyFontById, getDetailFontById } from "../../network/exhiState"
 import chooseCity from "../../components/common/chooseCity/chooseCity";
-import mainIndex from '../index/mainIndex111';
 export default {
-  name: "easyfont",
+  name: "modifyfont",
   data() {
     return {
       chooseCityTag: "",
@@ -346,19 +344,15 @@ export default {
         // 是否有国外政府官员含驻华使馆
         leaderF: false,
       },
+      fontId: ""
     };
   },
   components: {
     chooseCity,
   },
   created () {
-    this.getPrefillFont()
-    // console.log(this.$store.state.currentFont)
-    // if (this.$store.state.currentFont === undefined){
-    //   this.declareForm = {}
-    // }else {
-    //   this.declareForm = typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont) : this.$store.state.currentFont
-    // }
+    this.fontId = this.$route.params.id
+    this.getFontData(this.fontId)
   },
   computed: {
     leaderPresent() {
@@ -375,17 +369,22 @@ export default {
     },
   },
   methods: {
-    getPrefillFont () {
-      getAllFirstFontData(this.$store.state.token).then(res => {
-        console.log(res.data);
-        // this.declareForm = res.data[1]
-      })
-      // getAllNotFirstFontData(this.$store.state.token).then()
+    getFontData (id) {
+      if (this.isFirstFont) {
+        getDetailFontById(id).then(res => {
+          console.log(res.data);
+          this.declareForm = res.data
+        })
+      }else {
+        getEasyFontById(id).then(res => {
+          console.log(res.data);
+        })
+      }
     },
     returnMainIndex() {
       this.$router.back()
     },
-    declareFormed () {
+    declareFormed() {
       if (!this.declareForm.name) {
         this.$message({
           showClose: true,
@@ -585,6 +584,8 @@ export default {
           return false;
         }
       }
+      //展会ID
+      formdata.append("id", this.fontId);
       //展会简称
       formdata.append("meetAddr", this.$store.getters.token);
       // 财政资金的拨款金额
@@ -654,7 +655,6 @@ export default {
       //是否消费者参加
       formdata.append("view2", this.declareForm.view2);
       console.log(this.leaderPresent);
-      console.log(formdata);
       // console.log(formdata);
       // console.log(formdata.get("finanFrom"));
 
@@ -674,7 +674,7 @@ export default {
 
       var axios = require("axios");
       if (this.isFirstFont){
-        axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
+        axios.post("http://8.140.21.128:8445/api/handin/modifyDetail", formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
@@ -689,7 +689,7 @@ export default {
           })
           .catch((failResponse) => {});
       }else {
-        axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
+        axios.post("http://8.140.21.128:8445/api/handin/modifyEasy", formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
@@ -763,7 +763,6 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 .chartUser{
   display: flex;
   margin-top: 20px;
-  margin-left: 50px;
   height: 120px;
   //background-color: green;
 }
@@ -772,7 +771,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   transform: translateY(24%);
   margin: 10px;
   padding: 10px;
-  //width: 70%;
+  //width: 556px;
 }
 .function-btns{
   height: 100px;

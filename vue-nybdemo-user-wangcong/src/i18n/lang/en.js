@@ -41,6 +41,8 @@ const en = {
     userfond: "userfond",
     detafond: "detafond",
     easyfond: "easyfond",
+    modifyfont: "modifyfont",
+    seefont: "seefont",
     message:"message",
     haveRead: "haveRead",
     notRead: "notRead",

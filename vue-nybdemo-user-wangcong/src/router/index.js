@@ -12,7 +12,8 @@ import HomeMain from "@/views/index/mainIndex"
 import {getDetail} from '../network/getForm';
 import easyfont from "../views/foundchart/easyfont"
 import userfont from "@/views/foundchart/userfont"
-
+import modifyfont from "../views/foundchart/modifyfont";
+import seefont from "../views/foundchart/seefont";
 const NotFound = () => import("@/views/page404")
 
 // const UserFond = () => import("@/views/foundchart/userfont")
@@ -175,6 +176,42 @@ let defaultRouter = [
     ]
   },
   {
+    path: "/modifyfont",
+    iconCls: "el-icon-setting", // 图标样式class
+    name: routeName.modifyfont,
+    component: Layout,
+    alone: true,
+    hidden: true,
+    children: [
+      {
+        path: "/modifyfont/:id",
+        name: routeName.modifyfont,
+        component: modifyfont,
+        hidden: false,
+        children: [],
+      }
+
+    ]
+  },
+  {
+    path: "/seefont",
+    iconCls: "el-icon-setting", // 图标样式class
+    name: routeName.seefont,
+    component: Layout,
+    alone: true,
+    hidden: true,
+    children: [
+      {
+        path: "/seefont/:id",
+        name: routeName.seefont,
+        component: seefont,
+        hidden: false,
+        children: [],
+      }
+
+    ]
+  },
+  {
     path: "/easyfontview",
     iconCls: "el-icon-setting", // 图标样式class
     name: routeName.easyfontview,
@@ -219,7 +256,7 @@ let defaultRouter = [
     hidden: true,
     children: [
       {
-        path: "/handin",
+        path: "/handin/:id",
         name: routeName.userfond,
         component: Handin,
         hidden: false,
