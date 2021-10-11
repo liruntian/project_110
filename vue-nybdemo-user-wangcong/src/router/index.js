@@ -14,6 +14,7 @@ import easyfont from "../views/foundchart/easyfont"
 import userfont from "@/views/foundchart/userfont"
 import modifyfont from "../views/foundchart/modifyfont";
 import seefont from "../views/foundchart/seefont";
+import seesummary from "../views/foundchart/seesummary";
 const NotFound = () => import("@/views/page404")
 
 // const UserFond = () => import("@/views/foundchart/userfont")
@@ -184,7 +185,7 @@ let defaultRouter = [
     hidden: true,
     children: [
       {
-        path: "/modifyfont/:id",
+        path: "/modifyfont",
         name: routeName.modifyfont,
         component: modifyfont,
         hidden: false,
@@ -208,7 +209,23 @@ let defaultRouter = [
         hidden: false,
         children: [],
       }
-
+    ]
+  },
+  {
+    path: "/seesummary",
+    iconCls: "el-icon-setting", // 图标样式class
+    name: routeName.seefont,
+    component: Layout,
+    alone: true,
+    hidden: true,
+    children: [
+      {
+        path: "/seesummary",
+        name: routeName.seefont,
+        component: seesummary,
+        hidden: false,
+        children: [],
+      }
     ]
   },
   {

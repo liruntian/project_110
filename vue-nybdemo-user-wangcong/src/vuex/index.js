@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     flash: Cookies.get("flash"),
     userId: Cookies.get("userId"),
     userKind: Cookies.get("userKind"),
+    meetName: Cookies.get("meetName"),
     // checkState:null
     checkState: Cookies.get("checkState"),
     isFirstFont: Cookies.get("isFirstFont"),
@@ -24,7 +25,6 @@ const store = new Vuex.Store({
     setToken (state, token) {
       state.token = token
       Cookies.set("token", token, { expires: 1 / 24 })
-
     },
     setUserKind (state, userKind) {
       state.userKind = userKind
@@ -57,6 +57,10 @@ const store = new Vuex.Store({
     setPrefillFont (state, prefillFont) {
       state.prefillFont = prefillFont
       Cookies.set("prefillFont", prefillFont, { expires: 1/24 })
+    },
+    setMeetName (state, meetName) {
+      state.meetName = meetName
+      Cookies.set("meetName", meetName, { expires: 1 / 24})
     }
   },
   actions: {
@@ -113,6 +117,12 @@ const store = new Vuex.Store({
         commit("setPrefillFont", prefillFont)
         resolve()
       })
+    },
+    setMeetName ({commit}, meetName) {
+      return new Promise((resolve, reject) => {
+        commit("setMeetName", meetName)
+        resolve()
+      })
     }
   },
   getters: {
@@ -122,6 +132,7 @@ const store = new Vuex.Store({
     checkState: state => state.checkState,
     userId: state => state.userId,
     prefillFont: state => state.prefillFont,
+    meetName: state => state.meetName,
     addRouters: state => state.routerData.addRouters,
     token: state => state.token,
     userKind: state => state.userKind,

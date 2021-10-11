@@ -89,7 +89,7 @@
           </td>
         </tr>
         <tr>
-          <td v-if="isFirstFont">批准审核文件</td>
+          <td v-if="detailForm.isFirstFont">批准审核文件</td>
           <td v-else>去年审批文件</td>
           <td colspan="7">
             <a @click="downloadFile(detailForm.authFileId, '批准审核文件')">
@@ -116,7 +116,7 @@
             </a>
           </td>
         </tr>
-        <tr v-show="isFirstFont">
+        <tr v-show="detailForm.isFirstFont">
           <td>可行性报告文档</td>
           <td colspan="7">
             <a @click="downloadFile(detailForm.feasibilityFileId, '可行性报告文档')">
@@ -125,7 +125,7 @@
             </a>
           </td>
         </tr>
-        <tr v-show="isFirstFont">
+        <tr v-show="detailForm.isFirstFont">
           <td>承办单位办展条件说明</td>
           <td colspan="7">
             <a @click="downloadFile(detailForm.conditionStateFileId, '承办单位办展条件说明')">
@@ -151,17 +151,7 @@ export default {
     }
   },
   created () {
-    this.id = this.$route.query.id
-    this.isFirstFont = JSON.parse(this.$route.query.isFirst)
-    if (this.isFirstFont) {
-      getDetailFontById(this.id).then(res => {
-        this.detailForm = res.data
-      })
-    }else {
-      getEasyFontById (this.id).then(res => {
-        this.detailForm = res.data
-      })
-    }
+    this.detailForm = this.$route.query.item
   },
   computed: {
     leaderState () {

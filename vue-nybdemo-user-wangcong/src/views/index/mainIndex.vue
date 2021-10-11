@@ -26,7 +26,7 @@
                 <td style="color: #515A6E">{{ checkState }}</td>
                 <td>
                   <span>
-                    <a @click="seefont (currentFont.id, currentFont.isFirstFont)">查看申报</a>
+                    <a @click="seefont (currentFont)">查看申报</a>
                   </span>
                   <span>
                     <a v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</a>
@@ -63,7 +63,7 @@
                 <td>操作</td>
               </thead>
               <tr v-if="historyFontData.length === 0">
-                <td colspan="5">暂无历史申报数据</td>
+                <td colspan="6">暂无历史申报数据</td>
               </tr>
               <tr v-for="(item,index) in historyFontData" v-else :key="index">
                 <td>{{ item.name }}</td>
@@ -77,7 +77,7 @@
                 </td>
                 <td>
                   <span>
-                    <a @click="seefont (item.id, item.isFirstFont)">查看申报</a>
+                    <a @click="seefont (item)">查看申报</a>
                   </span>
                   <span>
                     <a v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</a>
@@ -268,7 +268,10 @@ export default {
     },
     modifyFont () {
       this.$router.push({
-        path: `/modifyfont/${this.currentFont.id}`
+        path: "/modifyfont",
+        query: {
+          item: this.currentFont
+        }
       })
     },
     handinSummary () {
@@ -299,27 +302,28 @@ export default {
         document.body.removeChild(elink);
       })
     },
-    seefont (id, isFirst) {
+    seefont (font) {
       this.$router.push({
         path: "/seefont",
         query: {
-          id,
-          isFirst
+          item: font
         }
       })
     },
     seeSummary (id) {
       console.log(id);
-      for (let font of this.historyFontData){
-        getLatestSummary(font.id).then(res => {
-          console.log(res)
-          console.log(res.data)
-        })
-      }
-      getLatestSummary(this.currentFont.id).then(res => {
-        console.log(res)
-        console.log(res.data)
+      this.$router.push({
+        path: "/seesummary",
+        query: {
+          id
+        }
       })
+      // for (let font of this.historyFontData){
+      //   getLatestSummary(font.id).then(res => {
+      //     console.log(res)
+      //     console.log(res.data)
+      //   })
+      // }
     },
     handleClick(row) {
       console.log(row);
@@ -408,8 +412,9 @@ export default {
   }
   font-size: 16px;
   width: 90%;
-  height: 120px;
+  //height: 120px;
   margin-left: 60px;
+  padding-bottom: 40px;
   table{
     width: 100%;
     text-align: center;

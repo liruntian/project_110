@@ -43,6 +43,7 @@ const en = {
     easyfond: "easyfond",
     modifyfont: "modifyfont",
     seefont: "seefont",
+    seesummary: "seesummary",
     message:"message",
     haveRead: "haveRead",
     notRead: "notRead",

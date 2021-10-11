@@ -7,10 +7,10 @@
           <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
         </div>
         <div class="function-btns">
-          <el-button @click="clearForm()" type="primary">重填</el-button>
-          <el-button @click="newFont()" type="primary">暂存</el-button>
-          <el-button class="subBtn" type="primary" v-on:click="declareFormed">提交</el-button>
-          <el-button @click="returnMainIndex()" type="primary">返回</el-button>
+          <el-button round @click="returnMainIndex()" type="primary" style="margin-left: 50px">返回</el-button>
+          <el-button round @click="clearForm()" type="danger" style="margin: 0 50px">重填</el-button>
+<!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
+          <el-button round class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
         </div>
       </div>
       <div>
@@ -21,7 +21,7 @@
                 <span>一、基础信息</span>
               </template>
               <el-row :gutter="40">
-                <el-col>
+                <el-col :span="12">
                   <el-form-item style="margin-top: 20px" prop="name">
                     <label class="xrequired">展会名称</label>
                     <el-input type="text" ref="name" v-model="declareForm.name" auto-complete="off"
@@ -38,7 +38,7 @@
                               placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                   <el-form-item style="margin-top: 20px" prop="hostComp">
                     <label class="xrequired">主办单位</label>
                     <el-input type="text" ref="hostComp" v-model="declareForm.hostComp" auto-complete="off"
@@ -60,14 +60,14 @@
                 <p><font class="hptext">注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见</font></p>
               </div>
               <el-row :gutter="40">
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="authObj">
                     <label class="xrequired">批准单位</label>
                     <el-input type="text" ref="authObj" v-model="declareForm.authObj" auto-complete="off"
                               placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="authNum">
                     <label>批准文号（选填）</label>
                     <el-input type="text" ref="authNum" v-model="declareForm.authNum" auto-complete="off"
@@ -90,16 +90,31 @@
                 <span>三、举办计划</span>
               </template>
               <el-row :gutter="40">
-                <el-col>
-                  <el-form-item prop="place">
-                    <label class="xrequired">举办地点</label>
-                    <div style="display:flex">
-                      <div style="width: 70%">
-                        <choose-city ref='chooseCity' :cityData = 'this.chooseCityTag'></choose-city>
-                      </div>
-                      <el-input style="width: 30%" type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
-                    </div>
-                  </el-form-item>
+                <el-col :span="12">
+                  <label class="xrequired" style="margin-left: 30px">举办地点</label>
+                  <div  style="display: flex;width: 100%">
+                    <el-form-item prop="chooseCity" style="width: 50%">
+                      <el-cascader
+                        v-model="declareForm.chooseCity"
+                        :options="provinceAndCityData"
+                        @change="handleChange"
+                      >
+                      </el-cascader>
+                    </el-form-item>
+                    <el-form-item prop="place" style="width: 50%">
+                      <el-input type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
+                    </el-form-item>
+                  </div>
+<!--                  <el-form-item >-->
+
+
+<!--&lt;!&ndash;                    <div style="display:flex">&ndash;&gt;-->
+<!--&lt;!&ndash;                      <div style="width: 70%">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <choose-city ref='chooseCity' :cityData = 'this.chooseCityTag'></choose-city>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                  </el-form-item>-->
                   <el-form-item prop="area">
                     <label  class="xrequired">展览面积（m²）</label>
                     <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off"
@@ -130,7 +145,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="Times">
                     <div style="display: flex;flex-direction: column">
                       <label class="xrequired">举办时间</label>
@@ -165,7 +180,7 @@
                 <span>四、经费来源</span>
               </template>
               <el-row :gutter="40">
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="finanFund">
                     <label>财政金额（万元）</label>
                     <el-input type="number" ref="finanFund" v-model="declareForm.finanFund" auto-complete="off"
@@ -173,7 +188,7 @@
                               placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="selfFund">
                     <label>自筹金额（万元）</label>
                     <el-input type="number" ref="selfFund" v-model="declareForm.selfFund" auto-complete="off"
@@ -229,7 +244,7 @@
                 <span>六、填报单位信息</span>
               </template>
               <el-row :gutter="40">
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="writeObject">
                     <label class="xrequired">填报单位</label>
                     <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
@@ -239,7 +254,7 @@
                     <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                   <el-form-item prop="department">
                     <label class="xrequired">责任处室</label>
                     <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
@@ -294,16 +309,16 @@
 </template>
 
 <script>
-// import { getEasy } from "../../network/getForm";
-// import { getDetail } from "../../network/getForm";
+import Vue from "vue"
 import { getAllFirstFontData, getAllNotFirstFontData } from "../../network/exhiState"
 import chooseCity from "../../components/common/chooseCity/chooseCity";
-import mainIndex from '../index/mainIndex111';
 export default {
   name: "easyfont",
   data() {
     return {
       chooseCityTag: "",
+      provinceAndCityData: [],
+      pickedProvinceAndCityData: [],
       declareForm: {
         name: "",
         hostComp: "",
@@ -312,6 +327,7 @@ export default {
         supportComp: "",
         authObj: "",
         authNum: "",
+        chooseCity: "",
         place: "",
         Times: [],
         cycle: "",
@@ -352,13 +368,9 @@ export default {
     chooseCity,
   },
   created () {
+    Vue.set(this.declareForm,"name", this.$store.state.meetName)
     this.getPrefillFont()
-    // console.log(this.$store.state.currentFont)
-    // if (this.$store.state.currentFont === undefined){
-    //   this.declareForm = {}
-    // }else {
-    //   this.declareForm = typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont) : this.$store.state.currentFont
-    // }
+    this.getProvinceAndCityData()
   },
   computed: {
     leaderPresent() {
@@ -381,6 +393,45 @@ export default {
         // this.declareForm = res.data[1]
       })
       // getAllNotFirstFontData(this.$store.state.token).then()
+    },
+    getProvinceAndCityData () {
+      const axios = require("axios")
+      axios.get('https://restapi.amap.com/v3/config/district',{
+        params: {
+          key: '214287d2088bc4992cd28103cb4eea7c',
+          subdistrict: 3
+        }
+      }).then(res => {
+        console.log(res.data.districts[0])
+        console.log(res.data.districts[0].districts)
+        for (let province of res.data.districts[0].districts){
+          let provinceObj = {
+            value: province.name,
+            label: province.name,
+            children: []
+          }
+          for (let city of province.districts){
+            let cityObj = {
+              value: city.name,
+              label: city.name,
+              children: []
+            }
+            for (let county of city.districts){
+              let countyObj = {
+                value: county.name,
+                label: county.name
+              }
+              cityObj.children.push(countyObj)
+            }
+            provinceObj.children.push(cityObj)
+          }
+          this.provinceAndCityData.push(provinceObj)
+        }
+      })
+    },
+    handleChange() {
+      console.log(this.declareForm.chooseCity)
+      console.log(this.declareForm.chooseCity.join("-"))
     },
     returnMainIndex() {
       this.$router.back()
@@ -422,11 +473,19 @@ export default {
         this.$refs.authObj.focus();
         return false;
       }
-
+      if (!this.declareForm.chooseCity) {
+        this.$message({
+          showClose: true,
+          message: "请选择举办地点！",
+          type: "error",
+        });
+        this.$refs.chooseCity.focus();
+        return false;
+      }
       if (!this.declareForm.place) {
         this.$message({
           showClose: true,
-          message: "举办地点！",
+          message: "请填写举办地点！",
           type: "error",
         });
         this.$refs.place.focus();
@@ -610,7 +669,8 @@ export default {
       // 批准文案
       formdata.append("authNum", this.declareForm.authNum);
       // 举办城市
-      formdata.append("chooseCity", this.$refs.chooseCity.getChoosedCity());
+      // formdata.append("chooseCity", this.$refs.chooseCity.getChoosedCity());
+      formdata.append("chooseCity", this.declareForm.chooseCity.join("-"));
       // 举办场所
       formdata.append("place", this.declareForm.place);
       // 举办周期
@@ -777,14 +837,9 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 }
 .function-btns{
   height: 100px;
-  //width: 360px;
   line-height: 100px;
-  //background-color: red;
-  margin: 10px;
-  //padding: 10px;
+  margin: 10px 0 10px 50px;
   z-index: 999999;
-  //float: top;
-  //top: 20px;
   right: 100px;
 }
 .el-collapse{
@@ -898,6 +953,9 @@ label.xrequired:after {
   position: relative;
   top: 8px;
   margin-left: 3px;
+}
+.el-cascader{
+  width: 100% !important;
 }
 </style>
 
