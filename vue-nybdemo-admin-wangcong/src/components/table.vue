@@ -12,14 +12,21 @@
       :visible.sync="showHandleHistory"
       width="30%"
     >
-      <el-empty description="暂无处理记录" v-if="handleRecords.length==0"></el-empty>
+      <el-empty
+        description="暂无处理记录"
+        v-if="handleRecords.length == 0"
+      ></el-empty>
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in handleRecords"
           :key="index"
           placement="top"
           :color="color"
-          :timestamp="activity.createTime.slice(0,10) +' ' + activity.createTime.slice(11,19)"
+          :timestamp="
+            activity.createTime.slice(0, 10) +
+            ' ' +
+            activity.createTime.slice(11, 19)
+          "
         >
           <el-card>
             <h4>{{ activity.adminId }}: 返回修改</h4>
@@ -46,10 +53,10 @@
   </div>
 </template>
 <script>
-
 import { historyHandles, checkPassDetail } from "../network/detailCheck";
 import { checkPassEasy } from "../network/easyCheck";
 export default {
+  inject: ["reload"],
   name: "beaTable",
   props: {
     data: {
@@ -111,7 +118,7 @@ export default {
           align: "center",
           render: (h, params) => {
             return h("div", [
-              params.row.checkState == '待审核'
+              params.row.checkState == "待审核"
                 ? h(
                     "Button",
                     {
@@ -148,7 +155,7 @@ export default {
                     },
                     "查看"
                   ),
-              params.row.checkState == '待总结'
+              params.row.checkState == "待总结"
                 ? h(
                     "Button",
                     {
@@ -161,14 +168,14 @@ export default {
                       },
                       on: {
                         click: () => {
-                          this.rejected(params.row)
+                          this.rejected(params.row);
                         },
                       },
                     },
                     "驳回"
                   )
                 : null,
-              params.row.checkState == '已完成'
+              params.row.checkState == "已完成"
                 ? h(
                     "Button",
                     {
@@ -181,7 +188,7 @@ export default {
                       },
                       on: {
                         click: () => {
-                          this.check(params.row); 
+                          this.check(params.row);
                         },
                       },
                     },
@@ -236,38 +243,55 @@ export default {
       this.changePage(1);
     },
     changePage(res) {
-      this.data = this.data.slice((res - 1) * this.pageSize, res * this.pageSize);
+      this.data = this.data.slice(
+        (res - 1) * this.pageSize,
+        res * this.pageSize
+      );
     },
     rejected(item) {
-      this.checkType == 1
-        ? checkPassDetail(
-            item.id,
-            this.$store.getters.token,
-            5
-          ).then((successResponse) => {
-            if (successResponse.data.code === 0) {
-            } else {
-              this.$message({
-                showClose: true,
-                message: "提交失败！",
-                type: "error",
-              });
-            }
-          })
-        : checkPassEasy(
-            item.id,
-            this.$store.getters.token,
-            5
-          ).then((successResponse) => {
-            if (successResponse.data.code === 0) {
-            } else {
-              this.$message({
-                showClose: true,
-                message: "提交失败！",
-                type: "error",
-              });
-            }
+      this.$confirm("确定驳回此条申报吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.checkType == 1
+            ? checkPassDetail(item.id, this.$store.getters.token, 5).then(
+                (successResponse) => {
+                  if (successResponse.data.code === 0) {
+                  } else {
+                    this.$message({
+                      showClose: true,
+                      message: "提交失败！",
+                      type: "error",
+                    });
+                  }
+                }
+              )
+            : checkPassEasy(item.id, this.$store.getters.token, 5).then(
+                (successResponse) => {
+                  if (successResponse.data.code === 0) {
+                  } else {
+                    this.$message({
+                      showClose: true,
+                      message: "提交失败！",
+                      type: "error",
+                    });
+                  }
+                }
+              );
+          this.$message({
+            type: "success",
+            message: "驳回成功!",
           });
+          this.reload();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消驳回",
+          });
+        });
     },
     check(data) {
       this.$router.push({
@@ -275,7 +299,7 @@ export default {
         query: {
           item: data,
           checkType: this.checkType,
-          checkState: data.checkState
+          checkState: data.checkState,
         },
       });
     },
