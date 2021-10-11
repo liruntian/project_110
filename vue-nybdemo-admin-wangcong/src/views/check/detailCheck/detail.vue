@@ -332,6 +332,21 @@ export default {
     }申报文件`;
   },
   computed: {
+    leaderState () {
+      if (this.detailForm.leaderState.toString().length === 0) {
+        return "00000" + this.detailForm.leaderState.toString()
+      }else if (this.detailForm.leaderState.toString().length === 1){
+        return "0000" + this.detailForm.leaderState.toString()
+      }else if (this.detailForm.leaderState.toString().length === 2){
+        return "000" + this.detailForm.leaderState.toString()
+      }else if (this.detailForm.leaderState.toString().length === 3){
+        return "00" + this.detailForm.leaderState.toString()
+      }else if (this.detailForm.leaderState.toString().length === 4){
+        return "0" + this.detailForm.leaderState.toString()
+      }else {
+        return this.detailForm.leaderState.toString()
+      }
+    },
     ishow() {
       return this.detailForm.checkState == "待审核" ? true : false;
     },
@@ -345,28 +360,28 @@ export default {
       return this.detailForm.view2 == true ? "是" : "否";
     },
     getLeaderN() {
-      return parseInt(this.detailForm.leaderState.toString()[0]) == 1
+      return parseInt(this.leaderState.toString()[0]) == 1
         ? "是"
         : "否";
     },
     getLeaderD() {
-      return parseInt(this.detailForm.leaderState.toString()[1]) == 1
+      return parseInt(this.leaderState.toString()[1]) == 1
         ? "是"
         : "否";
     },
 
     getLeaderP() {
-      return parseInt(this.detailForm.leaderState.toString()[2]) == 1
+      return parseInt(this.leaderState.toString()[2]) == 1
         ? "是"
         : "否";
     },
     getLeaderA() {
-      return parseInt(this.detailForm.leaderState.toString()[3]) == 1
+      return parseInt(this.leaderState.toString()[3]) == 1
         ? "是"
         : "否";
     },
     getLeaderF() {
-      return parseInt(this.detailForm.leaderState.toString()[4]) == 1
+      return parseInt(this.leaderState.toString()[4]) == 1
         ? "是"
         : "否";
     },
