@@ -1,85 +1,82 @@
-import {request} from "./request";
+import {request} from "./request"
 
-export async function getdetailFormdata() {
+export async function getdetailFormdata () {
   return request({
     // url: '/check/detailList  ',
-    url: '/search/allDetailMeet  ',
-    method: "post",
+    url: "/search/allDetailMeet  ",
+    method: "post"
     // responseType: 'blob',
   })
 }
-export function getdetailFile(fileId) {
+export function getdetailFile (fileId) {
   return request({
-    url: '/check/downloadFile',
+    url: "/check/downloadFile",
     method: "post",
-    responseType:'blob',
-    data:{
-      fileId : fileId,
-
+    responseType: "blob",
+    data: {
+      fileId: fileId
     }
 
   })
 }
 
-export function checkPassDetail(id,adminId,checkState) {
+export function checkPassDetail (id, adminId, checkState) {
   return request({
-    url: '/check/detail',
+    url: "/check/detail",
     method: "post",
-    data:{
-      id : id,
-      adminId:adminId,
-      checkState:checkState
+    data: {
+      id: id,
+      adminId: adminId,
+      checkState: checkState
     }
   })
 }
 
-export function historyHandles(id) {
+export function historyHandles (id) {
   return request({
-    url: '/search/checkInfo',
+    url: "/search/checkInfo",
     method: "post",
-    data:{
-      id : id,
+    data: {
+      id: id
     }
   })
 }
-export function getSummary(id) {
+export function getSummary (meetId) {
   return request({
-    url: '/search/latestSummary',
+    url: "/search/latestSummary",
     method: "post",
-    data:{
-      id : id,
-    }
-  })
-}
-
-export async function getDeatilByMeetName(meetName) {
-  return request({
-    url: '/search/getDetailByMeetName',
-    method: "post",
-    data:{
-      meetName : meetName,
-    }
-  })
-}
-export async function getDeatilByMeetAddr(meetAddr) {
-  return request({
-    url: '/search/getDetailByMeetAddr',
-    method: "post",
-    data:{
-      meetAddr : meetAddr,
-    }
-  })
-}
-export async function getDeatilById(id) {
-  return request({
-    url: '/search/getDetailById',
-    method: "post",
-    data:{
-      id : id,
+    data: {
+      meetId: meetId
     }
   })
 }
 
-
+export async function getDeatilByMeetName (meetName) {
+  return request({
+    url: "/search/getDetailByMeetName",
+    method: "post",
+    data: {
+      meetName: meetName
+    }
+  })
+}
+export async function getDeatilByMeetAddr (meetAddr) {
+  return request({
+    url: "/search/getDetailByMeetAddr",
+    method: "post",
+    data: {
+      meetAddr: meetAddr
+    }
+  })
+}
+export async function getDeatilById (id) {
+  return request({
+    url: "/search/getDetailById",
+    method: "post",
+    data: {
+      id: id
+    }
+  })
+}
 
 

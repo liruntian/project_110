@@ -26,7 +26,7 @@
           </tr>
           <tr align="center">
             <td>展会名称</td>
-            <td colspan="7">{{ detailForm.name }}</td>
+            <td colspan="7">{{ detailForm.name || meetName }}</td>
           </tr>
           <tr align="center">
             <td>主办单位</td>
@@ -201,8 +201,8 @@
             <td>线上成交额</td>
             <td>{{ detailForm.onlineTurnover }}</td>
             <td>线下参展人数</td>
-            <td>{{ getForign }}</td>
             <td>{{ detailForm.viewerNum }}</td>
+            <td>线上参展人数</td>
             <td>{{ detailForm.onlineViewerNum }}</td>
           </tr>
           <tr align="center">
@@ -261,7 +261,7 @@
           <el-input
             type="textarea"
             :rows="3"
-            ref='content'
+            ref="content"
             placeholder="请输入内容"
             v-model="form.content"
           >
@@ -295,198 +295,207 @@
 </template>
 
 <script>
-import { getUserId, send } from "../../../network/sendMessage";
-import { getdetailFile, checkPassDetail, getSummary } from "../../../network/detailCheck";
-import { checkPassEasy } from "../../../network/easyCheck";
-import { sendAmendments } from "../../../network/sendMessage";
+import { getUserId, send } from "../../../network/sendMessage"
+import {
+  getdetailFile,
+  checkPassDetail,
+  getSummary
+} from "../../../network/detailCheck"
+import { checkPassEasy } from "../../../network/easyCheck"
+
 export default {
   name: "detail",
-  data() {
+  data () {
     return {
       detailForm: {},
       modal1: false,
       pdfTitle: "",
       isFirstApply: true,
       centerDialogVisible: false,
+      meetName: "",
       form: {
         content: "",
-        fileList: [],
-      },
+        fileList: []
+      }
       // ishow: false
-    };
+    }
   },
-  created() {
-    this.detailForm = this.$route.query.item;
-    getSummary(this.detailForm.id).then(res => {
-      console.log('res',res);
+  created () {
+    this.checkState = this.$route.query.checkState
+    this.detailForm = this.$route.query.item
+    this.meetName = this.$route.query.item.name
+    getSummary(this.detailForm.id).then((res) => {
+      if (res.code === 0 && res.data) {
+        this.detailForm = res.data
+        console.log("res.data", res.data)
+      }
     })
-    console.log('detailForm',this.detailForm);
-    this.checkState = this.$route.query.checkState;
-    console.log('this.checkState',this.checkState);
     // this.checkState = '待总结';
     if (this.$route.query.checkType == 2) {
-      this.isFirstApply = false;
+      this.isFirstApply = false
     }
     this.pdfTitle = `${
       this.detailForm ? this.detailForm.name : "未命名展会"
-    }申报文件`;
+    }申报文件`
   },
   computed: {
     leaderState () {
       if (this.detailForm.leaderState.toString().length === 0) {
         return "00000" + this.detailForm.leaderState.toString()
-      }else if (this.detailForm.leaderState.toString().length === 1){
+      } else if (this.detailForm.leaderState.toString().length === 1) {
         return "0000" + this.detailForm.leaderState.toString()
-      }else if (this.detailForm.leaderState.toString().length === 2){
+      } else if (this.detailForm.leaderState.toString().length === 2) {
         return "000" + this.detailForm.leaderState.toString()
-      }else if (this.detailForm.leaderState.toString().length === 3){
+      } else if (this.detailForm.leaderState.toString().length === 3) {
         return "00" + this.detailForm.leaderState.toString()
-      }else if (this.detailForm.leaderState.toString().length === 4){
+      } else if (this.detailForm.leaderState.toString().length === 4) {
         return "0" + this.detailForm.leaderState.toString()
-      }else {
+      } else {
         return this.detailForm.leaderState.toString()
       }
     },
-    ishow() {
-      return this.detailForm.checkState == "待审核" ? true : false;
+    ishow () {
+      return this.detailForm.checkState == "待审核"
     },
-    getForign() {
-      return this.detailForm.view1 == true ? "是" : "否";
+    getForign () {
+      return this.detailForm.view1 == true ? "是" : "否"
     },
-    getView1() {
-      return this.detailForm.view1 == true ? "是" : "否";
+    getView1 () {
+      return this.detailForm.view1 == true ? "是" : "否"
     },
-    getView2() {
-      return this.detailForm.view2 == true ? "是" : "否";
+    getView2 () {
+      return this.detailForm.view2 == true ? "是" : "否"
     },
-    getLeaderN() {
-      return parseInt(this.leaderState.toString()[0]) == 1
-        ? "是"
-        : "否";
+    getLeaderN () {
+      return parseInt(this.leaderState.toString()[0]) == 1 ? "是" : "否"
     },
-    getLeaderD() {
-      return parseInt(this.leaderState.toString()[1]) == 1
-        ? "是"
-        : "否";
+    getLeaderD () {
+      return parseInt(this.leaderState.toString()[1]) == 1 ? "是" : "否"
     },
 
-    getLeaderP() {
-      return parseInt(this.leaderState.toString()[2]) == 1
-        ? "是"
-        : "否";
+    getLeaderP () {
+      return parseInt(this.leaderState.toString()[2]) == 1 ? "是" : "否"
     },
-    getLeaderA() {
-      return parseInt(this.leaderState.toString()[3]) == 1
-        ? "是"
-        : "否";
+    getLeaderA () {
+      return parseInt(this.leaderState.toString()[3]) == 1 ? "是" : "否"
     },
-    getLeaderF() {
-      return parseInt(this.leaderState.toString()[4]) == 1
-        ? "是"
-        : "否";
-    },
+    getLeaderF () {
+      return parseInt(this.leaderState.toString()[4]) == 1 ? "是" : "否"
+    }
   },
   methods: {
-    downSummaryFile(){
-      console.log("下载总结报告全文");
+    downFile (fileId, fileName) {
+      getdetailFile(fileId).then((res) => {
+        const blob = new Blob([res]) // 处理文档流
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    downHosterSignFile(){
-      console.log("下载单位主要负责同志签发页");
-
+    downSummaryFile () {
+      this.downFile(this.detailForm.summaryFileId, this.meetName + "的总结报告全文.pdf")
     },
-    back() {
-      history.go(-1);
+    downHosterSignFile () {
+      this.downFile(this.detailForm.hosterSignFileId, this.meetName + "的单位主要负责同志签发页.pdf")
     },
-    rejected() {
-      this.centerDialogVisible = true;
+    back () {
+      history.go(-1)
     },
-    Pass() {
+    rejected () {
+      this.centerDialogVisible = true
+    },
+    Pass () {
       this.isFirstApply
         ? checkPassDetail(
-            this.detailForm.id,
-            this.$store.getters.token,
-            1
-          ).then((successResponse) => {
+          this.detailForm.id,
+          this.$store.getters.token,
+          1
+        ).then((successResponse) => {
+          if (successResponse.data.code === 0) {
+          } else {
+            this.$message({
+              showClose: true,
+              message: "提交失败！",
+              type: "error"
+            })
+          }
+        })
+        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 1).then(
+          (successResponse) => {
             if (successResponse.data.code === 0) {
             } else {
               this.$message({
                 showClose: true,
                 message: "提交失败！",
-                type: "error",
-              });
+                type: "error"
+              })
             }
-          })
-        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 1).then(
-            (successResponse) => {
-              if (successResponse.data.code === 0) {
-              } else {
-                this.$message({
-                  showClose: true,
-                  message: "提交失败！",
-                  type: "error",
-                });
-              }
-            }
-          );
-      //todo 自动发送处理成功消息
+          }
+        )
+      // todo 自动发送处理成功消息
       getUserId(this.detailForm.meetAddr).then((res) => {
-        this.detailForm.userId = res.data;
+        this.detailForm.userId = res.data
         send(
           this.$store.getters.token,
           this.detailForm.userId,
           "审核通过",
           "您的申请已经通过审核"
-        );
-      });
-      history.go(-1);
+        )
+      })
+      history.go(-1)
     },
-    submitForm() {
-      let ip = this.$refs.adviceFile;
-      let formdata = new FormData();
-      formdata.append("adminId", this.$store.getters.token);
-      formdata.append("meetId", this.detailForm.id);
-      formdata.append("content", this.form.content);
-      formdata.append("file", ip.files[0]);
+    submitForm () {
+      let ip = this.$refs.adviceFile
+      let formdata = new FormData()
+      formdata.append("adminId", this.$store.getters.token)
+      formdata.append("meetId", this.detailForm.id)
+      formdata.append("content", this.form.content)
+      formdata.append("file", ip.files[0])
       if (!this.form.content) {
         this.$notify({
           title: "请输入修改意见",
-          type: "warning",
-        });
-        this.$refs.content.focus();
-        return false;
+          type: "warning"
+        })
+        this.$refs.content.focus()
+        return false
       }
       if (!ip.files[0]) {
         this.$notify({
           title: "请提交意见附件",
-          type: "warning",
-        });
-        this.$refs.adviceFile.focus();
-        return false;
+          type: "warning"
+        })
+        this.$refs.adviceFile.focus()
+        return false
       }
       // var axios = require("axios");
       this.$axios
-        .post(this.GLOBAL.BASE_URL+"/handin/checkInfo", formdata)
+        .post(this.GLOBAL.BASE_URL + "/handin/checkInfo", formdata)
         .then((successResponse) => {
-          console.log("successResponse", successResponse);
+          console.log("successResponse", successResponse)
           if (successResponse.data.code == 0) {
             this.$notify({
               title: "返回修改成功",
               message: "该条申报将返回给用户进行修改",
-              type: "success",
-            });
-            this.centerDialogVisible = false;
-            history.go(-1).catch(() => {}
-            );
+              type: "success"
+            })
+            this.centerDialogVisible = false
+            history.go(-1).catch(() => {})
           } else {
             this.$message({
               showClose: true,
               message: "返回失败",
-              type: "error",
-            });
+              type: "error"
+            })
           }
         })
-        .catch((failResponse) => {});
-        this.reject();
+        .catch((failResponse) => {})
+      this.reject()
     },
     // handleRemove(file, fileList) {
     //   console.log(file, fileList);
@@ -494,114 +503,114 @@ export default {
     // handlePreview(file) {
     //   console.log(file);
     // },
-    downAuthorizeFile() {
+    downAuthorizeFile () {
       getdetailFile(this.detailForm.authFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的批准审核文件.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none";
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的批准审核文件.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    //下载展会工作方案文档
-    downMeetPlanFile() {
+    // 下载展会工作方案文档
+    downMeetPlanFile () {
       getdetailFile(this.detailForm.meetPlanFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的展会工作方案文档.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none";
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的展会工作方案文档.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    downFeasibilityFile() {
+    downFeasibilityFile () {
       getdetailFile(this.detailForm.feasibilityFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none";
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    //下载条件说明
-    downConditionStateFile() {
+    // 下载条件说明
+    downConditionStateFile () {
       getdetailFile(this.detailForm.conditionStateFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none";
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    downInvestmentPlanFile() {
+    downInvestmentPlanFile () {
       getdetailFile(this.detailForm.investmentPlanFileId).then((res) => {
-        const blob = new Blob([res]); //处理文档流
-        const fileName = this.detailForm.name + "的招商方案.pdf";
-        const elink = document.createElement("a");
-        elink.setAttribute("download", decodeURIComponent(fileName));
-        elink.download = fileName;
-        elink.style.display = "none";
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        URL.revokeObjectURL(elink.href); // 释放URL 对象
-        document.body.removeChild(elink);
-      });
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的招商方案.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      })
     },
-    reject() {
+    reject () {
       this.isFirstApply
         ? checkPassDetail(
-            this.detailForm.id,
-            this.$store.getters.token,
-            2
-          ).then((successResponse) => {
+          this.detailForm.id,
+          this.$store.getters.token,
+          2
+        ).then((successResponse) => {
+          if (successResponse.data.code === 0) {
+          } else {
+            this.$message({
+              showClose: true,
+              message: "提交失败！",
+              type: "error"
+            })
+          }
+        })
+        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 2).then(
+          (successResponse) => {
             if (successResponse.data.code === 0) {
             } else {
               this.$message({
                 showClose: true,
                 message: "提交失败！",
-                type: "error",
-              });
+                type: "error"
+              })
             }
-          })
-        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 2).then(
-            (successResponse) => {
-              if (successResponse.data.code === 0) {
-              } else {
-                this.$message({
-                  showClose: true,
-                  message: "提交失败！",
-                  type: "error",
-                });
-              }
-            }
-          );
-    },
-  },
-};
+          }
+        )
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

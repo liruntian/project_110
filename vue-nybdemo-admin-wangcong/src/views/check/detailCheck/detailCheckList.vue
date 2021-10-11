@@ -66,29 +66,29 @@
 </template>
 
 <script>
-//这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
+// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
+// 例如：import 《组件名称》 from '《组件路径》';
 import {
   getdetailFormdata,
   getDeatilByMeetName,
   getDeatilByMeetAddr,
-  getDeatilById,
-} from "../../../network/detailCheck";
+  getDeatilById
+} from "../../../network/detailCheck"
 import {
   getEasyFormdata,
   getEasyByMeetName,
   getEasyByMeetAddr,
-  getEasyById,
-} from "../../../network/easyCheck";
-import beaTable from "../../../components/table";
-const statesOptions = ["待审核", "待修改", "待总结", "已完成"];
+  getEasyById
+} from "../../../network/easyCheck"
+import beaTable from "../../../components/table"
+const statesOptions = ["待审核", "待修改", "待总结", "已完成"]
 export default {
-  //import引入的组件需要注入到对象中才能使用
+  // import引入的组件需要注入到对象中才能使用
   components: {
-    beaTable,
+    beaTable
   },
-  data() {
-    //这里存放数据
+  data () {
+    // 这里存放数据
     return {
       // isshow: true,
       detailForm: [],
@@ -102,151 +102,149 @@ export default {
       checkType: 1,
       checkAll: true,
       isIndeterminate: true,
-      nextPath: "/detailCheck/",
-    };
+      nextPath: "/detailCheck/"
+    }
   },
-  //监听属性 类似于data概念
+  // 监听属性 类似于data概念
   computed: {},
-  //监控data中的数据变化
+  // 监控data中的数据变化
   watch: {},
-  //方法集合
+  // 方法集合
   methods: {
-    async getdetailList() {
+    async getdetailList () {
       await getdetailFormdata().then((res) => {
-        this.detailForm = res.data;
-        this.checkStateToString(this.detailForm);
-      });
+        this.detailForm = res.data
+        this.checkStateToString(this.detailForm)
+      })
     },
-    async getEasyList() {
+    async getEasyList () {
       await getEasyFormdata().then((res) => {
-        this.easyForm = res.data;
-        this.checkStateToString(this.easyForm);
-      });
+        this.easyForm = res.data
+        this.checkStateToString(this.easyForm)
+      })
     },
-    checkTypeChange(v) {
+    checkTypeChange (v) {
       if (v == 1) {
-        this.allAdataList = this.detailForm;
+        this.allAdataList = this.detailForm
       } else {
-        this.allAdataList = this.easyForm;
+        this.allAdataList = this.easyForm
       }
-      this.checkList = ["待审核"];
-      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
+      this.checkList = ["待审核"]
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
     },
-    checkListChange(value) {
-      this.datalist = [];
+    checkListChange (value) {
+      this.datalist = []
       for (let item of this.checkList) {
         this.datalist = this.datalist.concat(
           this.allAdataList.filter((v) => v.checkState == item)
-        );
+        )
       }
     },
-    checkStateToString(items) {
+    checkStateToString (items) {
       for (let item of items) {
-        item.createTime = item.createTime.slice(0, 10);
+        item.createTime = item.createTime.slice(0, 10)
         switch (item.checkState) {
-          case 0:
-            item.checkState = "待审核";
-            break;
-          case 1:
-            item.checkState = "待总结";
-            break;
-          case 2:
-            item.checkState = "待修改";
-            break;
-          case 3:
-            item.checkState = "已完成";
-            break;
-          case 5:
-            item.checkState = "已驳回";
-            break;
+        case 0:
+          item.checkState = "待审核"
+          break
+        case 1:
+          item.checkState = "待总结"
+          break
+        case 2:
+          item.checkState = "待修改"
+          break
+        case 3:
+          item.checkState = "已完成"
+          break
+        case 5:
+          item.checkState = "已驳回"
+          break
         }
       }
     },
-    async search() {
+    async search () {
       if (!(this.exportName || this.exportAddr || this.hostComp)) {
         this.$message({
           message: "请至少输入一个查询条件",
-          type: "warning",
-        });
-        return;
+          type: "warning"
+        })
+        return
       }
-      this.checkList = ["待审核"];
-      this.allAdataList = [];
-      if(this.checkType == 1){
+      this.checkList = ["待审核"]
+      this.allAdataList = []
+      if (this.checkType == 1) {
         if (this.exportName) {
           await getDeatilByMeetName(this.exportName).then((res) => {
-            this.allAdataList = this.allAdataList.concat(res.data);
-            this.checkStateToString(this.allAdataList);
-          });
+            this.allAdataList = this.allAdataList.concat(res.data)
+            this.checkStateToString(this.allAdataList)
+          })
         }
         if (this.exportAddr) {
           await getDeatilByMeetAddr(this.exportAddr).then((res) => {
-            this.allAdataList  = this.allAdataList.concat(res.data);
-            this.checkStateToString(this.allAdataList);
-          });
+            this.allAdataList = this.allAdataList.concat(res.data)
+            this.checkStateToString(this.allAdataList)
+          })
         }
         if (this.hostComp) {
-          console.log("根据主办方查询");
+          console.log("根据主办方查询")
         }
       } else {
-      if (this.exportName) {
-        await getEasyByMeetName(this.exportName).then((res) => {
-          this.allAdataList = this.allAdataList.concat(res.data);
-          this.checkStateToString(this.allAdataList);
-        });
+        if (this.exportName) {
+          await getEasyByMeetName(this.exportName).then((res) => {
+            this.allAdataList = this.allAdataList.concat(res.data)
+            this.checkStateToString(this.allAdataList)
+          })
+        }
+        if (this.exportAddr) {
+          await getEasyByMeetAddr(this.exportAddr).then((res) => {
+            this.allAdataList = this.allAdataList.concat(res.data)
+            this.checkStateToString(this.allAdataList)
+          })
+        }
+        if (this.hostComp) {
+          console.log("根据主办方查询")
+        }
       }
-      if (this.exportAddr) {
-        await getEasyByMeetAddr(this.exportAddr).then((res) => {
-          this.allAdataList = this.allAdataList.concat(res.data);
-          this.checkStateToString(this.allAdataList);
-        });
-      }
-      if (this.hostComp) {
-        console.log("根据主办方查询");
-      }
-      }
-      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
-
-
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
     },
-    async reset() {
-      this.exportName = "";
-      this.exportAddr= "";
-      this.hostComp = "";
-      await this.getdetailList();
-      await this.getEasyList();
+    async reset () {
+      this.exportName = ""
+      this.exportAddr = ""
+      this.hostComp = ""
+      await this.getdetailList()
+      await this.getEasyList()
       if (this.checkType == 1) {
-        this.allAdataList = this.detailForm;
+        this.allAdataList = this.detailForm
         // console.log('allAdataList',this.allAdataList);
       } else {
-        this.allAdataList = this.easyForm;
+        this.allAdataList = this.easyForm
       }
-      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
-    },
+      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
+    }
   },
-  //生命周期 - 创建完成（可以访问当前this实例）
-  async created() {
-    this.checkType = this.$route.query.value ? this.$route.query.value : "1";
-    await this.getdetailList();
-    await this.getEasyList();
+  // 生命周期 - 创建完成（可以访问当前this实例）
+  async created () {
+    this.checkType = this.$route.query.value ? this.$route.query.value : "1"
+    await this.getdetailList()
+    await this.getEasyList()
     if (this.checkType == 1) {
-      this.allAdataList = this.detailForm;
+      this.allAdataList = this.detailForm
       // console.log('allAdataList',this.allAdataList);
     } else {
-      this.allAdataList = this.easyForm;
+      this.allAdataList = this.easyForm
     }
-    this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核");
+    this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
   },
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
-};
+  // 生命周期 - 挂载完成（可以访问DOM元素）
+  mounted () {},
+  beforeCreate () {}, // 生命周期 - 创建之前
+  beforeMount () {}, // 生命周期 - 挂载之前
+  beforeUpdate () {}, // 生命周期 - 更新之前
+  updated () {}, // 生命周期 - 更新之后
+  beforeDestroy () {}, // 生命周期 - 销毁之前
+  destroyed () {}, // 生命周期 - 销毁完成
+  activated () {} // 如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类

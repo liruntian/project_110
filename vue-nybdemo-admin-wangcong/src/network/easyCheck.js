@@ -1,64 +1,64 @@
 import {request} from "./request.js"
 
-export async function getEasyFormdata(){
-	return request({
-		// url: '/check/easyList',
-		url: 'search/allEasyMeet',
-		methods:"post"
-	})
+export async function getEasyFormdata () {
+  return request({
+    // url: '/check/easyList',
+    url: "search/allEasyMeet",
+    methods: "post"
+  })
 }
-export function getEasyFile(fileId) {
-	return request({
-	  url: '/check/detailFile',
+export function getEasyFile (fileId) {
+  return request({
+	  url: "/check/detailFile",
 	  method: "post",
-	  responseType:'blob',
-	  data:{
-		fileId : fileId,
+	  responseType: "blob",
+	  data: {
+      fileId: fileId
 	  }
-	  
-  
-	})
-  }
 
-  export function checkPassEasy(id,adminId,checkState) {
-	return request({
-	  url: '/check/easy',
-	  method: "post",
-	  data:{
-		id : id,
-		adminId:adminId,
-		checkState:checkState
-  
-  
-	  }
-  
-	})
-  }
 
-  export async function getEasyByMeetName(meetName) {
-	return request({
-	  url: '/search/getEasyByMeetName',
+  })
+}
+
+export function checkPassEasy (id, adminId, checkState) {
+  return request({
+	  url: "/check/easy",
 	  method: "post",
-	  data:{
-		meetName : meetName,
+	  data: {
+      id: id,
+      adminId: adminId,
+      checkState: checkState
+
+
 	  }
-	})
-  }
-  export async function getEasyByMeetAddr(meetAddr) {
-	return request({
-	  url: '/search/getEasyByMeetAddr',
+
+  })
+}
+
+export async function getEasyByMeetName (meetName) {
+  return request({
+	  url: "/search/getEasyByMeetName",
 	  method: "post",
-	  data:{
-		meetAddr : meetAddr,
+	  data: {
+      meetName: meetName
 	  }
-	})
-  }
-  export async function getEasyById(id) {
-	return request({
-	  url: '/search/getEasyById',
+  })
+}
+export async function getEasyByMeetAddr (meetAddr) {
+  return request({
+	  url: "/search/getEasyByMeetAddr",
 	  method: "post",
-	  data:{
-		id : id,
+	  data: {
+      meetAddr: meetAddr
 	  }
-	})
-  }
+  })
+}
+export async function getEasyById (id) {
+  return request({
+	  url: "/search/getEasyById",
+	  method: "post",
+	  data: {
+      id: id
+	  }
+  })
+}
