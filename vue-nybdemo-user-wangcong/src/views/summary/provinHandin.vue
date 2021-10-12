@@ -41,7 +41,7 @@
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额（元）</label>
+              <label class="xrequired">线上成交额（万元）</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineViewer">
@@ -80,22 +80,6 @@
                   <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                 </el-checkbox-group>
               </div>
-
-
-<!--                <el-dropdown trigger="click" :hide-on-click='false'>-->
-<!--                <span class="el-dropdown-linkk">-->
-<!--                  选择参与地区<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--                </span>-->
-<!--                  <el-dropdown-menu slot="dropdown">-->
-<!--                    <el-dropdown-item >-->
-<!--                      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
-<!--                      <div style="margin: 15px 0;"></div>-->
-<!--                      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-<!--                        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>-->
-<!--                      </el-checkbox-group>-->
-<!--                    </el-dropdown-item>-->
-<!--                  </el-dropdown-menu>-->
-<!--                </el-dropdown>-->
             </el-form-item>
             <el-form-item prop="buyerNum">
               <label class="xrequired">采购商数量</label>
@@ -106,7 +90,7 @@
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="turnover">
-              <label class="xrequired">线下成交额（含意向）（元）</label>
+              <label class="xrequired">线下成交额（含意向）（万元）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="viewerNum">

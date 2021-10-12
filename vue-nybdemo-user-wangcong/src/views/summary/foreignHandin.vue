@@ -36,7 +36,7 @@
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额（元）</label>
+              <label class="xrequired">线上成交额（万元）</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineViewer">
@@ -71,7 +71,7 @@
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="turnover">
-              <label class="xrequired">线下成交额（含意向）（元）</label>
+              <label class="xrequired">线下成交额（含意向）（万元）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="viewerNum">
