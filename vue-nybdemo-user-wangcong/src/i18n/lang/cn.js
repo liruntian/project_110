@@ -41,6 +41,7 @@ const cn = {
     easyfond: "再次申报",
     modifyfont: "修改申报",
     seefont: "查看申报",
+    seesummary: "查看总结",
     message:"消息邮箱",
     haveRead: "已读信息",
     notRead: "未读信息",

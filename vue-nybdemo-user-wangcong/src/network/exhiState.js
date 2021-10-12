@@ -89,12 +89,12 @@ export function getDetailFontById (id) {
   })
 }
 //查找最近总结用于回填
-export function getLatestSummary (id) {
+export function getLatestSummary (meetId) {
   return request({
     url: "/search/latestSummary",
     method: "post",
     data: {
-      id
+      meetId
     }
   })
 }

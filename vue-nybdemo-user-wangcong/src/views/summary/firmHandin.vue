@@ -9,24 +9,24 @@
         </el-col>
         <el-col :span="11">
           <div class="function-btns">
-            <el-button @click="clearForm()" type="primary">重填</el-button>
-            <el-button @click="newFont()" type="primary">暂存</el-button>
-            <el-button class="subBtn" type="primary" v-on:click="declareFormed">提交</el-button>
-            <el-button @click="returnMainIndex()" type="primary">返回</el-button>
+            <el-button round @click="returnMainIndex()" type="primary">返回</el-button>
+            <el-button round @click="clearForm()" type="danger" style="margin: 0 50px">重填</el-button>
+<!--            <el-button @click="newFont()" type="primary">暂存</el-button>-->
+            <el-button round class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
           </div>
         </el-col>
       </el-row>
       <el-row :gutter="40" style="margin: 0">
         <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
           <el-col :span="11">
-            <el-form-item prop="detailId">
-              <label class="xrequired">展会名称</label>
-              <el-input type="text" ref="detailId" v-model="declareForm.detailId"
-                        auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item prop="countryNum">
-              <label class="xrequired">参展国家和地区数量</label>
-              <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder=""></el-input>
+<!--            <el-form-item prop="detailId">-->
+<!--              <label class="xrequired">展会名称</label>-->
+<!--              <el-input type="text" ref="detailId" v-model="declareForm.detailId"-->
+<!--                        auto-complete="off"></el-input>-->
+<!--            </el-form-item>-->
+            <el-form-item prop="area">
+              <label class="xrequired">展览面积（㎡）</label>
+              <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="companyNum">
               <label class="xrequired">参展企业数量</label>
@@ -41,12 +41,12 @@
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额</label>
+              <label class="xrequired">线上成交额（元）</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="onlineViewerNum">
+            <el-form-item prop="onlineViewer">
               <label class="xrequired">线上参展人数</label>
-              <el-input type="number" ref="onlineViewerNum" v-model="declareForm.onlineViewerNum" auto-complete="off" placeholder=""></el-input>
+              <el-input type="number" ref="onlineViewer" v-model="declareForm.onlineViewer" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="nextWorkPlan">
               <label class="xrequired">下一步工作计划(200字以内)</label>
@@ -67,11 +67,21 @@
               <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
                         oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
             </el-form-item>
+            <el-form-item style="padding-bottom:30px; padding-right: 30px">
+              <div style="float:left">
+                <label class="xrequired">总结报告全文</label><br/>
+                <input type="file" ref="summaryFile"  accept=".pdf" name="summaryFile"></input>
+              </div>
+              <div style="float:right">
+                <label class="xrequired">单位主要负责同志签发页</label><br/>
+                <input type="file" ref="hosterSignFile"  accept=".pdf" name="hosterSignFile"></input>
+              </div>
+            </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="area">
-              <label class="xrequired">展览面积</label>
-              <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
+            <el-form-item prop="countryNum">
+              <label class="xrequired">参展国家和地区数量</label>
+              <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item>
 <!--              <el-col :span="12">-->
@@ -109,7 +119,7 @@
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="turnover">
-              <label class="xrequired">线下成交额（含意向）</label>
+              <label class="xrequired">线下成交额（含意向）（元）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="viewerNum">
@@ -124,16 +134,6 @@
             <el-form-item prop="charger">
               <label class="xrequired">处室负责人</label>
               <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item style="padding-bottom:30px; padding-right: 30px">
-              <div style="float:left">
-                <label class="xrequired">总结报告全文</label><br/>
-                <input type="file" ref="summaryFile"  accept=".pdf" name="summaryFile"></input>
-              </div>
-              <div style="float:right">
-                <label class="xrequired">单位主要负责同志签发页</label><br/>
-                <input type="file" ref="hosterSignFile"  accept=".pdf" name="hosterSignFile"></input>
-              </div>
             </el-form-item>
           </el-col>
         </el-form>
@@ -174,7 +174,7 @@ export default {
         mediaNum: "",
         visitorNum: "",
         //线上参展人数
-        onlineViewerNum:'',
+        onlineViewer:'',
         turnover: "",
         //线上成交额
         onlineTurnover:'',
@@ -274,9 +274,9 @@ export default {
         this.$refs.viewerNum.focus();
         return false;
       }
-      if (!this.declareForm.onlineViewerNum) {
+      if (!this.declareForm.onlineViewer) {
         warningOpen("请填写线上参展人数");
-        this.$refs.onlineViewerNum.focus();
+        this.$refs.onlineViewer.focus();
         return false;
       }
       if (!this.declareForm.meetHighlight) {
@@ -324,7 +324,7 @@ export default {
         this.$refs.hosterSignFile.focus();
         return false;
       }
-      formdata.append("meetId", this.declareForm.meetId);
+      formdata.append("meetId", this.id*1);
       //总结类型（事业单位提交[0]，省部级提交[1]，涉外展会负责单位提交[2]）
       formdata.append("kind", this.$store.getters.userKind);
       formdata.append("detailId", this.declareForm.detailId);
@@ -348,7 +348,7 @@ export default {
       // 最终成交额（含意向）
       formdata.append("turnover", this.declareForm.turnover);
       //线上参展人数
-      formdata.append("onlineViewerNum", this.declareForm.onlineViewerNum);
+      formdata.append("onlineViewer", this.declareForm.onlineViewer);
       //线上成交额
       formdata.append("onlineTurnover", this.declareForm.onlineTurnover);
       formdata.append("viewerNum", this.declareForm.viewerNum);
@@ -606,6 +606,9 @@ margin-left: 3px;
 }
 .el-checkbox__label{
   padding-left: 5px;
+}
+.el-button{
+  //margin-left: 50px;
 }
 </style>
 
