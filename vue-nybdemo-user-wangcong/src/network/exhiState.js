@@ -1,21 +1,21 @@
-import {request} from "./request";
+import {request} from "./request"
 
-export function getDetailExhiState(userId) {
+export function getDetailExhiState (userId) {
   return request({
-    url: '/message/detailState',
+    url: "/message/detailState",
     method: "post",
     data: {
       meetAddr: userId
-  }
+    }
   })
 }
-export function getEasyExhiState(userId) {
+export function getEasyExhiState (userId) {
   return request({
-    url: '/message/easyState ',
+    url: "/message/easyState ",
     method: "post",
     data: {
       meetAddr: userId
-  }
+    }
   })
 }
 // 获取所有状态下首次申报的数据
@@ -88,7 +88,7 @@ export function getDetailFontById (id) {
     }
   })
 }
-//查找最近总结用于回填
+// 查找最近总结用于回填
 export function getLatestSummary (meetId) {
   return request({
     url: "/search/latestSummary",

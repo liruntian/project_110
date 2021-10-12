@@ -1,25 +1,27 @@
 <!--  -->
 <template>
   <div class="detailCheckList">
+    <el-card >
+    <div class="search-area">
     <div class="search-content">
-      <!-- <h3 style="margin-right: 16px">展会名称</h3>
+      <h3 style="margin-right: 16px">展会名称</h3>
       <el-input
         v-model="exportName"
         placeholder="请输入展会名称"
         style="width: 200px; margin-right: 48px"
-      ></el-input> -->
+      ></el-input>
       <h3 style="margin-right: 16px">展会简称</h3>
       <el-input
         v-model="exportAddr"
         placeholder="请输入展会简称"
         style="width: 200px; margin-right: 48px"
       ></el-input>
-      <!-- <h3 style="margin-right: 16px">主办方</h3>
+      <h3 style="margin-right: 16px">主办方</h3>
       <el-input
         v-model="hostComp"
         placeholder="请输入主办方"
         style="width: 200px"
-      ></el-input> -->
+      ></el-input>
     </div>
     <div class="search-button">
       <el-button
@@ -30,14 +32,14 @@
         >查询</el-button
       >
       <el-button size="small" @click="reset">重置</el-button>
+      </div>
     </div>
     <div class="filter-state">
-      <h3 class="title">状态</h3>
+      <h3 class="title">申报状态</h3>
       <div>
         <el-checkbox-group
           v-model="checkList"
           @change="checkListChange"
-          :min="1"
         >
           <el-checkbox label="待审核"></el-checkbox>
           <el-checkbox label="待修改"></el-checkbox>
@@ -57,6 +59,7 @@
         <el-radio label="2" border>再次申报</el-radio>
       </el-radio-group>
     </div>
+    </el-card>
     <bea-table
       :data="datalist"
       :nextPath="nextPath"
@@ -268,17 +271,28 @@ export default {
     margin-right: 16px;
   }
 }
+.search-area {
+  display: flex;
+}
 .search-content {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 .search-button {
-  margin-bottom: 16px;
+  margin-left: 16px;
+  line-height: 42px;
 }
 .check-type {
   display: flex;
   align-items: center;
+  // margin-bottom: 16px;
+}
+
+.el-card{
   margin-bottom: 16px;
+  .el-card__body {
+  padding: 6px 10px !important;
+}
 }
 </style>

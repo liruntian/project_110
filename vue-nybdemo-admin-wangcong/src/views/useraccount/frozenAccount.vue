@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="frozen">
     <!-- <div class="search-content">
       <h3 style="margin-right: 16px">展会名称</h3>
       <el-input
@@ -21,7 +21,7 @@
       </div>
     </div> -->
 
-    <Table border :columns="columns7" :data="data6"></Table>
+    <Table border :columns="columns7" :data="data6" ></Table>
     <div style="margin: 10px; overflow: hidden">
       <div style="float: right">
         <Page
@@ -38,27 +38,35 @@
 </template>
 
 <script>
-import { getAllUsers, freeze } from "../../network/freeze";
+import { getAllUsers, freeze } from "../../network/freeze"
 
 export default {
   inject: ["reload"],
-  data() {
+  data () {
     return {
       exportName: "",
       hostComp: "",
       pageSize: 10,
       columns7: [
         {
+          type: "index",
+          width: 60,
+          align: "center"
+        },
+        {
           title: "展会名称",
           key: "name",
+          align: "center"
         },
         {
           title: "处室负责人",
           key: "charger",
+          align: "center"
         },
         {
           title: "联系人手机",
           key: "teleNum",
+          align: "center"
         },
         {
           title: "Action",
@@ -69,86 +77,100 @@ export default {
             return h("div", [
               params.row.isFreeze
                 ? h(
-                    "Button",
-                    {
-                      props: {
-                        type: "primary",
-                        size: "small",
-                        disabled: true,
-                      },
-                      on: {
-                        click: () => {
-                          this.frozen(params.row.meetAddr);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "primary",
+                      size: "small",
+                      disabled: true
                     },
-                    "已冻结"
-                  )
+                    on: {
+                      click: () => {
+                        this.frozen(params.row.meetAddr)
+                      }
+                    }
+                  },
+                  "已冻结"
+                )
                 : h(
-                    "Button",
-                    {
-                      props: {
-                        type: "error",
-                        size: "small",
-                      },
-                      on: {
-                        click: () => {
-                          this.frozen(params.row);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "error",
+                      size: "small"
                     },
-                    "冻结"
-                  ),
-            ]);
-          },
-        },
+                    on: {
+                      click: () => {
+                        this.frozen(params.row)
+                      }
+                    }
+                  },
+                  "冻结"
+                )
+            ])
+          }
+        }
       ],
       data: [],
       data6: [
         {
           exhiName: "John Brown",
           charger: "汪聪",
-          teleNum: "13051578190",
-        },
-      ],
-    };
+          teleNum: "13051578190"
+        }
+      ]
+    }
   },
-  created() {
+  created () {
     getAllUsers().then((res) => {
-      this.data = res.data;
-      this.changePage(1);
-    });
+      this.data = res.data
+      this.changePage(1)
+    })
   },
   methods: {
-    show(index) {
+    show (index) {
       this.$Modal.info({
         title: "User Info",
-        content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`,
-      });
+        content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
+      })
     },
-    frozen(account) {
-      freeze(account.meetAddr).then((res) => {
-        this.$notify({
-          title: '冻结成功',
-          message: `成功将"${account.name}"的账号冻结`,
-          type: 'success'
-        });
-      });
-      this.reload();
-
+    frozen (account) {
+      this.$confirm("确定冻结该账号码吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        freeze(account.meetAddr).then((res) => {
+          this.$notify({
+            title: "冻结成功",
+            message: `成功将"${account.name}"的账号冻结`,
+            type: "success"
+          })
+        })
+        this.$message({
+          type: "success",
+          message: "冻结成功!"
+        })
+        this.reload()
+      }).catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消冻结"
+        })
+      })
     },
-    changePageSize(size) {
-      this.pageSize = size;
-      this.changePage(1);
+    changePageSize (size) {
+      this.pageSize = size
+      this.changePage(1)
     },
-    changePage(res) {
+    changePage (res) {
       this.data6 = this.data.slice(
         (res - 1) * this.pageSize,
         res * this.pageSize
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
 
 <style  lang='scss' scoped>
@@ -159,5 +181,8 @@ export default {
 }
 .search-button {
   margin-left: 16px;
+}
+.ivu-table-cell {
+  font-size: 16px;
 }
 </style>

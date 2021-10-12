@@ -309,12 +309,12 @@
 </template>
 
 <script>
-import Vue from "vue"
-import { getAllFirstFontData, getAllNotFirstFontData } from "../../network/exhiState"
+import Vue from "vue";
+import { getAllFirstFontData, getAllNotFirstFontData, } from "../../network/exhiState";
 import chooseCity from "../../components/common/chooseCity/chooseCity";
 export default {
   name: "easyfont",
-  data() {
+  data () {
     return {
       chooseCityTag: "",
       provinceAndCityData: [],
@@ -343,19 +343,19 @@ export default {
         orderComp: "",
         finanFund: "",
         selfFund: "",
-        //填报单位
+        // 填报单位
         writeObject: "",
-        //负责处室
+        // 负责处室
         department: "",
-        //处室负责人
+        // 处室负责人
         charger: "",
-        //手机号
+        // 手机号
         teleNum: "",
-        //党和国家领导人
+        // 党和国家领导人
         leaderN: false,
-        //有关司局和事业单位负责人
+        // 有关司局和事业单位负责人
         leaderD: false,
-        //省部级以上领导
+        // 省部级以上领导
         leaderP: false,
         // 国家级行业协会负责人
         leaderA: false,
@@ -368,12 +368,12 @@ export default {
     chooseCity,
   },
   created () {
-    Vue.set(this.declareForm,"name", this.$store.state.meetName)
-    this.getPrefillFont()
-    this.getProvinceAndCityData()
+    Vue.set(this.declareForm, "name", this.$store.state.meetName);
+    this.getPrefillFont();
+    this.getProvinceAndCityData();
   },
   computed: {
-    leaderPresent() {
+    leaderPresent () {
       return (
         (this.declareForm.leaderN ? 1 : 0).toString() +
         (this.declareForm.leaderD ? 1 : 0).toString() +
@@ -383,7 +383,7 @@ export default {
       );
     },
     isFirstFont () {
-      return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont):this.$store.state.isFirstFont
+      return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont) : this.$store.state.isFirstFont;
     },
   },
   methods: {
@@ -391,50 +391,50 @@ export default {
       getAllFirstFontData(this.$store.state.token).then(res => {
         console.log(res.data);
         // this.declareForm = res.data[1]
-      })
+      });
       // getAllNotFirstFontData(this.$store.state.token).then()
     },
     getProvinceAndCityData () {
-      const axios = require("axios")
-      axios.get('https://restapi.amap.com/v3/config/district',{
+      const axios = require("axios");
+      axios.get("https://restapi.amap.com/v3/config/district", {
         params: {
-          key: '214287d2088bc4992cd28103cb4eea7c',
-          subdistrict: 3
-        }
+          key: "214287d2088bc4992cd28103cb4eea7c",
+          subdistrict: 3,
+        },
       }).then(res => {
-        console.log(res.data.districts[0])
-        console.log(res.data.districts[0].districts)
-        for (let province of res.data.districts[0].districts){
+        console.log(res.data.districts[0]);
+        console.log(res.data.districts[0].districts);
+        for (let province of res.data.districts[0].districts) {
           let provinceObj = {
             value: province.name,
             label: province.name,
-            children: []
-          }
-          for (let city of province.districts){
+            children: [],
+          };
+          for (let city of province.districts) {
             let cityObj = {
               value: city.name,
               label: city.name,
-              children: []
-            }
-            for (let county of city.districts){
+              children: [],
+            };
+            for (let county of city.districts) {
               let countyObj = {
                 value: county.name,
-                label: county.name
-              }
-              cityObj.children.push(countyObj)
+                label: county.name,
+              };
+              cityObj.children.push(countyObj);
             }
-            provinceObj.children.push(cityObj)
+            provinceObj.children.push(cityObj);
           }
-          this.provinceAndCityData.push(provinceObj)
+          this.provinceAndCityData.push(provinceObj);
         }
-      })
+      });
     },
-    handleChange() {
-      console.log(this.declareForm.chooseCity)
-      console.log(this.declareForm.chooseCity.join("-"))
+    handleChange () {
+      console.log(this.declareForm.chooseCity);
+      console.log(this.declareForm.chooseCity.join("-"));
     },
-    returnMainIndex() {
-      this.$router.back()
+    returnMainIndex () {
+      this.$router.back();
     },
     declareFormed () {
       if (!this.declareForm.name) {
@@ -578,14 +578,14 @@ export default {
       let ip0 = this.$refs.authorizeFile;
       let ip1 = this.$refs.inputFile1;
       let ip2 = this.$refs.inputFile2;
-      let ip3 = {}
-      let ip4 = {}
+      let ip3 = {};
+      let ip4 = {};
       if (this.isFirstFont) {
         ip3 = this.$refs.inputFile3;
         ip4 = this.$refs.inputFile4;
       }
       var formdata = new FormData();
-      if (this.isFirstFont){
+      if (this.isFirstFont) {
         if (!ip0.files[0]) {
           this.$message({
             showClose: true,
@@ -644,7 +644,7 @@ export default {
           return false;
         }
       }
-      //展会简称
+      // 展会简称
       formdata.append("meetAddr", this.$store.getters.token);
       // 财政资金的拨款金额
       formdata.append("finanFund", this.declareForm.finanFund);
@@ -675,9 +675,9 @@ export default {
       formdata.append("place", this.declareForm.place);
       // 举办周期
       formdata.append("cycle", this.declareForm.cycle);
-      //开始时间
+      // 开始时间
       formdata.append("startTime", this.declareForm.Times[0]);
-      //结束时间
+      // 结束时间
       formdata.append("endTime", this.declareForm.Times[1]);
       // 展会内容
       formdata.append("meetState", this.declareForm.meetState);
@@ -685,33 +685,33 @@ export default {
       formdata.append("finanFund", this.declareForm.finanFund);
       // 自筹资金数额
       formdata.append("selfFund", this.declareForm.selfFund);
-      //出席领导情况
+      // 出席领导情况
       formdata.append("leaderState", this.leaderPresent.toString());
-      //同期活动
+      // 同期活动
       formdata.append("activityBrief", this.declareForm.activityBrief);
-      //填报单位
+      // 填报单位
       formdata.append("writeObject", this.declareForm.writeObject);
-      //负责处室
+      // 负责处室
       formdata.append("department", this.declareForm.department);
-      //处室负责人
+      // 处室负责人
       formdata.append("charger", this.declareForm.charger);
-      //手机号
+      // 手机号
       formdata.append("teleNum", this.declareForm.teleNum);
-      //展会工作方案文档
+      // 展会工作方案文档
       formdata.append("meetPlanFile", ip1.files[0]);
-      //招展招商方案文档
+      // 招展招商方案文档
       formdata.append("investmentPlanFile", ip2.files[0]);
       if (this.isFirstFont) {
-        //可行性报告文档
+        // 可行性报告文档
         formdata.append("feasibilityFile", ip3.files[0]);
-        //承办单位办展条件说明
+        // 承办单位办展条件说明
         formdata.append("conditionStateFile", ip4.files[0]);
       }
-      //上级单位审核意见
+      // 上级单位审核意见
       formdata.append("authFile", ip0.files[0]);
-      //是否采购商参加
+      // 是否采购商参加
       formdata.append("view1", this.declareForm.view1);
-      //是否消费者参加
+      // 是否消费者参加
       formdata.append("view2", this.declareForm.view2);
       console.log(this.leaderPresent);
       console.log(typeof this.leaderPresent);
@@ -734,12 +734,12 @@ export default {
       //   .catch((failResponse) => {});
 
       var axios = require("axios");
-      if (this.isFirstFont){
+      if (this.isFirstFont) {
         axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
-              this.$message.success("提交成功")
+              this.$message.success("提交成功");
             } else {
               this.$message({
                 showClose: true,
@@ -749,12 +749,12 @@ export default {
             }
           })
           .catch((failResponse) => {});
-      }else {
+      } else {
         axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
-              this.$message.success("提交成功")
+              this.$message.success("提交成功");
             } else {
               this.$message({
                 showClose: true,
@@ -767,17 +767,17 @@ export default {
       }
     },
     clearForm () {
-      this.$refs["fontForm"].resetFields()
-      this.$refs.authorizeFile.value = ""
-      this.$refs.inputFile1.value = ""
-      this.$refs.inputFile2.value = ""
-      if (this.$refs.inputFile3.value){
-        this.$refs.inputFile3.value = ""
+      this.$refs["fontForm"].resetFields();
+      this.$refs.authorizeFile.value = "";
+      this.$refs.inputFile1.value = "";
+      this.$refs.inputFile2.value = "";
+      if (this.$refs.inputFile3.value) {
+        this.$refs.inputFile3.value = "";
       }
-      if (this.$refs.inputFile4.value){
-        this.$refs.inputFile4.value = ""
+      if (this.$refs.inputFile4.value) {
+        this.$refs.inputFile4.value = "";
       }
-    }
+    },
   },
 };
 </script>

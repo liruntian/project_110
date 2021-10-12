@@ -35,6 +35,7 @@ module.exports = {
     "no-redeclare": 2,//禁止重复声明变量
     "eqeqeq": [2, "allow-null"], // 使用 === 替代 ==
     "quotes": [ 2, "double"], // 使用双引号
-    "semi": [2, "never"] // 不使用分号
+    "semi": [2, "always"], // 不使用分号
+    "comma-dangle": [2, "always"]
   }
 }

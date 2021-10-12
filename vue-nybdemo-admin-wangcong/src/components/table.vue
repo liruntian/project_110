@@ -87,6 +87,11 @@ export default {
       handleRecords: [],
       columns1: [
         {
+          type: "index",
+          width: 60,
+          align: "center"
+        },
+        {
           title: "展会ID",
           key: "id"
         },
@@ -107,7 +112,7 @@ export default {
           key: "hostComp"
         },
         {
-          title: "审核状态",
+          title: "申报状态",
           key: "checkState"
         },
         {
