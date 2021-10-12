@@ -53,32 +53,32 @@
   </div>
 </template>
 <script>
-import { historyHandles, checkPassDetail } from "../network/detailCheck";
-import { checkPassEasy } from "../network/easyCheck";
+import { historyHandles, checkPassDetail } from "../network/detailCheck"
+import { checkPassEasy } from "../network/easyCheck"
 export default {
   inject: ["reload"],
   name: "beaTable",
   props: {
     data: {
       type: Array,
-      default() {
-        return [];
-      },
+      default () {
+        return []
+      }
     },
     nextPath: {
       type: String,
-      default() {
-        return "/";
-      },
+      default () {
+        return "/"
+      }
     },
     checkType: {
       type: String,
-      default() {
-        return "1";
-      },
-    },
+      default () {
+        return "1"
+      }
+    }
   },
-  data() {
+  data () {
     return {
       color: "#0bbd87",
       self: this,
@@ -88,27 +88,27 @@ export default {
       columns1: [
         {
           title: "展会ID",
-          key: "id",
+          key: "id"
         },
         {
           title: "申报日期",
-          key: "createTime",
+          key: "createTime"
         },
         {
           title: "展会名称",
-          key: "name",
+          key: "name"
         },
         {
           title: "举办地",
-          key: "chooseCity",
+          key: "chooseCity"
         },
         {
           title: "主办方",
-          key: "hostComp",
+          key: "hostComp"
         },
         {
           title: "审核状态",
-          key: "checkState",
+          key: "checkState"
         },
         {
           title: "操作",
@@ -120,96 +120,96 @@ export default {
             return h("div", [
               params.row.checkState == "待审核"
                 ? h(
-                    "Button",
-                    {
-                      props: {
-                        type: "primary",
-                        size: "small",
-                      },
-                      style: {
-                        marginRight: "5px",
-                      },
-                      on: {
-                        click: () => {
-                          this.check(params.row);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "primary",
+                      size: "small"
                     },
-                    "审批"
-                  )
+                    style: {
+                      marginRight: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.check(params.row)
+                      }
+                    }
+                  },
+                  "审批"
+                )
                 : h(
-                    "Button",
-                    {
-                      props: {
-                        type: "primary",
-                        size: "small",
-                      },
-                      style: {
-                        marginRight: "5px",
-                      },
-                      on: {
-                        click: () => {
-                          this.check(params.row);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "primary",
+                      size: "small"
                     },
-                    "查看"
-                  ),
+                    style: {
+                      marginRight: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.check(params.row)
+                      }
+                    }
+                  },
+                  "查看"
+                ),
               params.row.checkState == "待总结"
                 ? h(
-                    "Button",
-                    {
-                      props: {
-                        type: "error",
-                        size: "small",
-                      },
-                      style: {
-                        marginRight: "5px",
-                      },
-                      on: {
-                        click: () => {
-                          this.rejected(params.row);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "error",
+                      size: "small"
                     },
-                    "驳回"
-                  )
+                    style: {
+                      marginRight: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.rejected(params.row)
+                      }
+                    }
+                  },
+                  "驳回"
+                )
                 : null,
               params.row.checkState == "已完成"
                 ? h(
-                    "Button",
-                    {
-                      props: {
-                        type: "primary",
-                        size: "small",
-                      },
-                      style: {
-                        marginRight: "5px",
-                      },
-                      on: {
-                        click: () => {
-                          this.check(params.row);
-                        },
-                      },
+                  "Button",
+                  {
+                    props: {
+                      type: "primary",
+                      size: "small"
                     },
-                    "查看总结"
-                  )
+                    style: {
+                      marginRight: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.check(params.row, "查看总结")
+                      }
+                    }
+                  },
+                  "查看总结"
+                )
                 : null,
               h(
                 "Button",
                 {
                   props: {
                     type: "primary",
-                    size: "small",
+                    size: "small"
                   },
                   style: {
-                    marginRight: "5px",
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
                       // this.removeButton(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
                 "导出表单"
               ),
@@ -218,99 +218,100 @@ export default {
                 {
                   props: {
                     type: "primary",
-                    size: "small",
+                    size: "small"
                   },
                   style: {
-                    marginRight: "5px",
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.getHandleRecords(params.row.id);
-                    },
-                  },
+                      this.getHandleRecords(params.row.id)
+                    }
+                  }
                 },
                 "处理历史"
-              ),
-            ]);
-          },
-        },
-      ],
-    };
+              )
+            ])
+          }
+        }
+      ]
+    }
   },
   methods: {
-    changePageSize(size) {
-      this.pageSize = size;
-      this.changePage(1);
+    changePageSize (size) {
+      this.pageSize = size
+      this.changePage(1)
     },
-    changePage(res) {
+    changePage (res) {
       this.data = this.data.slice(
         (res - 1) * this.pageSize,
         res * this.pageSize
-      );
+      )
     },
-    rejected(item) {
+    rejected (item) {
       this.$confirm("确定驳回此条申报吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           this.checkType == 1
             ? checkPassDetail(item.id, this.$store.getters.token, 5).then(
-                (successResponse) => {
-                  if (successResponse.data.code === 0) {
-                  } else {
-                    this.$message({
-                      showClose: true,
-                      message: "提交失败！",
-                      type: "error",
-                    });
-                  }
+              (successResponse) => {
+                if (successResponse.data.code === 0) {
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: "提交失败！",
+                    type: "error"
+                  })
                 }
-              )
+              }
+            )
             : checkPassEasy(item.id, this.$store.getters.token, 5).then(
-                (successResponse) => {
-                  if (successResponse.data.code === 0) {
-                  } else {
-                    this.$message({
-                      showClose: true,
-                      message: "提交失败！",
-                      type: "error",
-                    });
-                  }
+              (successResponse) => {
+                if (successResponse.data.code === 0) {
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: "提交失败！",
+                    type: "error"
+                  })
                 }
-              );
+              }
+            )
           this.$message({
             type: "success",
-            message: "驳回成功!",
-          });
-          this.reload();
+            message: "驳回成功!"
+          })
+          this.reload()
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消驳回",
-          });
-        });
+            message: "已取消驳回"
+          })
+        })
     },
-    check(data) {
+    check (data, status) {
       this.$router.push({
         path: this.nextPath,
         query: {
           item: data,
           checkType: this.checkType,
           checkState: data.checkState,
-        },
-      });
+          status: status
+        }
+      })
     },
-    getHandleRecords(id) {
-      this.showHandleHistory = true;
+    getHandleRecords (id) {
+      this.showHandleHistory = true
       historyHandles(id).then((res) => {
-        this.handleRecords = res.data;
-      });
-    },
-  },
-};
+        this.handleRecords = res.data
+      })
+    }
+  }
+}
 </script>
 
 <style>

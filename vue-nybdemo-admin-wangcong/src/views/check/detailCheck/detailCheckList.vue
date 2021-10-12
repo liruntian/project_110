@@ -2,24 +2,24 @@
 <template>
   <div class="detailCheckList">
     <div class="search-content">
-      <h3 style="margin-right: 16px">展会名称</h3>
+      <!-- <h3 style="margin-right: 16px">展会名称</h3>
       <el-input
         v-model="exportName"
         placeholder="请输入展会名称"
         style="width: 200px; margin-right: 48px"
-      ></el-input>
+      ></el-input> -->
       <h3 style="margin-right: 16px">展会简称</h3>
       <el-input
         v-model="exportAddr"
         placeholder="请输入展会简称"
         style="width: 200px; margin-right: 48px"
       ></el-input>
-      <h3 style="margin-right: 16px">主办方</h3>
+      <!-- <h3 style="margin-right: 16px">主办方</h3>
       <el-input
         v-model="hostComp"
         placeholder="请输入主办方"
         style="width: 200px"
-      ></el-input>
+      ></el-input> -->
     </div>
     <div class="search-button">
       <el-button
@@ -170,7 +170,8 @@ export default {
         })
         return
       }
-      this.checkList = ["待审核"]
+      // this.checkList = ["待审核"]
+      this.checkList = statesOptions
       this.allAdataList = []
       if (this.checkType == 1) {
         if (this.exportName) {
@@ -205,12 +206,14 @@ export default {
           console.log("根据主办方查询")
         }
       }
-      this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
+      // this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
+      this.datalist = this.allAdataList
     },
     async reset () {
       this.exportName = ""
       this.exportAddr = ""
       this.hostComp = ""
+      this.checkList = ["待审核"]
       await this.getdetailList()
       await this.getEasyList()
       if (this.checkType == 1) {

@@ -6,7 +6,7 @@
       >
 
       <div
-        v-if="!(checkState == '已完成')"
+        v-if="!(checkState == '已完成' && status == '查看总结')"
         id="pdfDom"
         style="
           padding-top: 55px;
@@ -26,7 +26,7 @@
           </tr>
           <tr align="center">
             <td>展会名称</td>
-            <td colspan="7">{{ detailForm.name || meetName }}</td>
+            <td colspan="7">{{ detailForm.name }}</td>
           </tr>
           <tr align="center">
             <td>主办单位</td>
@@ -136,7 +136,7 @@
           </tr>
           <tr align="center" v-show="isFirstApply">
             <td>可行性报告文档</td>
-            <td colspan="7" style="ffont-size: 10px">
+            <td colspan="7" style="font-size: 10px">
               <div class="down" @click="downFeasibilityFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
@@ -162,7 +162,7 @@
           margin: auto;
           width: fit-content;
         "
-        v-if="checkState == '已完成'"
+        v-if="checkState == '已完成' && status == '查看总结'"
       >
         <table border="1px" cellspacing="0">
           <colgroup span="8" width="200"></colgroup>
@@ -172,7 +172,7 @@
           </tr>
           <tr align="center">
             <td>展会名称</td>
-            <td colspan="7">{{ detailForm.name }}</td>
+            <td colspan="7">{{ detailForm.name || meetName }}</td>
           </tr>
           <tr align="center">
             <td>展览面积</td>
@@ -203,7 +203,7 @@
             <td>线下参展人数</td>
             <td>{{ detailForm.viewerNum }}</td>
             <td>线上参展人数</td>
-            <td>{{ detailForm.onlineViewerNum }}</td>
+            <td>{{ detailForm.onlineViewer }}</td>
           </tr>
           <tr align="center">
             <td>填报单位</td>
@@ -313,6 +313,7 @@ export default {
       isFirstApply: true,
       centerDialogVisible: false,
       meetName: "",
+      status: "",
       form: {
         content: "",
         fileList: []
@@ -324,10 +325,15 @@ export default {
     this.checkState = this.$route.query.checkState
     this.detailForm = this.$route.query.item
     this.meetName = this.$route.query.item.name
+    this.status = this.$route.query.status
+    console.log("this.status", this.status)
+
     getSummary(this.detailForm.id).then((res) => {
-      if (res.code === 0 && res.data) {
+      if (res.code === 0 && res.data && this.status === '查看总结') {
         this.detailForm = res.data
-        console.log("res.data", res.data)
+        console.log("res.data.", res.data)
+        console.log("this.status", this.status)
+        console.log("res.data.onlineViewer", res.data.onlineViewer)
       }
     })
     // this.checkState = '待总结';
@@ -537,7 +543,7 @@ export default {
     downFeasibilityFile () {
       getdetailFile(this.detailForm.feasibilityFileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf"
+        const fileName = this.detailForm.name + "的可行性报告文档.pdf"
         const elink = document.createElement("a")
         elink.setAttribute("download", decodeURIComponent(fileName))
         elink.download = fileName

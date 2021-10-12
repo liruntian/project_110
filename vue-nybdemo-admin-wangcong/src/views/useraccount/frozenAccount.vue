@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search-content">
+    <!-- <div class="search-content">
       <h3 style="margin-right: 16px">展会名称</h3>
       <el-input
         v-model="exportName"
@@ -19,7 +19,7 @@
         >
         <el-button size="small">重置</el-button>
       </div>
-    </div>
+    </div> -->
 
     <Table border :columns="columns7" :data="data6"></Table>
     <div style="margin: 10px; overflow: hidden">
