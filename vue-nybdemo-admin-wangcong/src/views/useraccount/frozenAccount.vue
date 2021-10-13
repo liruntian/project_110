@@ -21,7 +21,7 @@
       </div>
     </div> -->
 
-    <Table border :columns="columns7" :data="data6" ></Table>
+    <Table border :columns="columns7" :data="data6" :row-class-name="rowClassName" ></Table>
     <div style="margin: 10px; overflow: hidden">
       <div style="float: right">
         <Page
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getAllUsers, freeze } from "../../network/freeze"
+import { getAllUsers, freeze, unFreeze } from "../../network/freeze"
 
 export default {
   inject: ["reload"],
@@ -81,16 +81,15 @@ export default {
                   {
                     props: {
                       type: "primary",
-                      size: "small",
-                      disabled: true
+                      size: "small"
                     },
                     on: {
                       click: () => {
-                        this.frozen(params.row.meetAddr)
+                        this.unFrozen(params.row)
                       }
                     }
                   },
-                  "已冻结"
+                  "解冻"
                 )
                 : h(
                   "Button",
@@ -135,7 +134,7 @@ export default {
       })
     },
     frozen (account) {
-      this.$confirm("确定冻结该账号码吗?", "提示", {
+      this.$confirm("确定冻结该账号吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -147,15 +146,32 @@ export default {
             type: "success"
           })
         })
-        this.$message({
-          type: "success",
-          message: "冻结成功!"
-        })
         this.reload()
       }).catch(() => {
         this.$message({
           type: "info",
           message: "已取消冻结"
+        })
+      })
+    },
+    unFrozen (account) {
+      this.$confirm("确定解冻该账号吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        unFreeze(account.meetAddr).then((res) => {
+          this.$notify({
+            title: "解冻成功",
+            message: `成功将"${account.name}"的账号解冻`,
+            type: "success"
+          })
+        })
+        this.reload()
+      }).catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消解冻"
         })
       })
     },
@@ -168,12 +184,18 @@ export default {
         (res - 1) * this.pageSize,
         res * this.pageSize
       )
+    },
+    rowClassName (row, index) {
+      if (row.isFreeze) {
+        return "demo-table-error-row"
+      }
+      return ""
     }
   }
 }
 </script>
 
-<style  lang='scss' scoped>
+<style>
 .search-content {
   display: flex;
   align-items: center;
@@ -184,5 +206,9 @@ export default {
 }
 .ivu-table-cell {
   font-size: 16px;
+}
+.ivu-table .demo-table-error-row td {
+    background-color: #f5f7f9;
+    color: #c3cbd6;
 }
 </style>
