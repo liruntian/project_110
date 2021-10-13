@@ -41,7 +41,7 @@
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额（元）</label>
+              <label class="xrequired">线上成交额（万元）</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineViewer">
@@ -67,14 +67,14 @@
               <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
                         oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
             </el-form-item>
-            <el-form-item style="padding-bottom:30px; padding-right: 30px">
+            <el-form-item style="padding-bottom:30px">
               <div style="float:left">
                 <label class="xrequired">总结报告全文</label><br/>
-                <input type="file" ref="summaryFile"  accept=".pdf" name="summaryFile"></input>
+                <input type="file" ref="summaryFile" style="width: 200px" accept=".pdf" name="summaryFile"></input>
               </div>
               <div style="float:right">
                 <label class="xrequired">单位主要负责同志签发页</label><br/>
-                <input type="file" ref="hosterSignFile"  accept=".pdf" name="hosterSignFile"></input>
+                <input type="file" ref="hosterSignFile" style="width: 200px" accept=".pdf" name="hosterSignFile"></input>
               </div>
             </el-form-item>
           </el-col>
@@ -119,7 +119,7 @@
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="turnover">
-              <label class="xrequired">线下成交额（含意向）（元）</label>
+              <label class="xrequired">线下成交额（含意向）（万元）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="viewerNum">

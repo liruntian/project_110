@@ -25,9 +25,9 @@
           <td>{{ detailForm.activityNum }}</td>
           <td>宣传媒体数量</td>
           <td>{{ detailForm.mediaNum }}</td>
-          <td>线下成交额（含意向）</td>
+          <td>线下成交额（含意向）（万元）</td>
           <td>{{ detailForm.turnover }}</td>
-          <td>线上成交额</td>
+          <td>线上成交额（万元）</td>
           <td>{{ detailForm.onlineTurnover }}</td>
         </tr>
         <tr>

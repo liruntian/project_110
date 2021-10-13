@@ -78,8 +78,8 @@
               <el-form-item enctype="multipart/form-data">
                 <div class="authorizeFile">
                   <label class="xrequired">
-                    <span v-if="isFirstFont">批准审核文件</span>
-                    <span v-else>去年审批文件</span>
+                    <span style="font-size: 14px" v-if="isFirstFont">批准审核文件</span>
+                    <span style="font-size: 14px" v-else>去年审批文件</span>
                   </label><br />
                   <input type="file" ref="authorizeFile" accept=".pdf" name="authorizeFile"></input>
                 </div>
