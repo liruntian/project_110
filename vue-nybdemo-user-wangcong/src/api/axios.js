@@ -43,6 +43,7 @@ axios.interceptors.response.use(
     }
   },
   error => {
+    NProgress.done()
     if (error.response.status === 404) {
       Message({
         message: "请求地址出错",

@@ -171,8 +171,10 @@ export default {
     }
   },
   methods: {
-    downloadFile (fieId, TheFileName) {
-      downloadFile(fieId).then((res) => {
+    downloadFile (fileId, TheFileName) {
+      console.log(fileId)
+      downloadFile(fileId).then((res) => {
+        console.log(res)
         const blob = new Blob([res]); //处理文档流
         const fileName = this.detailForm.name + "的" + TheFileName + ".pdf";
         const elink = document.createElement("a");
@@ -184,7 +186,7 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
-      });
+      })
     }
   }
 }

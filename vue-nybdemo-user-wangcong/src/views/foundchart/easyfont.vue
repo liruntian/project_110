@@ -5,24 +5,26 @@
         <div class="helpinfo">
           <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
           <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
+          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在30MB以内!</font></p>
         </div>
         <div class="function-btns">
-          <el-button round @click="returnMainIndex()" type="primary" style="margin-left: 50px">返回</el-button>
-          <el-button round @click="clearForm()" type="danger" style="margin: 0 50px">重填</el-button>
+          <el-button round @click="returnMainIndex()" type="primary" >返回</el-button>
+          <el-button round @click="clearForm()" type="danger" style="margin: 0 30px" >重填</el-button>
 <!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
-          <el-button round class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
+          <el-button round class="subBtn" type="success" style="margin-left: 0" v-on:click="declareFormed">提交</el-button>
         </div>
       </div>
       <div>
         <el-form :model="declareForm" ref="fontForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;background-color: #ffffff" enctype='multipart/form-data'>
-          <el-collapse>
+          <el-collapse @change="collapseChange">
             <el-collapse-item name="1">
               <template slot="title">
                 <span>一、基础信息</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[0]">还有必填项未填写!</span>
               </template>
               <el-row :gutter="40">
                 <el-col :span="12">
-                  <el-form-item style="margin-top: 20px" prop="name">
+                  <el-form-item style="margin-top: 20px;" prop="name">
                     <label class="xrequired">展会名称</label>
                     <el-input type="text" ref="name" v-model="declareForm.name" auto-complete="off"
                               placeholder=""></el-input>
@@ -55,6 +57,7 @@
             <el-collapse-item name="2">
               <template slot="title">
                 <span>二、办展依据</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[1]">还有必填项未填写!</span>
               </template>
               <div class="attention">
                 <p><font class="hptext">注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见</font></p>
@@ -69,17 +72,17 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="authNum">
-                    <label>批准文号（选填）</label>
+                    <label>批准文号</label>
                     <el-input type="text" ref="authNum" v-model="declareForm.authNum" auto-complete="off"
-                              placeholder=""></el-input>
+                              placeholder="请填写数字"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-form-item enctype="multipart/form-data">
                 <div class="authorizeFile">
                   <label class="xrequired">
-                    <span style="font-size: 14px" v-if="isFirstFont">批准审核文件</span>
-                    <span style="font-size: 14px" v-else>去年审批文件</span>
+                    <span style="font-size: 20px" v-if="isFirstFont">批准审核文件</span>
+                    <span style="font-size: 20px" v-else>去年审批文件</span>
                   </label><br />
                   <input type="file" ref="authorizeFile" accept=".pdf" name="authorizeFile"></input>
                 </div>
@@ -88,6 +91,7 @@
             <el-collapse-item name="3">
               <template slot="title">
                 <span>三、举办计划</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[2]">还有必填项未填写!</span>
               </template>
               <el-row :gutter="40">
                 <el-col :span="12">
@@ -97,7 +101,6 @@
                       <el-cascader
                         v-model="declareForm.chooseCity"
                         :options="provinceAndCityData"
-                        @change="handleChange"
                       >
                       </el-cascader>
                     </el-form-item>
@@ -105,16 +108,6 @@
                       <el-input type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
                     </el-form-item>
                   </div>
-<!--                  <el-form-item >-->
-
-
-<!--&lt;!&ndash;                    <div style="display:flex">&ndash;&gt;-->
-<!--&lt;!&ndash;                      <div style="width: 70%">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <choose-city ref='chooseCity' :cityData = 'this.chooseCityTag'></choose-city>&ndash;&gt;-->
-<!--&lt;!&ndash;                      </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--                  </el-form-item>-->
                   <el-form-item prop="area">
                     <label  class="xrequired">展览面积（m²）</label>
                     <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off"
@@ -132,13 +125,13 @@
                     </p>
                   </el-form-item>
                   <div style="display: flex; flex-direction: row; width: 100%">
-                    <p style="padding-left: 30px"><label  class="xrequired">观众构成</label></p>
-                    <el-form-item style="width: 30%;margin:5px 0 0 0" prop="view1">
+                    <p style="padding-left: 30px;width: 130px"><label class="xrequired" style="width: 120px">观众构成</label></p>
+                    <el-form-item style="width: 40%;margin:5px 0 0 0" prop="view1">
                       <label style="vertical-align:middle;">是否有采购商参加</label>
                       <input style="vertical-align:middle;" ref="view1" type="checkbox" v-model="declareForm.view1" name="views" auto-complete="off"
                              placeholder=""></input>
                     </el-form-item>
-                    <el-form-item style="width: 30%;margin:5px 0 0 0" prop="view2">
+                    <el-form-item style="width: 40%;margin:5px 0 0 0" prop="view2">
                       <label style="vertical-align:middle;">是否有消费者参加</label>
                       <input style="vertical-align:middle;" ref="view2" type="checkbox" v-model="declareForm.view2" name="views" auto-complete="off"
                              placeholder=""></input>
@@ -178,22 +171,23 @@
             <el-collapse-item name="4">
               <template slot="title">
                 <span>四、经费来源</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[3]">还有必填项未填写!</span>
               </template>
               <el-row :gutter="40">
                 <el-col :span="12">
                   <el-form-item prop="finanFund">
-                    <label>财政金额（万元）</label>
+                    <label class="xrequired">财政金额（万元）</label>
                     <el-input type="number" ref="finanFund" v-model="declareForm.finanFund" auto-complete="off"
                               oninput="if(value.length > 8) value = value.slice(0,8)"
-                              placeholder=""></el-input>
+                              placeholder="填写数字，没有请填0"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="selfFund">
-                    <label>自筹金额（万元）</label>
+                    <label class="xrequired">自筹金额（万元）</label>
                     <el-input type="number" ref="selfFund" v-model="declareForm.selfFund" auto-complete="off"
                               oninput="if(value.length > 8) value = value.slice(0,8)"
-                              placeholder=""></el-input>
+                              placeholder="填写数字，没有请填0"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -201,47 +195,56 @@
             <el-collapse-item name="5">
               <template slot="title">
                 <span>五、拟邀请领导情况</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[4]">还有必填项未填写!</span>
               </template>
               <el-form-item style="margin-bottom: 0" prop="leaderN">
-                <p><label>领导出席情况</label></p>
-                  <p style="font-size: 10px">
+                <p><label class="xrequired">领导出席情况</label></p>
+                  <p>
                     <label style="vertical-align:middle;">党和国家领导人</label>
-                    <input style="vertical-align:middle;" ref="leaderN" type="checkbox" v-model="declareForm.leaderN" name="leaderN" auto-complete="off"
+                    <input style="vertical-align:middle;" ref="leaderN" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderN" name="leaderN" auto-complete="off"
                            placeholder=""></input>
                   </p>
               </el-form-item>
               <el-form-item style="margin-bottom: 0" prop="leaderD">
-                  <p style="font-size: 10px">
+                  <p>
                     <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
-                    <input style="vertical-align:middle;" ref="leaderD" type="checkbox" v-model="declareForm.leaderD" name="leaderD" auto-complete="off"
+                    <input style="vertical-align:middle;" ref="leaderD" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderD" name="leaderD" auto-complete="off"
                            placeholder=""></input>
                   </p>
               </el-form-item>
               <el-form-item style="margin-bottom: 0" prop="leaderP">
-                  <p style="font-size: 10px">
+                  <p>
                     <label style="vertical-align:middle;">省部级以上领导</label>
-                    <input style="vertical-align:middle;" ref="leaderP" type="checkbox" v-model="declareForm.leaderP" name="leaderP" auto-complete="off"
+                    <input style="vertical-align:middle;" ref="leaderP" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderP" name="leaderP" auto-complete="off"
                            placeholder=""></input>
                   </p>
               </el-form-item>
               <el-form-item style="margin-bottom: 0" prop="leaderA">
-                  <p style="font-size: 10px">
+                  <p>
                     <label style="vertical-align:middle;">国家级行业协会负责人</label>
-                    <input style="vertical-align:middle;" ref="leaderA" type="checkbox" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
+                    <input style="vertical-align:middle;" ref="leaderA" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
                            placeholder=""></input>
                   </p>
               </el-form-item>
               <el-form-item style="margin-bottom: 0" prop="leaderF">
-                  <p style="font-size: 10px">
-                    <label style="vertical-align:middle;">是否有国外政府官员含驻华使馆</label>
-                    <input style="vertical-align:middle;" ref="leaderF" type="checkbox" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
+                  <p>
+                    <label style="vertical-align:middle;">国外政府官员含驻华使馆</label>
+                    <input style="vertical-align:middle;" ref="leaderF" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
                            placeholder=""></input>
                   </p>
+              </el-form-item>
+              <el-form-item style="margin-bottom: 0" prop="leaderNull">
+                <p>
+                  <label style="vertical-align:middle;">无</label>
+                  <input style="vertical-align:middle;" ref="leaderNull" type="checkbox" @click="leaderNullClick()" v-model="declareForm.leaderNull" name="leaderNull" auto-complete="off"
+                         placeholder=""></input>
+                </p>
               </el-form-item>
             </el-collapse-item>
             <el-collapse-item name="6">
               <template slot="title">
                 <span>六、填报单位信息</span>
+                <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[5]">还有必填项未填写!</span>
               </template>
               <el-row :gutter="40">
                 <el-col :span="12">
@@ -261,8 +264,7 @@
                   </el-form-item>
                   <el-form-item prop="teleNum">
                     <label class="xrequired">负责人手机号</label>
-                    <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
-                              oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
+                    <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -316,9 +318,11 @@ export default {
   name: "easyfont",
   data () {
     return {
+      uploadFile: require("../../assets/icons/upload_file.svg"),
       chooseCityTag: "",
       provinceAndCityData: [],
       pickedProvinceAndCityData: [],
+      collapse: [false, false, false, false, false, false],
       declareForm: {
         name: "",
         hostComp: "",
@@ -361,6 +365,7 @@ export default {
         leaderA: false,
         // 是否有国外政府官员含驻华使馆
         leaderF: false,
+        leaderNull: false,
       },
     };
   },
@@ -369,31 +374,27 @@ export default {
   },
   created () {
     Vue.set(this.declareForm, "name", this.$store.state.meetName);
-    this.getPrefillFont();
     this.getProvinceAndCityData();
   },
   computed: {
     leaderPresent () {
-      return (
-        (this.declareForm.leaderN ? 1 : 0).toString() +
-        (this.declareForm.leaderD ? 1 : 0).toString() +
-        (this.declareForm.leaderP ? 1 : 0).toString() +
-        (this.declareForm.leaderA ? 1 : 0).toString() +
-        (this.declareForm.leaderF ? 1 : 0).toString()
-      );
+      if (this.declareForm.leaderNull){
+        return "00000"
+      }else {
+        return (
+          (this.declareForm.leaderN ? 1 : 0).toString() +
+          (this.declareForm.leaderD ? 1 : 0).toString() +
+          (this.declareForm.leaderP ? 1 : 0).toString() +
+          (this.declareForm.leaderA ? 1 : 0).toString() +
+          (this.declareForm.leaderF ? 1 : 0).toString()
+        );
+      }
     },
     isFirstFont () {
       return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont) : this.$store.state.isFirstFont;
     },
   },
   methods: {
-    getPrefillFont () {
-      getAllFirstFontData(this.$store.state.token).then(res => {
-        console.log(res.data);
-        // this.declareForm = res.data[1]
-      });
-      // getAllNotFirstFontData(this.$store.state.token).then()
-    },
     getProvinceAndCityData () {
       const axios = require("axios");
       axios.get("https://restapi.amap.com/v3/config/district", {
@@ -402,8 +403,6 @@ export default {
           subdistrict: 3,
         },
       }).then(res => {
-        console.log(res.data.districts[0]);
-        console.log(res.data.districts[0].districts);
         for (let province of res.data.districts[0].districts) {
           let provinceObj = {
             value: province.name,
@@ -428,10 +427,6 @@ export default {
           this.provinceAndCityData.push(provinceObj);
         }
       });
-    },
-    handleChange () {
-      console.log(this.declareForm.chooseCity);
-      console.log(this.declareForm.chooseCity.join("-"));
     },
     returnMainIndex () {
       this.$router.back();
@@ -546,32 +541,55 @@ export default {
         this.$refs.view1.focus();
         return false;
       }
-      if (!(this.declareForm.finanFund || this.declareForm.selfFund)) {
+      if (!this.declareForm.finanFund) {
         this.$message({
           showClose: true,
-          message: "请填写经费来源！",
+          message: "请填写财政金额！",
           type: "error",
         });
         this.$refs.finanFund.focus();
         return false;
       }
+      if (!this.declareForm.selfFund) {
+        this.$message({
+          showClose: true,
+          message: "请填写自筹金额！",
+          type: "error",
+        });
+        this.$refs.selfFund.focus();
+        return false;
+      }
+      if (!this.declareForm.leaderNull && this.leaderPresent === "00000"){
+        this.$message({
+          showClose: true,
+          message: "请填写拟邀请领导情况！",
+          type: "error",
+        });
+        this.$refs.leaderA.focus();
+        return false;
+      }
       if (!this.declareForm.writeObject) {
-        warningOpen("请填写填报单位");
+        this.$message.error("请填写填报单位");
         this.$refs.writeObject.focus();
         return false;
       }
       if (!this.declareForm.department) {
-        warningOpen("请填写责任处室");
+        this.$message.error("请填写责任处室");
         this.$refs.department.focus();
         return false;
       }
       if (!this.declareForm.charger) {
-        warningOpen("请填写处室负责人");
+        this.$message.error("请填写处室负责人");
         this.$refs.charger.focus();
         return false;
       }
       if (!this.declareForm.teleNum) {
-        warningOpen("请填写负责人手机号");
+        this.$message.error("请填写负责人手机号");
+        this.$refs.teleNum.focus();
+        return false;
+      }
+      if (this.declareForm.teleNum.length !== 8 && this.declareForm.teleNum.length !== 11) {
+        this.$message.error("负责人手机号请填写8或11位数字");
         this.$refs.teleNum.focus();
         return false;
       }
@@ -589,7 +607,7 @@ export default {
         if (!ip0.files[0]) {
           this.$message({
             showClose: true,
-            message: "请填写批准审核文件！",
+            message: "请提交批准审核文件！",
             type: "error",
           });
           this.$refs.authorizeFile.focus();
@@ -599,17 +617,35 @@ export default {
         if (!ip0.files[0]) {
           this.$message({
             showClose: true,
-            message: "请填写去年审批文件！",
+            message: "请提交去年审批文件！",
             type: "error",
           });
           this.$refs.authorizeFile.focus();
           return false;
         }
       }
+      if (ip0.files[0].size/1024/1024 > 30){
+        this.$message({
+          showClose: true,
+          message: "上传的文件过大，请重新上传！",
+          type: "error",
+        });
+        this.$refs.authorizeFile.focus();
+        return false;
+      }
       if (!ip1.files[0]) {
         this.$message({
           showClose: true,
-          message: "请填写展会工作方案！",
+          message: "请提交展会工作方案文件！",
+          type: "error",
+        });
+        this.$refs.inputFile1.focus();
+        return false;
+      }
+      if (ip1.files[0].size/1024/1024 > 30){
+        this.$message({
+          showClose: true,
+          message: "上传的文件过大，请重新上传！",
           type: "error",
         });
         this.$refs.inputFile1.focus();
@@ -618,7 +654,16 @@ export default {
       if (!ip2.files[0]) {
         this.$message({
           showClose: true,
-          message: "请填写招展招商方案！",
+          message: "请提交招展招商方案文件！",
+          type: "error",
+        });
+        this.$refs.inputFile2.focus();
+        return false;
+      }
+      if (ip2.files[0].size/1024/1024 > 30){
+        this.$message({
+          showClose: true,
+          message: "上传的文件过大，请重新上传！",
           type: "error",
         });
         this.$refs.inputFile2.focus();
@@ -628,7 +673,16 @@ export default {
         if (!ip3.files[0]) {
           this.$message({
             showClose: true,
-            message: "请填写可行性报告！",
+            message: "请提交可行性报告文件！",
+            type: "error",
+          });
+          this.$refs.inputFile3.focus();
+          return false;
+        }
+        if (ip3.files[0].size/1024/1024 > 30){
+          this.$message({
+            showClose: true,
+            message: "上传的文件过大，请重新上传！",
             type: "error",
           });
           this.$refs.inputFile3.focus();
@@ -637,7 +691,16 @@ export default {
         if (!ip4.files[0]) {
           this.$message({
             showClose: true,
-            message: "请填写承办单位办展条件说明！",
+            message: "请提交承办单位办展条件说明文件！",
+            type: "error",
+          });
+          this.$refs.inputFile4.focus();
+          return false;
+        }
+        if (ip4.files[0].size/1024/1024 > 30){
+          this.$message({
+            showClose: true,
+            message: "上传的文件过大，请重新上传！",
             type: "error",
           });
           this.$refs.inputFile4.focus();
@@ -646,14 +709,6 @@ export default {
       }
       // 展会简称
       formdata.append("meetAddr", this.$store.getters.token);
-      // 财政资金的拨款金额
-      formdata.append("finanFund", this.declareForm.finanFund);
-      // 其他来源的拨款金额
-      // formdata.append("otherFund", this.declareForm.otherfond);
-      // 展会面积
-      formdata.append("area", this.declareForm.area);
-      // 是否邀请国外参展商
-      formdata.append("foreign", this.declareForm.foreign);
       // 展会名称
       formdata.append("name", this.declareForm.name);
       // 主办单位
@@ -669,26 +724,33 @@ export default {
       // 批准文案
       formdata.append("authNum", this.declareForm.authNum);
       // 举办城市
-      // formdata.append("chooseCity", this.$refs.chooseCity.getChoosedCity());
       formdata.append("chooseCity", this.declareForm.chooseCity.join("-"));
       // 举办场所
       formdata.append("place", this.declareForm.place);
-      // 举办周期
-      formdata.append("cycle", this.declareForm.cycle);
       // 开始时间
       formdata.append("startTime", this.declareForm.Times[0]);
       // 结束时间
       formdata.append("endTime", this.declareForm.Times[1]);
+      // 展会面积
+      formdata.append("area", this.declareForm.area);
+      // 举办周期
+      formdata.append("cycle", this.declareForm.cycle);
       // 展会内容
       formdata.append("meetState", this.declareForm.meetState);
-      // 财政资金数额
+      // 同期活动
+      formdata.append("activityBrief", this.declareForm.activityBrief);
+      // 是否邀请国外参展商
+      formdata.append("foreign", this.declareForm.foreign);
+      // 是否采购商参加
+      formdata.append("view1", this.declareForm.view1);
+      // 是否消费者参加
+      formdata.append("view2", this.declareForm.view2);
+      // 财政资金的拨款金额
       formdata.append("finanFund", this.declareForm.finanFund);
       // 自筹资金数额
       formdata.append("selfFund", this.declareForm.selfFund);
       // 出席领导情况
       formdata.append("leaderState", this.leaderPresent.toString());
-      // 同期活动
-      formdata.append("activityBrief", this.declareForm.activityBrief);
       // 填报单位
       formdata.append("writeObject", this.declareForm.writeObject);
       // 负责处室
@@ -697,6 +759,8 @@ export default {
       formdata.append("charger", this.declareForm.charger);
       // 手机号
       formdata.append("teleNum", this.declareForm.teleNum);
+      // 上级单位审核意见
+      formdata.append("authFile", ip0.files[0]);
       // 展会工作方案文档
       formdata.append("meetPlanFile", ip1.files[0]);
       // 招展招商方案文档
@@ -707,32 +771,6 @@ export default {
         // 承办单位办展条件说明
         formdata.append("conditionStateFile", ip4.files[0]);
       }
-      // 上级单位审核意见
-      formdata.append("authFile", ip0.files[0]);
-      // 是否采购商参加
-      formdata.append("view1", this.declareForm.view1);
-      // 是否消费者参加
-      formdata.append("view2", this.declareForm.view2);
-      console.log(this.leaderPresent);
-      console.log(typeof this.leaderPresent);
-      console.log(formdata);
-      // console.log(formdata);
-      // console.log(formdata.get("finanFrom"));
-
-      // sendEasy(formdata)
-      //   .then((successResponse) => {
-      //     if (successResponse.data.code === 0) {
-      //       this.$router.push("/").catch(() => {});
-      //     } else {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "提交失败！",
-      //         type: "error",
-      //       });
-      //     }
-      //   })
-      //   .catch((failResponse) => {});
-
       var axios = require("axios");
       if (this.isFirstFont) {
         axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
@@ -743,12 +781,19 @@ export default {
             } else {
               this.$message({
                 showClose: true,
-                message: "提交失败！",
+                message: "提交失败，请重试！",
                 type: "error",
               });
             }
           })
-          .catch((failResponse) => {});
+          .catch((failResponse) => {
+            console.log(failResponse)
+            this.$message({
+              showClose: true,
+              message: "提交失败，请重试！",
+              type: "error",
+            });
+          });
       } else {
         axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
           .then((successResponse) => {
@@ -758,12 +803,19 @@ export default {
             } else {
               this.$message({
                 showClose: true,
-                message: "提交失败！",
+                message: "提交失败，请重试！",
                 type: "error",
               });
             }
           })
-          .catch((failResponse) => {});
+          .catch((failResponse) => {
+            console.log(failResponse);
+            this.$message({
+              showClose: true,
+              message: "提交失败，请重试！",
+              type: "error",
+            });
+          });
       }
     },
     clearForm () {
@@ -778,6 +830,74 @@ export default {
         this.$refs.inputFile4.value = "";
       }
     },
+    collapseChange (val) {
+      if (!this.declareForm.name || !this.declareForm.hostComp || !this.declareForm.fundComp){
+        Vue.set(this.collapse,0,true)
+      }else {
+        Vue.set(this.collapse,0,false)
+      }
+      if (!this.declareForm.authObj || !this.$refs.authorizeFile.files[0]){
+        Vue.set(this.collapse,1,true)
+      }else {
+        Vue.set(this.collapse,1,false)
+      }
+      if (!this.declareForm.chooseCity ||
+        !this.declareForm.Times ||
+        !this.declareForm.area ||
+        !this.declareForm.meetState ||
+        !this.declareForm.cycle ||
+        !this.declareForm.activityBrief ||
+        !this.declareForm.place){
+        Vue.set(this.collapse,2,true)
+      }else {
+        Vue.set(this.collapse,2,false)
+      }
+      if (!this.declareForm.finanFund || !this.declareForm.selfFund){
+        Vue.set(this.collapse,3,true)
+      }else {
+        Vue.set(this.collapse,3,false)
+      }
+      if (!this.declareForm.leaderNull && this.leaderPresent === "00000"){
+        Vue.set(this.collapse,4,true)
+      }else {
+        Vue.set(this.collapse,4,false)
+      }
+      if (this.isFirstFont){
+        if (!this.declareForm.writeObject ||
+          !this.declareForm.department ||
+          !this.declareForm.charger ||
+          !this.declareForm.teleNum ||
+          !this.$refs.inputFile1.files[0] ||
+          !this.$refs.inputFile2.files[0] ||
+          !this.$refs.inputFile3.files[0] ||
+          !this.$refs.inputFile4.files[0]) {
+          Vue.set(this.collapse,5,true)
+        }else {
+          Vue.set(this.collapse,5,false)
+        }
+      }else {
+        if (!this.declareForm.writeObject ||
+          !this.declareForm.department ||
+          !this.declareForm.charger ||
+          !this.declareForm.teleNum ||
+          !this.$refs.inputFile1.files[0] ||
+          !this.$refs.inputFile2.files[0]) {
+          Vue.set(this.collapse,5,true)
+        }else {
+          Vue.set(this.collapse,5,false)
+        }
+      }
+    },
+    leaderClick () {
+      Vue.set(this.declareForm, "leaderNull", false)
+    },
+    leaderNullClick () {
+      Vue.set(this.declareForm, "leaderN", false)
+      Vue.set(this.declareForm, "leaderD", false)
+      Vue.set(this.declareForm, "leaderP", false)
+      Vue.set(this.declareForm, "leaderA", false)
+      Vue.set(this.declareForm, "leaderF", false)
+    }
   },
 };
 </script>
@@ -841,6 +961,13 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   margin: 10px 0 10px 50px;
   z-index: 999999;
   right: 100px;
+  position: fixed;
+  .el-button{
+    height: 60px;
+    width: 100px;
+    border-radius: 40px;
+    font-size: 20px;
+  }
 }
 .el-collapse{
   margin: 30px 0 40px 0px;
@@ -849,6 +976,11 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   flex-direction: column;
   .el-collapse-item{
     margin-left: 40px;
+    .el-collapse-item__header{
+      &:hover{
+        color: #409eff;
+      }
+    }
   }
   span{
     font-size: 24px;
@@ -856,20 +988,30 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 }
 .el-input{
   width: 40%;
+  font-size: 18px;
 }
 .attention {
+  /*background-color: lawngreen;*/
   background-color: rgba(70, 130, 180, 0.1);
-  transform: translateY(24%);
-  margin: 0px 10px 10px 30px;
+  /*color: rgba(80, 144,53, 1);*/
+  /*transform: translateY(24%);*/
+  margin: 0px 10px 40px 20px;
   padding: 10px ;
-  width: 100% !important;
+  width: 90% !important;
 }
 .hptext {
-  color: rgba(70, 130, 180, 0.9);
+  /*color: rgba(70, 130, 180, 0.9);*/
+  color: rgba(80, 144,53, 1);
+  letter-spacing: 2px;
+  font-size: 20px;
+  font-family: 微软雅黑;
 }
 
 .wrtext {
   color: rgba(255, 38, 38, 0.9);
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-family: 微软雅黑;
 }
 
 .card1 {
@@ -946,13 +1088,16 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   top: 50px;
   left: 6px;
 }
-label.xrequired:after {
-  content: "*";
-  color: red;
-  font-size: 25px;
-  position: relative;
-  top: 8px;
-  margin-left: 3px;
+label{
+  font-size: 20px;
+  .xrequired:after {
+    content: "*";
+    color: red;
+    font-size: 25px;
+    position: relative;
+    top: 8px;
+    margin-left: 3px;
+  }
 }
 .el-cascader{
   width: 100% !important;
