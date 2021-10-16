@@ -324,6 +324,7 @@ export default {
   created () {
     this.checkState = this.$route.query.checkState
     this.detailForm = this.$route.query.item
+    console.log('his.detailForm',this.detailForm)
     this.meetName = this.$route.query.item.name
     this.status = this.$route.query.status
     console.log("this.status", this.status)
@@ -364,7 +365,7 @@ export default {
       return this.detailForm.checkState == "待审核"
     },
     getForign () {
-      return this.detailForm.view1 == true ? "是" : "否"
+      return this.detailForm.foreign == true ? "是" : "否"
     },
     getView1 () {
       return this.detailForm.view1 == true ? "是" : "否"
