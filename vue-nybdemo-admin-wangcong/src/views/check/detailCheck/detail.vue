@@ -480,6 +480,14 @@ export default {
         this.$refs.adviceFile.focus()
         return false
       }
+      if (ip.files[0].size/1024/1024 > 10){
+        this.$notify({
+          title: "上传的附件过大，请重新上传",
+          type: "warning"
+        })
+        this.$refs.adviceFile.focus();
+        return false;
+      }
       // var axios = require("axios");
       this.$axios
         .post(this.GLOBAL.BASE_URL + "/handin/checkInfo", formdata)
