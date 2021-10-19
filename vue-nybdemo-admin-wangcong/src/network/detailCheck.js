@@ -56,7 +56,7 @@ export async function getDeatilByMeetName (meetName) {
     url: "/search/getDetailByMeetName",
     method: "post",
     data: {
-      meetName: meetName
+      name: meetName
     }
   })
 }
