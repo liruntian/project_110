@@ -5,7 +5,7 @@
         <el-col :span="11" style="margin: 0 50px">
           <div class="helpinfo">
             <p><font class="hptext">请认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
-            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在30MB以内!</font></p>
+            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
           </div>
         </el-col>
         <el-col :span="11">
@@ -290,7 +290,7 @@ export default {
         this.$refs.summaryFile.focus();
         return false;
       }
-      if (ip1.files[0].size/1024/1024 > 30){
+      if (ip1.files[0].size/1024/1024 > 10){
         this.$message({
           showClose: true,
           message: "上传的文件过大，请重新上传！",
@@ -304,7 +304,7 @@ export default {
         this.$refs.hosterSignFile.focus();
         return false;
       }
-      if (ip2.files[0].size/1024/1024 > 30){
+      if (ip2.files[0].size/1024/1024 > 10){
         this.$message({
           showClose: true,
           message: "上传的文件过大，请重新上传！",

@@ -4,7 +4,7 @@ export function request(config){
 	const instance = axios.create({
 		baseURL: "http://8.140.21.128:8445/api",
 		// baseURL : 'http://192.168.43.226:8445/api',
-		timeout: 5000
+		timeout: 60*1000
 	})
 	//2.axios拦截器
 	//2.1.请求拦截

@@ -12,11 +12,11 @@
             <table border="1" cellspacing="0">
               <thead>
                 <td>展会名称</td>
-                <td>首次申报</td>
+                <td width="60px">首次</br>申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
-                <td>申报状态</td>
-                <td>操作</td>
+                <td width="90px">申报</br>状态</td>
+                <td width="390px">操作</td>
               </thead>
               <tr>
                 <td>{{ currentFont.name }}</td>
@@ -53,14 +53,14 @@
               <thead>
                 <td width="60px">#</td>
                 <td>展会名称</td>
-                <td>首次申报</td>
+                <td width="60px">首次</br>申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
-                <td>申报状态</td>
+                <td width="90px">申报</br>状态</td>
                 <td>操作</td>
               </thead>
               <tr v-if="historyFontData.length === 0">
-                <td colspan="6">暂无历史申报数据</td>
+                <td colspan="7">暂无历史申报数据</td>
               </tr>
               <tr v-for="(item,index) in showHistoryFontData" v-else :key="index">
                 <td>{{(currentPage-1)*pageSize + index+1}}</td>
@@ -76,7 +76,7 @@
 <!--                  <span style="color: #515A6E" v-show="item.checkState === 4">已撤销</span>-->
 <!--                  <span style="color: #515A6E" v-show="item.checkState === 5">已驳回</span>-->
                 </td>
-                <td>
+                <td width="280px">
                   <el-button type="primary" @click="seefont (item)">查看申报</el-button>
 <!--                  <span>-->
 <!--                    <a ></a>-->
@@ -129,12 +129,23 @@
             <el-card>
               <span>处理意见：{{record.content}}</span>
               <span>
-                <a style="margin-left: 15px" @click="downloadFile(record.fileId)">
+                <a style="margin-left: 15px" @click="downloadFile(record)">
                   <img style="height: 30px;width: 30px" :src="downloadIcon" alt="">
                   点击下载附件
                 </a>
               </span>
+              <el-popover
+                placement="bottom"
+                trigger="manual"
+                width="60px"
+                content="正在下载附件..."
+                :visible-arrow="true"
+                offset="0"
+                v-model="record.isDownloading">
+<!--                <el-button slot="reference" @click="visible = !visible">手动激活</el-button>-->
+              </el-popover>
             </el-card>
+
           </el-timeline-item>
         </el-timeline>
         <span slot="footer" class="dialog-footer">
@@ -170,6 +181,8 @@ export default {
       pageSize: 5,
       currentPage: 1,
       showHistoryFontData: [],
+      visible: false,
+      loading: ""
     }
   },
   created () {
@@ -293,11 +306,19 @@ export default {
       getHandleRecord(id).then(res => {
         console.log(res.data)
         this.handleRecord = res.data
+        this.handleRecord.forEach((record) => {
+          Vue.set(record, "isDownloading", false)
+          let date = new Date(record.createTime)
+          let targetTime = new Date(date.getTime() + 8*60*60*1000)
+          let showTime = targetTime.getFullYear()+"-"+ (targetTime.getMonth()+1).toString() +"-"+targetTime.getDate()+" "+targetTime.getHours()+":"+targetTime.getMinutes()+":"+targetTime.getSeconds()
+          Vue.set(record, "createTime", showTime)
+        })
         this.handleRecordDialogVisible = true
       })
     },
-    downloadFile (fileId) {
-      downloadFile(fileId).then(res => {
+    downloadFile (record) {
+      Vue.set(record, "isDownloading", true)
+      downloadFile(record.fileId).then(res => {
         console.log(res);
         const blob = new Blob([res]); //处理文档流
         const fileName =  "处理意见.pdf";
@@ -310,6 +331,10 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
+        Vue.set(record, "isDownloading", false)
+      }).catch(() => {
+        Vue.set(record, "isDownloading", false)
+        this.$message.error("下载失败，请重试")
       })
     },
     seefont (font) {
@@ -460,5 +485,18 @@ export default {
 }
 .el-button{
   padding: 10px 12px !important;
+}
+.el-popover{
+  right: 0 !important;
+  bottom: -32px !important;
+  border-radius: 20px !important;
+  background: #0bbd87 !important;
+  min-width: 80px !important;
+  /* min-width: 150px; */
+  /*padding: 12px !important;*/
+  color: #fff !important;
+}
+.el-popover--plain{
+  padding: 5px 20px !important;
 }
 </style>

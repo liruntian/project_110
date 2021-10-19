@@ -91,47 +91,52 @@
         <tr>
           <td v-if="detailForm.isFirstFont">批准审核文件</td>
           <td v-else>去年审批文件</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.authFileId, '批准审核文件')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.authFileId, '批准审核文件',0)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[0]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
           <td>展会工作方案文档</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.meetPlanFileId, '展会工作方案文档')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.meetPlanFileId, '展会工作方案文档', 1)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[1]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
           <td>招展招商方案文档</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.investmentPlanFileId, '招展招商方案文档')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.investmentPlanFileId, '招展招商方案文档', 2)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[2]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr v-show="detailForm.isFirstFont">
           <td>可行性报告文档</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.feasibilityFileId, '可行性报告文档')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.feasibilityFileId, '可行性报告文档', 3)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[3]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr v-show="detailForm.isFirstFont">
           <td>承办单位办展条件说明</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.conditionStateFileId, '承办单位办展条件说明')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.conditionStateFileId, '承办单位办展条件说明', 4)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[4]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
       </table>
@@ -139,6 +144,7 @@
   </div>
 </template>
 <script>
+import Vue from "vue"
 import { getDetailFontById, getEasyFontById, downloadFile } from "../../network/exhiState"
 export default {
   name: "seefont",
@@ -147,7 +153,8 @@ export default {
       id: '',
       isFirstFont: false,
       downloadIcon: require('../../assets/icons/file.svg'),
-      detailForm: {}
+      detailForm: {},
+      isDownloading: [false, false, false, false, false]
     }
   },
   created () {
@@ -171,8 +178,8 @@ export default {
     }
   },
   methods: {
-    downloadFile (fileId, TheFileName) {
-      console.log(fileId)
+    downloadFile (fileId, TheFileName, index) {
+      Vue.set(this.isDownloading, index, true)
       downloadFile(fileId).then((res) => {
         console.log(res)
         const blob = new Blob([res]); //处理文档流
@@ -186,6 +193,10 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
+        Vue.set(this.isDownloading, index, false)
+      }).catch(() => {
+        Vue.set(this.isDownloading, index, false)
+        this.$message.error("下载失败，请重试！")
       })
     }
   }

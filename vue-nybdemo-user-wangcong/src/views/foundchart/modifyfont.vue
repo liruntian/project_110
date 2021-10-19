@@ -5,7 +5,7 @@
         <div class="helpinfo">
           <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
           <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
-          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在30MB以内!</font></p>
+          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
         </div>
         <div class="function-btns">
           <el-button round @click="returnMainIndex()" type="primary">返回</el-button>
@@ -645,7 +645,7 @@ export default {
           return false;
         }
       }
-      if (ip0.files[0].size/1024/1024 > 30){
+      if (ip0.files[0].size/1024/1024 > 10){
         this.$message({
           showClose: true,
           message: "上传的文件过大，请重新上传！",
@@ -663,7 +663,7 @@ export default {
         this.$refs.inputFile1.focus();
         return false;
       }
-      if (ip1.files[0].size/1024/1024 > 30){
+      if (ip1.files[0].size/1024/1024 > 10){
         this.$message({
           showClose: true,
           message: "上传的文件过大，请重新上传！",
@@ -681,7 +681,7 @@ export default {
         this.$refs.inputFile2.focus();
         return false;
       }
-      if (ip2.files[0].size/1024/1024 > 30){
+      if (ip2.files[0].size/1024/1024 > 10){
         this.$message({
           showClose: true,
           message: "上传的文件过大，请重新上传！",
@@ -700,7 +700,7 @@ export default {
           this.$refs.inputFile3.focus();
           return false;
         }
-        if (ip3.files[0].size/1024/1024 > 30){
+        if (ip3.files[0].size/1024/1024 > 10){
           this.$message({
             showClose: true,
             message: "上传的文件过大，请重新上传！",
@@ -718,7 +718,7 @@ export default {
           this.$refs.inputFile4.focus();
           return false;
         }
-        if (ip4.files[0].size/1024/1024 > 30){
+        if (ip4.files[0].size/1024/1024 > 10){
           this.$message({
             showClose: true,
             message: "上传的文件过大，请重新上传！",

@@ -56,20 +56,22 @@
         </tr>
         <tr>
           <td>总结报告全文</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.summaryFileId, '总结报告全文')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.summaryFileId, '总结报告全文', 0)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[0]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
           <td>单位主要负责同志签发页</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.hosterSignFileId, '单位主要负责同志签发页')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.hosterSignFileId, '单位主要负责同志签发页', 1)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[1]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
       </table>
@@ -78,6 +80,7 @@
 </template>
 
 <script>
+  import Vue from "vue"
 import { getLatestSummary, downloadFile } from "../../network/exhiState"
 export default {
   name: "seesummary",
@@ -85,7 +88,8 @@ export default {
     return {
       fontId: "",
       downloadIcon: require('../../assets/icons/file.svg'),
-      detailForm: {}
+      detailForm: {},
+      isDownloading: [false, false]
     }
   },
   created () {
@@ -96,7 +100,8 @@ export default {
     })
   },
   methods: {
-    downloadFile (fieId, TheFileName) {
+    downloadFile (fieId, TheFileName, index) {
+      Vue.set(this.isDownloading, index, true)
       downloadFile(fieId).then((res) => {
         const blob = new Blob([res]); //处理文档流
         const fileName = this.$store.state.meetName + "的" + TheFileName + ".pdf";
@@ -109,6 +114,10 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
+        Vue.set(this.isDownloading, index, false)
+      }).catch(() => {
+        Vue.set(this.isDownloading, index, false)
+        this.$message.error("下载失败，请重试！")
       });
     }
   }
