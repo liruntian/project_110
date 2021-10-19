@@ -115,19 +115,20 @@ export default {
     border-right: solid 1px #e6e6e6;
     .logo-name {
       background-color: #03152A !important;
+      padding-top: 18px;
       @extend %w100;
-      font-weight: 300;
+      font-weight: bold;
       z-index: 999;
       p {
         height: 50px;
         line-height: 50px;
         text-align: center;
-        font-size: 21px;
+        font-size: 28px;
         color: rgba(255,255,255,0.6);
       }
     }
     .el-menu-vertical:not(.el-menu--collapse) {
-      width: 200px;
+      width: 260px;
       @extend %h100;
       overflow-y: scroll;
       overflow-x: hidden;
@@ -143,11 +144,13 @@ export default {
         vertical-align: middle;
         margin-right: 5px;
         width: 24px;
+        /*height: 30px;*/
         text-align: center;
         font-size: 18px;
       }
       .el-menu-item {
         background-color: #020f1d !important;
+        font-size: 22px;
         border-bottom: 1px solid #020f1d;
         &:hover {
           color: #ffffff !important;
@@ -160,7 +163,7 @@ export default {
       .is-opened > .el-submenu__title > .el-icon-arrow-down {
         color: #ffffff;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 24px;
       }
     }
 
@@ -169,7 +172,8 @@ export default {
   .sysLogo{
     text-align: center;
     background-color: #03152A;
-
-    height: 100px;
+    height: 80px;
+    padding-top: 8px;
+    /*line-height: 100px;*/
   }
 </style>

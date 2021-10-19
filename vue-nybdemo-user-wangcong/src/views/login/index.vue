@@ -9,7 +9,7 @@
       <div class="loginBox">
         <div class="loginCon">
           <p class="title">展会申报系统用户端</p>
-          <p class="title">vue + springboot</p>
+<!--          <p class="title">vue + springboot</p>-->
           <el-card shadow="always" class="login-module" v-if="smdl">
             <div slot="header" class="clearfix formTitlt">
               <span>密码登录</span>
@@ -226,16 +226,17 @@ export default {
         border-bottom: 0px;
       }
       .title {
-        font-size: 36px;
+        font-size: 48px;
         font-weight: 600;
         color: #ffffff;
         width: 500px;
         float: left;
-        margin-top: 0px;
+        margin-top: 50px;
         &:first-child {
-          font-size: 34px;
+          font-size: 48px;
           margin-top: 50px;
           margin-bottom: 30px;
+          line-height: 300px;
         }
       }
       .login-module {

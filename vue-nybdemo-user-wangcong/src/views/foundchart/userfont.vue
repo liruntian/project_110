@@ -758,12 +758,13 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 .attention {
   background-color: rgba(70, 130, 180, 0.1);
   transform: translateY(24%);
-  margin: 0px 10px 10px 30px;
+  margin: 0px 10px 40px 30px;
   padding: 10px ;
-  width: 991px;
+  /*width: 991px;*/
 }
 .hptext {
-  color: rgba(70, 130, 180, 0.9);
+  /*color: rgba(70, 130, 180, 0.9);*/
+  color: rgba(80, 144,53, 1);
 }
 
 .wrtext {

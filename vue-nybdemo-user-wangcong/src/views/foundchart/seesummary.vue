@@ -6,10 +6,6 @@
         <tr>
           <th colspan="8">展会申报总结信息</th>
         </tr>
-<!--        <tr>-->
-<!--          <td>展会名称</td>-->
-<!--          <td colspan="7">{{ detailForm.name }}</td>-->
-<!--        </tr>-->
         <tr>
           <td>展览面积（㎡）</td>
           <td>{{ detailForm.area }}</td>
@@ -25,20 +21,22 @@
           <td>{{ detailForm.activityNum }}</td>
           <td>宣传媒体数量</td>
           <td>{{ detailForm.mediaNum }}</td>
-          <td>线下成交额（含意向）（万元）</td>
-          <td>{{ detailForm.turnover }}</td>
-          <td>线上成交额（万元）</td>
-          <td>{{ detailForm.onlineTurnover }}</td>
-        </tr>
-        <tr>
           <td>线上参展人数</td>
-          <td colspan="3">{{ detailForm.onlineViewer }}&nbsp;</td>
+          <td >{{ detailForm.onlineViewer }}&nbsp;</td>
           <td>线下参展人数</td>
-          <td colspan="3">{{ detailForm.viewerNum }}</td>
+          <td>{{ detailForm.viewerNum }}</td>
         </tr>
         <tr>
+          <td colspan="2">线上成交额（万元）</td>
+          <td colspan="2">{{ detailForm.onlineTurnover }}</td>
+          <td colspan="2">线下成交额（含意向）（万元）</td>
+          <td colspan="2">{{ detailForm.turnover }}</td>
+        </tr>
+        <tr>
+          <td>参展国家和地区数量</td>
+          <td>{{ detailForm.countryNum }}</td>
           <td>参展省市自治区情况</td>
-          <td colspan="7">{{ detailForm.provinceState }}</td>
+          <td colspan="5">{{ detailForm.provinceState }}</td>
         </tr>
         <tr style="height: 100px">
           <td>下一步工作计划</td>
@@ -58,20 +56,22 @@
         </tr>
         <tr>
           <td>总结报告全文</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.summaryFileId, '总结报告全文')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.summaryFileId, '总结报告全文', 0)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[0]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
           <td>单位主要负责同志签发页</td>
-          <td colspan="7">
-            <a @click="downloadFile(detailForm.hosterSignFileId, '单位主要负责同志签发页')">
+          <td colspan="7" style="position:relative;">
+            <a @click="downloadFile(detailForm.hosterSignFileId, '单位主要负责同志签发页', 1)">
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
+            <span v-show="isDownloading[1]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
       </table>
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+  import Vue from "vue"
 import { getLatestSummary, downloadFile } from "../../network/exhiState"
 export default {
   name: "seesummary",
@@ -87,7 +88,8 @@ export default {
     return {
       fontId: "",
       downloadIcon: require('../../assets/icons/file.svg'),
-      detailForm: {}
+      detailForm: {},
+      isDownloading: [false, false]
     }
   },
   created () {
@@ -98,7 +100,8 @@ export default {
     })
   },
   methods: {
-    downloadFile (fieId, TheFileName) {
+    downloadFile (fieId, TheFileName, index) {
+      Vue.set(this.isDownloading, index, true)
       downloadFile(fieId).then((res) => {
         const blob = new Blob([res]); //处理文档流
         const fileName = this.$store.state.meetName + "的" + TheFileName + ".pdf";
@@ -111,6 +114,10 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
+        Vue.set(this.isDownloading, index, false)
+      }).catch(() => {
+        Vue.set(this.isDownloading, index, false)
+        this.$message.error("下载失败，请重试！")
       });
     }
   }
@@ -125,7 +132,7 @@ export default {
 .content{
   height: 100%;
   width: 100%;
-  padding: 40px 50px;
+  padding: 40px 30px;
 }
 table {
   width: 100%;

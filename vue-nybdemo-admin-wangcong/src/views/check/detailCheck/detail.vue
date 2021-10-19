@@ -325,12 +325,22 @@ export default {
       // ishow: false
     };
   },
+<<<<<<< HEAD
   created() {
     this.checkState = this.$route.query.checkState;
     this.detailForm = this.$route.query.item;
     this.meetName = this.$route.query.item.name;
     this.status = this.$route.query.status;
     console.log("this.status", this.status);
+=======
+  created () {
+    this.checkState = this.$route.query.checkState
+    this.detailForm = this.$route.query.item
+    console.log('his.detailForm',this.detailForm)
+    this.meetName = this.$route.query.item.name
+    this.status = this.$route.query.status
+    console.log("this.status", this.status)
+>>>>>>> 879a2eefe767a264a66208bcda4bab892a7cfeb6
 
     getSummary(this.detailForm.id).then((res) => {
       if (res.code === 0 && res.data && this.status === "查看总结") {
@@ -367,8 +377,8 @@ export default {
     ishow() {
       return this.detailForm.checkState == "待审核";
     },
-    getForign() {
-      return this.detailForm.view1 == true ? "是" : "否";
+    getForign () {
+      return this.detailForm.foreign == true ? "是" : "否"
     },
     getView1() {
       return this.detailForm.view1 == true ? "是" : "否";
@@ -486,6 +496,14 @@ export default {
           title: "请提交意见附件",
           type: "warning",
         });
+        this.$refs.adviceFile.focus();
+        return false;
+      }
+      if (ip.files[0].size/1024/1024 > 10){
+        this.$notify({
+          title: "上传的附件过大，请重新上传",
+          type: "warning"
+        })
         this.$refs.adviceFile.focus();
         return false;
       }

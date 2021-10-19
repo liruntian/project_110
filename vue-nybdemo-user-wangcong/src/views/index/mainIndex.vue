@@ -10,14 +10,14 @@
           </a>
           <div class="current-font-data" v-else>
             <table border="1" cellspacing="0">
-              <tr>
+              <thead>
                 <td>展会名称</td>
-                <td>是否首次申报</td>
+                <td width="60px">首次</br>申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
-                <td>申报状态</td>
-                <td>操作</td>
-              </tr>
+                <td width="90px">申报</br>状态</td>
+                <td width="390px">操作</td>
+              </thead>
               <tr>
                 <td>{{ currentFont.name }}</td>
                 <td>{{ currentFont.isFirstFont ? "是" : "否" }}</td>
@@ -25,24 +25,20 @@
                 <td>{{ time }}</td>
                 <td style="color: #515A6E">{{ checkState }}</td>
                 <td>
+                  <el-button type="primary" @click="seefont (currentFont)">查看申报</el-button>
                   <span>
-                    <a @click="seefont (currentFont)">查看申报</a>
+                    <el-button type="primary" v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</el-button>
+                    <el-button type="primary" disabled v-else>撤回</el-button>
                   </span>
                   <span>
-                    <a v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</a>
-                    <span v-else style="color: #515A6E">撤回</span>
+                    <el-button type="primary" v-if="currentFont.checkState === 2" @click="modifyFont()">修改</el-button>
+                    <el-button type="primary" disabled v-else>修改</el-button>
                   </span>
                   <span>
-                    <a v-if="currentFont.checkState === 2" @click="modifyFont()">修改</a>
-                    <span v-else style="color: #515A6E">修改</span>
+                    <el-button type="primary" v-if="currentFont.checkState === 1" @click="handinSummary()">填写总结</el-button>
+                    <el-button type="primary" disabled v-else>填写总结</el-button>
                   </span>
-                  <span>
-                    <a v-if="currentFont.checkState === 1" @click="handinSummary()">填写总结</a>
-                    <span v-else style="color: #515A6E">填写总结</span>
-                  </span>
-                  <span>
-                    <a @click="seeHandleRecord(currentFont.id)">处理记录</a>
-                  </span>
+                  <el-button type="primary" @click="seeHandleRecord(currentFont.id)">处理记录</el-button>
                 </td>
               </tr>
             </table>
@@ -55,41 +51,56 @@
           <div class="history-font-data">
             <table border="1" cellspacing="0">
               <thead>
+                <td width="60px">#</td>
                 <td>展会名称</td>
-                <td>是否首次申报</td>
+                <td width="60px">首次</br>申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
-                <td>申报状态</td>
+                <td width="90px">申报</br>状态</td>
                 <td>操作</td>
               </thead>
               <tr v-if="historyFontData.length === 0">
-                <td colspan="6">暂无历史申报数据</td>
+                <td colspan="7">暂无历史申报数据</td>
               </tr>
-              <tr v-for="(item,index) in historyFontData" v-else :key="index">
+              <tr v-for="(item,index) in showHistoryFontData" v-else :key="index">
+                <td>{{(currentPage-1)*pageSize + index+1}}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.isFirstFont ? "是" : "否" }}</td>
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
                 <td>
-                  <span style="color: #515A6E" v-show="item.checkState === 3">已完成</span>
-                  <span style="color: #515A6E" v-show="item.checkState === 4">已撤销</span>
-                  <span style="color: #515A6E" v-show="item.checkState === 5">已驳回</span>
+                  <el-tag style="font-size: 16px" v-show="item.checkState === 3" type="success">已完成</el-tag>
+                  <el-tag style="font-size: 16px" v-show="item.checkState === 4">已撤销</el-tag>
+                  <el-tag style="font-size: 16px" v-show="item.checkState === 5" type="danger">已驳回</el-tag>
+<!--                  <span style="color: #515A6E" v-show="item.checkState === 3">已完成</span>-->
+<!--                  <span style="color: #515A6E" v-show="item.checkState === 4">已撤销</span>-->
+<!--                  <span style="color: #515A6E" v-show="item.checkState === 5">已驳回</span>-->
                 </td>
-                <td>
+                <td width="280px">
+                  <el-button type="primary" @click="seefont (item)">查看申报</el-button>
+<!--                  <span>-->
+<!--                    <a ></a>-->
+<!--                  </span>-->
                   <span>
-                    <a @click="seefont (item)">查看申报</a>
+                    <el-button type="primary" v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</el-button>
+                    <el-button type="primary" disabled v-else>查看总结</el-button>
                   </span>
-                  <span>
-                    <a v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</a>
-                    <span v-else style="color: #515A6E">查看总结</span>
-                  </span>
-                  <span>
-                    <a @click="seeHandleRecord(item.id)">处理记录</a>
-                  </span>
+                  <el-button type="primary" @click="seeHandleRecord(item.id)">处理记录</el-button>
                 </td>
               </tr>
             </table>
           </div>
+        </div>
+        <div class="pagination">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 20, 50]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next"
+            :total="historyFontData.length">
+          </el-pagination>
         </div>
       </div>
       <el-dialog
@@ -118,12 +129,23 @@
             <el-card>
               <span>处理意见：{{record.content}}</span>
               <span>
-                <a style="margin-left: 15px" @click="downloadFile(record.fileId)">
+                <a style="margin-left: 15px" @click="downloadFile(record)">
                   <img style="height: 30px;width: 30px" :src="downloadIcon" alt="">
                   点击下载附件
                 </a>
               </span>
+              <el-popover
+                placement="bottom"
+                trigger="manual"
+                width="60px"
+                content="正在下载附件..."
+                :visible-arrow="true"
+                offset="0"
+                v-model="record.isDownloading">
+<!--                <el-button slot="reference" @click="visible = !visible">手动激活</el-button>-->
+              </el-popover>
             </el-card>
+
           </el-timeline-item>
         </el-timeline>
         <span slot="footer" class="dialog-footer">
@@ -156,6 +178,11 @@ export default {
       handleRecord: [],
       hasCurrentFont: false,
       currentFont: {},
+      pageSize: 5,
+      currentPage: 1,
+      showHistoryFontData: [],
+      visible: false,
+      loading: ""
     }
   },
   created () {
@@ -165,12 +192,6 @@ export default {
     isFirstFont () {
       return typeof (this.$store.state.isFirstFont) === "string" ? JSON.parse(this.$store.state.isFirstFont):this.$store.state.isFirstFont
     },
-    // hasCurrentFont () {
-    //   return typeof (this.$store.state.hasCurrentFont) === "string" ? JSON.parse(this.$store.state.hasCurrentFont):this.$store.state.hasCurrentFont
-    // },
-    // currentFont () {
-    //   return typeof (this.$store.state.currentFont) === "string" ? JSON.parse(this.$store.state.currentFont):this.$store.state.currentFont
-    // },
     place () {
       return this.currentFont.chooseCity + "-" + this.currentFont.place
     },
@@ -221,6 +242,7 @@ export default {
               that.$store.dispatch("setCurrentFont", item)
             }
           }
+          console.log(that.historyFontData)
           getAllNotFirstFontData(that.$store.state.token).then(res => {
             console.log(res.data)
             if (res.data.length === 0) {
@@ -238,6 +260,7 @@ export default {
                 }
               }
             }
+            that.showHistoryFontData = that.historyFontData.slice(0, that.currentPage*that.pageSize)
           })
         }
       })
@@ -283,11 +306,19 @@ export default {
       getHandleRecord(id).then(res => {
         console.log(res.data)
         this.handleRecord = res.data
+        this.handleRecord.forEach((record) => {
+          Vue.set(record, "isDownloading", false)
+          let date = new Date(record.createTime)
+          let targetTime = new Date(date.getTime() + 8*60*60*1000)
+          let showTime = targetTime.getFullYear()+"-"+ (targetTime.getMonth()+1).toString() +"-"+targetTime.getDate()+" "+targetTime.getHours()+":"+targetTime.getMinutes()+":"+targetTime.getSeconds()
+          Vue.set(record, "createTime", showTime)
+        })
         this.handleRecordDialogVisible = true
       })
     },
-    downloadFile (fileId) {
-      downloadFile(fileId).then(res => {
+    downloadFile (record) {
+      Vue.set(record, "isDownloading", true)
+      downloadFile(record.fileId).then(res => {
         console.log(res);
         const blob = new Blob([res]); //处理文档流
         const fileName =  "处理意见.pdf";
@@ -300,6 +331,10 @@ export default {
         elink.click();
         URL.revokeObjectURL(elink.href); // 释放URL 对象
         document.body.removeChild(elink);
+        Vue.set(record, "isDownloading", false)
+      }).catch(() => {
+        Vue.set(record, "isDownloading", false)
+        this.$message.error("下载失败，请重试")
       })
     },
     seefont (font) {
@@ -334,9 +369,16 @@ export default {
     handIn() {
       this.$router.push('/handin')
     },
-    fontView() {
-      this.$router.push('/easyfontview')
+    handleSizeChange (val) {
+      console.log("每页",val);
+      this.pageSize = val
+      this.showHistoryFontData = this.historyFontData.slice(0, this.currentPage*this.pageSize)
     },
+    handleCurrentChange (val) {
+      console.log("当前页",val)
+      this.currentPage = val
+      this.showHistoryFontData = this.historyFontData.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize)
+    }
   },
 }
 </script>
@@ -356,27 +398,32 @@ export default {
   p{
     font-size: 24px;
     color: black;
-    margin: 50px 0px 20px 60px;
+    margin: 30px 0px 20px 20px;
   }
   .current-font-data{
     font-size: 16px;
-    width: 90%;
+    width: 95%;
     height: 120px;
-    margin-left: 60px;
+    margin-left: 20px;
     table{
       width: 100%;
       text-align: center;
+      thead{
+        font-size: 20px;
+        height: 60px;
+        font-weight: bold;
+      }
       tr{
         height: 50px;
         tr :last-child{
           display: flex;
           justify-content: center;
         }
-        td{
-          span{
-            color: #409EFF;
-          }
-        }
+        /*td{*/
+        /*  span{*/
+        /*    color: #409EFF;*/
+        /*  }*/
+        /*}*/
       }
     }
   }
@@ -408,18 +455,18 @@ export default {
   p{
     font-size: 24px;
     color: black;
-    margin: 50px 0px 20px ;
+    margin: 30px 0px 20px ;
   }
   font-size: 16px;
-  width: 90%;
+  width: 95%;
   //height: 120px;
-  margin-left: 60px;
+  margin-left: 20px;
   padding-bottom: 40px;
   table{
     width: 100%;
     text-align: center;
     thead{
-      font-size: 22px;
+      font-size: 20px;
       height: 60px;
       font-weight: bold;
     }
@@ -429,12 +476,27 @@ export default {
         display: flex;
         justify-content: center;
       }
-      td{
-        span{
-          color: #409EFF;
-        }
-      }
     }
   }
+}
+.pagination{
+  float: right;
+  margin: 20px 0px;
+}
+.el-button{
+  padding: 10px 12px !important;
+}
+.el-popover{
+  right: 0 !important;
+  bottom: -32px !important;
+  border-radius: 20px !important;
+  background: #0bbd87 !important;
+  min-width: 80px !important;
+  /* min-width: 150px; */
+  /*padding: 12px !important;*/
+  color: #fff !important;
+}
+.el-popover--plain{
+  padding: 5px 20px !important;
 }
 </style>

@@ -4,7 +4,8 @@
       <el-row>
         <el-col :span="11" style="margin: 0 50px">
           <div class="helpinfo">
-            <p><font class="hptext">请省部级单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改</font></p>
+            <p><font class="hptext">请省部级单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
+            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
           </div>
         </el-col>
         <el-col :span="11">
@@ -40,14 +41,15 @@
               <label class="xrequired">宣传媒体数</label>
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额（万元）</label>
-              <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
+            <el-form-item prop="buyerNum">
+              <label class="xrequired">采购商数量</label>
+              <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="onlineViewer">
-              <label class="xrequired">线上参展人数</label>
-              <el-input type="number" ref="onlineViewer" v-model="declareForm.onlineViewer" auto-complete="off" placeholder=""></el-input>
+            <el-form-item prop="activityNum">
+              <label class="xrequired">同期活动数量</label>
+              <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
+
             <el-form-item prop="nextWorkPlan">
               <label class="xrequired">下一步工作计划(200字以内)</label>
               <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
@@ -58,15 +60,15 @@
               <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
                         placeholder=""></el-input>
             </el-form-item>
+            <el-form-item prop="writeObject">
+              <label class="xrequired">填报单位</label>
+              <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
+            </el-form-item>
             <el-form-item prop="department">
               <label class="xrequired">责任处室</label>
               <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="teleNum">
-              <label class="xrequired">负责人手机号</label>
-              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
-                        oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
-            </el-form-item>
+
             <el-form-item style="padding-bottom:30px">
               <div style="float:left">
                 <label class="xrequired">总结报告全文</label><br/>
@@ -93,31 +95,16 @@
                   <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                 </el-checkbox-group>
               </div>
+            </el-form-item>
+            <el-form-item prop="onlineTurnover">
+              <label class="xrequired">线上成交额（万元）</label>
+              <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item prop="onlineViewer">
+              <label class="xrequired">线上参展人数</label>
+              <el-input type="number" ref="onlineViewer" v-model="declareForm.onlineViewer" auto-complete="off" placeholder=""></el-input>
+            </el-form-item>
 
-<!--                <el-dropdown trigger="click" :hide-on-click='false'>-->
-<!--                  <span class="el-dropdown-linkk" ref="checkedCities">-->
-<!--                    选择参与地区<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--                  </span>-->
-<!--                  <el-dropdown-menu slot="dropdown">-->
-<!--                    <el-dropdown-item >-->
-<!--                      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
-<!--&lt;!&ndash;                      <div style="margin: 15px 0;"></div>&ndash;&gt;-->
-<!--                      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-<!--                        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>-->
-<!--                      </el-checkbox-group>-->
-<!--                    </el-dropdown-item>-->
-<!--                  </el-dropdown-menu>-->
-<!--                </el-dropdown>-->
-<!--              </el-col>-->
-            </el-form-item>
-            <el-form-item prop="buyerNum">
-              <label class="xrequired">采购商数量</label>
-              <el-input type="number" ref=" buyerNum" v-model="declareForm.buyerNum" auto-complete="off" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item prop="activityNum">
-              <label class="xrequired">同期活动数量</label>
-              <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
-            </el-form-item>
             <el-form-item prop="turnover">
               <label class="xrequired">线下成交额（含意向）（万元）</label>
               <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
@@ -127,13 +114,15 @@
               <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
 
-            <el-form-item prop="writeObject">
-              <label class="xrequired">填报单位</label>
-              <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
-            </el-form-item>
+
             <el-form-item prop="charger">
               <label class="xrequired">处室负责人</label>
               <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item prop="teleNum">
+              <label class="xrequired">负责人手机号</label>
+              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
+                        oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
             </el-form-item>
           </el-col>
         </el-form>
@@ -191,15 +180,9 @@ export default {
     };
   },
   created() {
-    console.log(this.id)
-    this.getLatestSummaryData(this.id)
+
   },
   methods: {
-    getLatestSummaryData (id) {
-      getLatestSummary(id).then(res => {
-        console.log(res);
-      })
-    },
     returnMainIndex() {
       this.$router.back()
     },
@@ -214,113 +197,129 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
     declareFormed() {
-      if (!this.declareForm.detailId) {
-        warningOpen("请填写展会名称");
-        this.$refs.detailId.focus();
-        return false;
-      }
       if (!this.declareForm.area) {
-        warningOpen("请填写展览面积");
+        this.$message.error("请填写展览面积");
         this.$refs.area.focus();
         return false;
       }
       if (!this.declareForm.countryNum) {
-        warningOpen("请填写参展国家和地区数量");
+        this.$message.error("请填写参展国家和地区数量");
         this.$refs.countryNum.focus();
         return false;
       }
       if (!this.checkedCities.length) {
-        warningOpen("请填写参展省市自治区情况");
+        this.$message.error("请填写参展省市自治区情况");
         this.$refs.checkedCities.focus();
         return false;
       }
       if (!this.declareForm.companyNum) {
-        warningOpen("请填写参展企业数量");
+        this.$message.error("请填写参展企业数量");
         this.$refs.companyNum.focus();
         return false;
       }
       if (!this.declareForm.buyerNum) {
-        warningOpen("请填写采购商数量");
+        this.$message.error("请填写采购商数量");
         this.$refs.buyerNum.focus();
         return false;
       }
       if (!this.declareForm.displayObj) {
-        warningOpen("请填写参展产品数量");
+        this.$message.error("请填写参展产品数量");
         this.$refs.displayObj.focus();
         return false;
       }
       if (!this.declareForm.activityNum) {
-        warningOpen("请填写同期活动数量");
+        this.$message.error("请填写同期活动数量");
         this.$refs.activityNum.focus();
         return false;
       }
       if (!this.declareForm.mediaNum) {
-        warningOpen("请填写宣传媒体数");
+        this.$message.error("请填写宣传媒体数");
         this.$refs.mediaNum.focus();
         return false;
       }
       if (!this.declareForm.turnover) {
-        warningOpen("请填写线下成交额");
+        this.$message.error("请填写线下成交额");
         this.$refs.turnover.focus();
         return false;
       }
       if (!this.declareForm.onlineTurnover) {
-        warningOpen("请填写线上成交额");
+        this.$message.error("请填写线上成交额");
         this.$refs.onlineTurnover.focus();
         return false;
       }
       if (!this.declareForm.viewerNum) {
-        warningOpen("请填写线下参展人数");
+        this.$message.error("请填写线下参展人数");
         this.$refs.viewerNum.focus();
         return false;
       }
       if (!this.declareForm.onlineViewer) {
-        warningOpen("请填写线上参展人数");
+        this.$message.error("请填写线上参展人数");
         this.$refs.onlineViewer.focus();
         return false;
       }
       if (!this.declareForm.meetHighlight) {
-        warningOpen("请填写展会亮点");
+        this.$message.error("请填写展会亮点");
         this.$refs.meetHighlight.focus();
         return false;
       }
       if (!this.declareForm.nextWorkPlan) {
-        warningOpen("请填写下一步工作计划");
+        this.$message.error("请填写下一步工作计划");
         this.$refs.nextWorkPlan.focus();
         return false;
       }
       if (!this.declareForm.writeObject) {
-        warningOpen("请填写填报单位");
+        this.$message.error("请填写填报单位");
         this.$refs.writeObject.focus();
         return false;
       }
       if (!this.declareForm.department) {
-        warningOpen("请填写责任处室");
+        this.$message.error("请填写责任处室");
         this.$refs.department.focus();
         return false;
       }
       if (!this.declareForm.charger) {
-        warningOpen("请填写处室负责人");
+        this.$message.error("请填写处室负责人");
         this.$refs.charger.focus();
         return false;
       }
       if (!this.declareForm.teleNum) {
-        warningOpen("请填写负责人手机号");
+        this.$message.error("请填写负责人手机号");
+        this.$refs.teleNum.focus();
+        return false;
+      }
+      if (this.declareForm.teleNum.length !== 8 && this.declareForm.teleNum.length !== 11) {
+        this.$message.error("负责人手机号请填写8或11位数字");
         this.$refs.teleNum.focus();
         return false;
       }
       let ip1 = this.$refs.summaryFile;
       let ip2 = this.$refs.hosterSignFile;
-
-
       var formdata = new FormData();
       if (!ip1.files[0]) {
-        warningOpen("请提交总结报告全文");
+        this.$message.error("请提交总结报告全文文件");
+        this.$refs.summaryFile.focus();
+        return false;
+      }
+      if (ip1.files[0].size/1024/1024 > 10){
+        this.$message({
+          showClose: true,
+          message: "上传的文件过大，请重新上传！",
+          type: "error",
+        });
         this.$refs.summaryFile.focus();
         return false;
       }
       if (!ip2.files[0]) {
-        warningOpen("请提交总结报告全文");
+        this.$message.error("请提交单位主要负责同志签发页");
+        this.$refs.hosterSignFile.focus();
+        return false;
+      }
+      if (ip2.files[0].size/1024/1024 > 10){
+        this.$message({
+          showClose: true,
+          message: "上传的文件过大，请重新上传！",
+          type: "error",
+        });
         this.$refs.hosterSignFile.focus();
         return false;
       }
@@ -444,13 +443,14 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 .helpinfo {
   background-color: rgba(70, 130, 180, 0.1);
   transform: translateY(24%);
-  margin: 10px 10px 10px 0px;
+  margin: 10px 10px 50px 0px;
   padding: 10px;
   //width: 100%;
   font-size: 16px;
 }
 .hptext {
-  color: rgba(70, 130, 180, 0.9);
+  color: rgba(80, 144,53, 1);
+  font-family: 微软雅黑;
 }
 
 .wrtext {
