@@ -29,6 +29,7 @@
           :current="1"
           show-total
           show-sizer
+          :page-size-opts = [10,20,50,100]
           @on-change="changePage"
           @on-page-size-change="changePageSize"
         ></Page>
