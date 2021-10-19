@@ -6,6 +6,8 @@
       :context="self"
       :nextPath="nextPath"
       size="large"
+      @on-selection-change="changeChecked"
+      ref="table"
     ></Table>
     <el-dialog
       title="审核历史记录查看"
@@ -72,7 +74,6 @@ export default {
       }
     },
     checkType: {
-      type: String,
       default () {
         return "1"
       }
@@ -85,6 +86,7 @@ export default {
       pageSize: 10,
       showHandleHistory: false,
       handleRecords: [],
+      selection: [],
       columns1: [
         {
           type: "selection",
@@ -248,6 +250,23 @@ export default {
     }
   },
   methods: {
+    changeChecked (a) {
+      this.selection = a
+    },
+    downCSV () {
+      if (this.selection.length <= 0) {
+        this.$notify.error({
+          title: "警告",
+          message: "请至少选择一条数据进行导出"
+        })
+        return
+      }
+      this.$refs.table.exportCsv({
+        filename: "申报记录",
+        columns: this.columns1.filter((col, index) => index > 1 && index < 8),
+        data: this.selection
+      })
+    },
     changePageSize (size) {
       this.pageSize = size
       this.changePage(1)

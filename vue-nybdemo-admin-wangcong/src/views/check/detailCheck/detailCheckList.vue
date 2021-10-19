@@ -16,12 +16,12 @@
         placeholder="请输入展会简称"
         style="width: 200px; margin-right: 48px"
       ></el-input>
-      <h3 style="margin-right: 16px">主办方</h3>
+      <!-- <h3 style="margin-right: 16px">主办方</h3>
       <el-input
         v-model="hostComp"
         placeholder="请输入主办方"
         style="width: 200px"
-      ></el-input>
+      ></el-input> -->
     </div>
     <div class="search-button">
       <el-button
@@ -33,6 +33,7 @@
       >
       <el-button size="small" @click="reset">重置</el-button>
       </div>
+
     </div>
     <div class="filter-state">
       <h3 class="title">申报状态</h3>
@@ -58,12 +59,16 @@
         <el-radio label="1" border>首次申报</el-radio>
         <el-radio label="2" border>再次申报</el-radio>
       </el-radio-group>
+      <div class="export">
+            <el-button size="small" @click="exportCsv">导出所选申报记录</el-button>
+      </div>
     </div>
     </el-card>
     <bea-table
       :data="datalist"
       :nextPath="nextPath"
       :checkType="checkType"
+      ref = "bee_table"
     ></bea-table>
   </div>
 </template>
@@ -93,7 +98,7 @@ export default {
   data () {
     // 这里存放数据
     return {
-      // isshow: true,
+      // selection: false,
       detailForm: [],
       easyForm: [],
       datalist: [],
@@ -109,11 +114,15 @@ export default {
     }
   },
   // 监听属性 类似于data概念
-  computed: {},
+  computed: {
+  },
   // 监控data中的数据变化
   watch: {},
   // 方法集合
   methods: {
+    exportCsv () {
+      this.$refs.bee_table.downCSV()
+    },
     async getdetailList () {
       await getdetailFormdata().then((res) => {
         this.detailForm = res.data
@@ -230,6 +239,9 @@ export default {
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   async created () {
+    if (this.$refs.bee_table) {
+      this.selection = this.$refs.bee_table.selection
+    }
     this.checkType = this.$route.query.value ? this.$route.query.value : "1"
     await this.getdetailList()
     await this.getEasyList()
@@ -242,7 +254,8 @@ export default {
     this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted () {},
+  mounted () {
+  },
   beforeCreate () {}, // 生命周期 - 创建之前
   beforeMount () {}, // 生命周期 - 挂载之前
   beforeUpdate () {}, // 生命周期 - 更新之前
@@ -286,6 +299,7 @@ export default {
 .check-type {
   display: flex;
   align-items: center;
+  position: relative;
   // margin-bottom: 16px;
 }
 
@@ -294,5 +308,9 @@ export default {
   .el-card__body {
   padding: 6px 10px !important;
 }
+}
+.export {
+  position: absolute;
+  right: 10px;
 }
 </style>
