@@ -9,7 +9,7 @@ import Cookies from "js-cookie"
 import NProgress from "nprogress"
 import { Message } from "element-ui"
 // axios默认配置
-axios.defaults.timeout = 60*1000 // 超时时间
+axios.defaults.timeout = 30*1000 // 超时时间
 axios.defaults.baseURL = process.env.API_HOST
 
 // http request 拦截器
