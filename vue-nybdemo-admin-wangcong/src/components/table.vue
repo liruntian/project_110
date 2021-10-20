@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import Vue from "vue"
 import { historyHandles, checkPassDetail } from "../network/detailCheck"
 import { checkPassEasy } from "../network/easyCheck"
 export default {
@@ -338,6 +339,12 @@ export default {
       this.showHandleHistory = true
       historyHandles(id).then((res) => {
         this.handleRecords = res.data
+        this.handleRecords.forEach((record) => {
+          let date = new Date(record.createTime)
+          let targetTime = new Date(date.getTime() + 8*60*60*1000)
+          let showTime = targetTime.getFullYear()+"-"+ (targetTime.getMonth()+1).toString() +"-"+targetTime.getDate()+" "+targetTime.getHours()+":"+targetTime.getMinutes()+":"+targetTime.getSeconds()
+          Vue.set(record, "createTime", showTime)
+        })
       })
     }
   }
