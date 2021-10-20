@@ -123,12 +123,12 @@ export default {
         height: 50px;
         line-height: 50px;
         text-align: center;
-        font-size: 28px;
+        font-size: 22px;
         color: rgba(255,255,255,0.6);
       }
     }
     .el-menu-vertical:not(.el-menu--collapse) {
-      width: 260px;
+      width: 200px;
       @extend %h100;
       overflow-y: scroll;
       overflow-x: hidden;
@@ -150,7 +150,7 @@ export default {
       }
       .el-menu-item {
         background-color: #020f1d !important;
-        font-size: 22px;
+        font-size: 18px;
         border-bottom: 1px solid #020f1d;
         &:hover {
           color: #ffffff !important;

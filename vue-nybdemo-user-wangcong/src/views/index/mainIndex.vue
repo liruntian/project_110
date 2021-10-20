@@ -2,63 +2,89 @@
   <div class="main">
     <div class="all-info">
       <div class="current-font">
-        <div class="new-font">
-          <p>进行中申报</p>
+<!--        <div class="new-font">-->
+<!--          <p>进行中申报</p>-->
           <a class="new-font-btn" v-if="!hasCurrentFont" @click="newFont()">
             <img :src="addBtn" alt="">
             <span>新建申报</span>
           </a>
           <div class="current-font-data" v-else>
-            <table border="1" cellspacing="0">
-              <thead>
-                <td>展会名称</td>
-                <td width="60px">首次</br>申报</td>
-                <td>举办地点</td>
-                <td>举办时间</td>
-                <td width="90px">申报</br>状态</td>
-                <td width="390px">操作</td>
-              </thead>
-              <tr>
-                <td>{{ currentFont.name }}</td>
-                <td>{{ currentFont.isFirstFont ? "是" : "否" }}</td>
-                <td>{{ place }}</td>
-                <td>{{ time }}</td>
-                <td style="color: #515A6E">{{ checkState }}</td>
-                <td>
-                  <el-button type="primary" @click="seefont (currentFont)">查看申报</el-button>
-                  <span>
-                    <el-button type="primary" v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤回</el-button>
-                    <el-button type="primary" disabled v-else>撤回</el-button>
-                  </span>
-                  <span>
-                    <el-button type="primary" v-if="currentFont.checkState === 2" @click="modifyFont()">修改</el-button>
-                    <el-button type="primary" disabled v-else>修改</el-button>
-                  </span>
-                  <span>
-                    <el-button type="primary" v-if="currentFont.checkState === 1" @click="handinSummary()">填写总结</el-button>
-                    <el-button type="primary" disabled v-else>填写总结</el-button>
-                  </span>
-                  <el-button type="primary" @click="seeHandleRecord(currentFont.id)">处理记录</el-button>
-                </td>
-              </tr>
-            </table>
+              <div class="title">
+                <img :src="onGoing" alt="">
+                <div>进行中的申报</div>
+              </div>
+              <table border="1" cellspacing="0">
+                <tr>
+                  <td class="table-des-head">
+                    <img style="height: 26px" :src="state" alt="">
+                    <div>申报状态</div>
+                  </td>
+                  <td>
+                    <el-tag style="font-size: 16px" v-show="checkState === 1" type="success">待总结</el-tag>
+                    <el-tag style="font-size: 16px" v-show="checkState === 0">待审核</el-tag>
+                    <el-tag style="font-size: 16px" v-show="checkState === 2" type="danger">待修改</el-tag>
+                  </td>
+                  <td class="table-des-head">
+                    <img style="height: 26px" :src="timeIcon" alt="">
+                    <div>举办时间</div>
+                  </td>
+                  <td style="width: 240px;color: #606266">{{ time }}</td>
+                  <td class="table-des-head">
+                    <img style="height: 26px" :src="placeIcon" alt="">
+                    <div>举办地点</div>
+                  </td>
+                  <td style="color: #606266">{{ place }}</td>
+                </tr>
+                <tr>
+                  <td class="table-des-head">
+                    <img style="height: 20px" :src="firstTime" alt="">
+                    <div>首次申报</div>
+                  </td>
+                  <td style="color: #606266">{{ currentFont.isFirstFont ? "是" : "否" }}</td>
+                  <td class="table-des-head">
+                    <img style="height: 20px" :src="operation" alt="">
+                    <div>操&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作</div>
+                  </td>
+                  <td colspan="3">
+                    <el-button type="primary" @click="seefont (currentFont)">查看申报</el-button>
+                    <span style="margin-left: 20px">
+                      <el-button type="primary" v-if="currentFont.checkState === 0" @click="centerCancelDialogVisible = true">撤&nbsp;&nbsp;&nbsp;&nbsp;回</el-button>
+                      <el-button type="primary" disabled v-else>撤&nbsp;&nbsp;&nbsp;&nbsp;回</el-button>
+                    </span>
+                    <span style="margin-left: 20px">
+                      <el-button type="primary" v-if="currentFont.checkState === 2" @click="modifyFont()">修&nbsp;&nbsp;&nbsp;&nbsp;改</el-button>
+                      <el-button type="primary" disabled v-else>修&nbsp;&nbsp;&nbsp;&nbsp;改</el-button>
+                    </span>
+                    <span style="margin-left: 20px">
+                      <el-button type="primary" v-if="currentFont.checkState === 1" @click="handinSummary()">填写总结</el-button>
+                      <el-button type="primary" disabled v-else>填写总结</el-button>
+                    </span>
+                    <el-button style="margin-left: 20px" type="primary" @click="seeHandleRecord(currentFont.id)">处理记录</el-button>
+                  </td>
+                </tr>
+              </table>
+<!--            </el-card>-->
           </div>
-        </div>
+<!--        </div>-->
       </div>
       <div class="history-font">
         <div>
-          <p>历史申报</p>
+<!--          <p>历史申报</p>-->
+          <div class="title">
+            <img :src="history" alt="">
+            <div>历史申报</div>
+          </div>
           <div class="history-font-data">
-            <table border="1" cellspacing="0">
-              <thead>
+            <table  cellspacing="0">
+              <tr class="table-head">
                 <td width="60px">#</td>
                 <td>展会名称</td>
                 <td width="60px">首次</br>申报</td>
                 <td>举办地点</td>
                 <td>举办时间</td>
                 <td width="90px">申报</br>状态</td>
-                <td>操作</td>
-              </thead>
+                <td width="300px">操作</td>
+              </tr>
               <tr v-if="historyFontData.length === 0">
                 <td colspan="7">暂无历史申报数据</td>
               </tr>
@@ -69,23 +95,19 @@
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
                 <td>
-                  <el-tag style="font-size: 16px" v-show="item.checkState === 3" type="success">已完成</el-tag>
-                  <el-tag style="font-size: 16px" v-show="item.checkState === 4">已撤销</el-tag>
-                  <el-tag style="font-size: 16px" v-show="item.checkState === 5" type="danger">已驳回</el-tag>
-<!--                  <span style="color: #515A6E" v-show="item.checkState === 3">已完成</span>-->
-<!--                  <span style="color: #515A6E" v-show="item.checkState === 4">已撤销</span>-->
-<!--                  <span style="color: #515A6E" v-show="item.checkState === 5">已驳回</span>-->
+                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 3" type="success">已完成</el-tag>
+                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 4">已撤销</el-tag>
+                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 5" type="danger">已驳回</el-tag>
                 </td>
-                <td width="280px">
-                  <el-button type="primary" @click="seefont (item)">查看申报</el-button>
-<!--                  <span>-->
-<!--                    <a ></a>-->
-<!--                  </span>-->
-                  <span>
-                    <el-button type="primary" v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</el-button>
-                    <el-button type="primary" disabled v-else>查看总结</el-button>
+                <td>
+                  <span class="operationBtn">
+                    <el-button class="operationBtn" type="primary" @click="seefont (item)">查看申报</el-button>
                   </span>
-                  <el-button type="primary" @click="seeHandleRecord(item.id)">处理记录</el-button>
+                  <span>
+                    <el-button class="operationBtn" type="primary" v-if="item.checkState === 3" @click="seeSummary(item.id)">查看总结</el-button>
+                    <el-button class="operationBtn" type="primary" disabled v-else>查看总结</el-button>
+                  </span>
+                  <el-button class="operationBtn" type="primary" @click="seeHandleRecord(item.id)">处理记录</el-button>
                 </td>
               </tr>
             </table>
@@ -172,6 +194,13 @@ export default {
     return {
       addBtn: require('../../assets/icons/add_btn.svg'),
       downloadIcon: require('../../assets/icons/file.svg'),
+      onGoing: require('../../assets/icons/ongoing.svg'),
+      history: require('../../assets/icons/history.svg'),
+      state: require('../../assets/icons/state.svg'),
+      timeIcon: require('../../assets/icons/time_icon.svg'),
+      placeIcon: require('../../assets/icons/place_icon.svg'),
+      operation: require('../../assets/icons/operation.svg'),
+      firstTime: require('../../assets/icons/first_time.svg'),
       historyFontData: [],
       centerCancelDialogVisible: false,
       handleRecordDialogVisible: false,
@@ -199,22 +228,22 @@ export default {
       return this.currentFont.startTime.slice(0, 10) + " 至 " + this.currentFont.endTime.slice(0, 10)
     },
     checkState () {
-      let checkState = ""
-      switch (this.currentFont.checkState) {
-        case 0:
-          checkState = "待审核"
-            break
-        case 1:
-          checkState = "待总结"
-          break
-        case 2:
-          checkState = "待修改"
-          break
-        case 9:
-          checkState = "草稿"
-          break
-      }
-      return checkState
+      // let checkState = ""
+      // switch (this.currentFont.checkState) {
+      //   case 0:
+      //     checkState = "待审核"
+      //       break
+      //   case 1:
+      //     checkState = "待总结"
+      //     break
+      //   case 2:
+      //     checkState = "待修改"
+      //     break
+      //   case 9:
+      //     checkState = "草稿"
+      //     break
+      // }
+      return this.currentFont.checkState
     }
   },
   methods: {
@@ -395,35 +424,57 @@ export default {
   height: 100%;
 }
 .current-font{
-  p{
-    font-size: 24px;
-    color: black;
-    margin: 30px 0px 20px 20px;
-  }
+  width: 100%;
+  padding: 40px 20px 20px;
   .current-font-data{
     font-size: 16px;
-    width: 95%;
-    height: 120px;
-    margin-left: 20px;
+    width: 100%;
+    height: 180px;
+    /*box-sizing: border-box;*/
+    .title{
+      height: 40px;
+      margin-bottom: 10px;
+      display: flex;
+      img{
+        height: 40px;
+      }
+      div{
+        margin: auto 20px;
+        font-size: 20px;
+        color: #606266;
+        font-weight: bold;
+      }
+    }
+    .table-des-head{
+      background-color: #fafafa;
+      display: flex;
+      height: 50px;
+      justify-content: center;
+      align-items: center;
+      img{
+        /*height: 30px;*/
+      }
+      div{
+        margin-left: 10px;
+      }
+    }
     table{
       width: 100%;
       text-align: center;
-      thead{
-        font-size: 20px;
-        height: 60px;
-        font-weight: bold;
-      }
+      border: 1px solid #ebeef5;
       tr{
-        height: 50px;
-        tr :last-child{
-          display: flex;
-          justify-content: center;
+        td{
+          border: 1px solid #ebeef5;
+          font-size: 18px;
+          color: #909399;
+          .el-tag{
+            font-size: 18px !important;
+          }
+          .el-button{
+            font-size: 16px;
+          }
         }
-        /*td{*/
-        /*  span{*/
-        /*    color: #409EFF;*/
-        /*  }*/
-        /*}*/
+        height: 50px !important;
       }
     }
   }
@@ -444,9 +495,10 @@ export default {
       width: 100px;
     }
     span{
-      font-size: 24px;
+      font-size: 20px;
+      font-weight: bold;
       color: black;
-      margin-left: 30px;
+      margin-left: 20px;
     }
   }
 }
@@ -458,23 +510,49 @@ export default {
     margin: 30px 0px 20px ;
   }
   font-size: 16px;
-  width: 95%;
+  width: 100%;
   //height: 120px;
-  margin-left: 20px;
-  padding-bottom: 40px;
+  /*margin-left: 20px;*/
+  padding:0 20px 40px 20px;
+  .title{
+    height: 40px;
+    margin-bottom: 10px;
+    display: flex;
+    img{
+      height: 35px;
+    }
+    div{
+      margin: auto 20px;
+      font-size: 20px;
+      color: #606266;
+      font-weight: bold;
+    }
+  }
   table{
     width: 100%;
     text-align: center;
-    thead{
-      font-size: 20px;
+    & :hover :not(.operationBtn) {
+      background-color: #ebf7ff;
+    }
+    .operationBtn{
+      span {
+        background: transparent !important;
+      }
+    }
+    .table-head{
+      font-size: 16px;
       height: 60px;
       font-weight: bold;
+      background-color: #f8f8f9;
     }
     tr{
       height: 50px;
       tr :last-child{
         display: flex;
         justify-content: center;
+      }
+      td{
+        border: 1px solid #ebeef5;
       }
     }
   }
@@ -486,14 +564,14 @@ export default {
 .el-button{
   padding: 10px 12px !important;
 }
+
+
 .el-popover{
   right: 0 !important;
   bottom: -32px !important;
   border-radius: 20px !important;
   background: #0bbd87 !important;
   min-width: 80px !important;
-  /* min-width: 150px; */
-  /*padding: 12px !important;*/
   color: #fff !important;
 }
 .el-popover--plain{
