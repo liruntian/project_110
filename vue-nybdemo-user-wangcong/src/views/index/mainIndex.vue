@@ -9,11 +9,11 @@
             <span>新建申报</span>
           </a>
           <div class="current-font-data" v-else>
-              <div class="title">
-                <img :src="onGoing" alt="">
-                <div>进行中的申报</div>
-              </div>
-              <table border="1" cellspacing="0">
+            <div class="title">
+              <img :src="onGoing" alt="">
+              <div>进行中的申报</div>
+            </div>
+            <table border="1" cellspacing="0">
                 <tr>
                   <td class="table-des-head">
                     <img style="height: 26px" :src="state" alt="">
@@ -63,10 +63,15 @@
                   </td>
                 </tr>
               </table>
+            <el-divider style="background-color: #409eff">
+              <img style="height: 35px; padding: 0 0" :src="dividerIcon" alt="">
+            </el-divider>
 <!--            </el-card>-->
           </div>
 <!--        </div>-->
+
       </div>
+
       <div class="history-font">
         <div>
 <!--          <p>历史申报</p>-->
@@ -201,6 +206,7 @@ export default {
       placeIcon: require('../../assets/icons/place_icon.svg'),
       operation: require('../../assets/icons/operation.svg'),
       firstTime: require('../../assets/icons/first_time.svg'),
+      dividerIcon: require('../../assets/icons/divider_icon.svg'),
       historyFontData: [],
       centerCancelDialogVisible: false,
       handleRecordDialogVisible: false,
@@ -429,7 +435,7 @@ export default {
   .current-font-data{
     font-size: 16px;
     width: 100%;
-    height: 180px;
+    height: 220px;
     /*box-sizing: border-box;*/
     .title{
       height: 40px;
@@ -448,12 +454,10 @@ export default {
     .table-des-head{
       background-color: #fafafa;
       display: flex;
+      font-weight: bold;
       height: 50px;
       justify-content: center;
       align-items: center;
-      img{
-        /*height: 30px;*/
-      }
       div{
         margin-left: 10px;
       }
@@ -465,10 +469,10 @@ export default {
       tr{
         td{
           border: 1px solid #ebeef5;
-          font-size: 18px;
-          color: #909399;
+          font-size: 16px;
+          /*color: #909399;*/
           .el-tag{
-            font-size: 18px !important;
+            font-size: 16px !important;
           }
           .el-button{
             font-size: 16px;
@@ -499,6 +503,14 @@ export default {
       font-weight: bold;
       color: black;
       margin-left: 20px;
+    }
+  }
+  .el-divider{
+    background-color: #409eff;
+    margin: 50px 0;
+    .el-divider__text.is-center{
+      padding: 0 0;
+      line-height: 1px;
     }
   }
 }
