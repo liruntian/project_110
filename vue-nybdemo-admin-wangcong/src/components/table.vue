@@ -57,7 +57,7 @@
 </template>
 <script>
 import Vue from "vue"
-import { historyHandles, checkPassDetail } from "../network/detailCheck"
+import { historyHandles, checkPassDetail, getdetailFile } from "../network/detailCheck"
 import { checkPassEasy } from "../network/easyCheck"
 export default {
   inject: ["reload"],
@@ -255,8 +255,8 @@ export default {
     changeChecked (a) {
       this.selection = a
     },
-    downFile (fileId, fileName) {
-      getdetailFile(fileId).then((res) => {
+    async downFile (fileId, fileName) {
+      await getdetailFile(fileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
         const elink = document.createElement("a")
         elink.setAttribute("download", decodeURIComponent(fileName))
@@ -269,12 +269,12 @@ export default {
         document.body.removeChild(elink)
       })
     },
-    downAllFile (a) {
-      downFile(a.authFileId, a.name + "的批准审核文件.pdf")
-      downFile(a.meetPlanFileId, a.name + "的展会工作方案文档.pdf")
-      downFile(a.investmentPlanFileId, a.name + "的招商方案.pdf")
-      downFile(a.feasibilityFileId, a.name + "的可行性报告文档.pdf")
-      downFile(a.conditionStateFileId, a.name + "的承办单位办展条件说明.pdf")
+    async downAllFile (a) {
+      console.log(a.meetPlanFileId);
+      await this.downFile(a.meetPlanFileId, a.name + "的展会工作方案文档.pdf")
+      await this.downFile(a.investmentPlanFileId, a.name + "的招商方案.pdf")
+      await this.downFile(a.feasibilityFileId, a.name + "的可行性报告文档.pdf")
+      await this.downFile(a.conditionStateFileId, a.name + "的承办单位办展条件说明.pdf")
     },
     downCSV () {
       if (this.selection.length <= 0) {
