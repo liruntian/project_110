@@ -27,6 +27,7 @@
                   v-model="loginForm.meetAddr"
                   auto-complete="off"
                   placeholder="请输入登录账号"
+                  @keyup.enter.native="submitForm"
                 ></el-input>
               </el-form-item>
               <el-form-item>
@@ -35,6 +36,7 @@
                   v-model="loginForm.password"
                   auto-complete="off"
                   placeholder="请输入登录密码"
+                  @keyup.enter.native="submitForm"
                 ></el-input>
               </el-form-item>
               <el-form-item>
@@ -81,6 +83,8 @@ export default {
         password: "",
       },
     };
+  },
+  created() {
   },
   methods: {
     submitForm() {

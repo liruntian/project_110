@@ -26,7 +26,7 @@
                 <el-col :span="12">
                   <el-form-item style="margin-top: 20px;" prop="name">
                     <label class="xrequired">展会名称</label>
-                    <el-input type="text" ref="name" v-model="declareForm.name" auto-complete="off"
+                    <el-input type="text" ref="name" disabled v-model="declareForm.name" auto-complete="off"
                               placeholder=""></el-input>
                   </el-form-item>
                   <el-form-item prop="fundComp">

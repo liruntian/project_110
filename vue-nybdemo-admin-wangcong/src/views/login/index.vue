@@ -16,11 +16,20 @@
             </div>
             <el-form :model="loginForm" status-icon label-width="100px" class="demo-ruleForm">
               <el-form-item>
-                <el-input type="text" v-model="loginForm.id" auto-complete="off" placeholder="请输入登录账号"></el-input>
+                <el-input
+                  type="text"
+                  v-model="loginForm.id"
+                  auto-complete="off"
+                  placeholder="请输入登录账号"
+                  @keyup.enter.native="submitForm"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-input type="password" v-model="loginForm.password" auto-complete="off"
-                          placeholder="请输入登录密码"></el-input>
+                <el-input
+                  type="password"
+                  v-model="loginForm.password"
+                  auto-complete="off"
+                  placeholder="请输入登录密码"
+                  @keyup.enter.native="submitForm"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button class="subBtn" type="primary" v-on:click="submitForm">登录</el-button>
