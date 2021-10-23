@@ -115,15 +115,15 @@ export default {
     border-right: solid 1px #e6e6e6;
     .logo-name {
       background-color: #03152A !important;
-      padding-top: 18px;
+      padding-top: 5px;
       @extend %w100;
-      font-weight: bold;
+      /*font-weight: bold;*/
       z-index: 999;
       p {
         height: 50px;
         line-height: 50px;
         text-align: center;
-        font-size: 22px;
+        font-size: 21px;
         color: rgba(255,255,255,0.6);
       }
     }
@@ -146,11 +146,11 @@ export default {
         width: 24px;
         /*height: 30px;*/
         text-align: center;
-        font-size: 18px;
+        font-size: 14px;
       }
       .el-menu-item {
         background-color: #020f1d !important;
-        font-size: 18px;
+        font-size: 14px;
         border-bottom: 1px solid #020f1d;
         &:hover {
           color: #ffffff !important;

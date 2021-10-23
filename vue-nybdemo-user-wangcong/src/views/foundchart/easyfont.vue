@@ -8,10 +8,10 @@
           <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
         </div>
         <div class="function-btns">
-          <el-button round @click="returnMainIndex()" type="primary" >返回</el-button>
-          <el-button round @click="clearForm()" type="danger" style="margin: 0 30px" >重填</el-button>
+          <el-button @click="returnMainIndex()" type="primary" >返回</el-button>
+          <el-button @click="clearForm()" style="margin: 0 20px 0 30px" type="danger">重填</el-button>
 <!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
-          <el-button round class="subBtn" type="success" style="margin-left: 0" v-on:click="declareFormed">提交</el-button>
+          <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
         </div>
       </div>
       <div>
@@ -22,9 +22,9 @@
                 <span>一、基础信息</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[0]">还有必填项未填写!</span>
               </template>
-              <el-row :gutter="40">
+              <el-row>
                 <el-col :span="12">
-                  <el-form-item style="margin-top: 20px;" prop="name">
+                  <el-form-item prop="name">
                     <label class="xrequired">展会名称</label>
                     <el-input type="text" ref="name" disabled v-model="declareForm.name" auto-complete="off"
                               placeholder=""></el-input>
@@ -41,7 +41,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item style="margin-top: 20px" prop="hostComp">
+                  <el-form-item prop="hostComp">
                     <label class="xrequired">主办单位</label>
                     <el-input type="text" ref="hostComp" v-model="declareForm.hostComp" auto-complete="off"
                               placeholder=""></el-input>
@@ -49,7 +49,8 @@
                   <el-form-item prop="supportComp">
                     <label>协办单位</label>
                     <el-input type="text" ref="supportComp" v-model="declareForm.supportComp" auto-complete="off"
-                              placeholder=""></el-input>
+                              placeholder="">
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -59,10 +60,15 @@
                 <span>二、办展依据</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[1]">还有必填项未填写!</span>
               </template>
-              <div class="attention">
-                <p><font class="hptext">注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见</font></p>
+              <div class="attention-tips">
+                <p >
+                  注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见
+                </p>
               </div>
-              <el-row :gutter="40">
+<!--              <div class="attention">-->
+<!--                注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见-->
+<!--              </div>-->
+              <el-row>
                 <el-col :span="12">
                   <el-form-item prop="authObj">
                     <label class="xrequired">批准单位</label>
@@ -81,8 +87,8 @@
               <el-form-item enctype="multipart/form-data">
                 <div class="authorizeFile">
                   <label class="xrequired">
-                    <span style="font-size: 20px" v-if="isFirstFont">批准审核文件</span>
-                    <span style="font-size: 20px" v-else>去年审批文件</span>
+                    <span style="font-size: 16px" v-if="isFirstFont">批准审核文件</span>
+                    <span style="font-size: 16px" v-else>去年审批文件</span>
                   </label><br />
                   <input type="file" ref="authorizeFile" accept=".pdf" name="authorizeFile"></input>
                 </div>
@@ -93,30 +99,44 @@
                 <span>三、举办计划</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[2]">还有必填项未填写!</span>
               </template>
-              <el-row :gutter="40">
-                <el-col :span="12">
-                  <label class="xrequired" style="margin-left: 30px">举办地点</label>
-                  <div  style="display: flex;width: 100%">
-                    <el-form-item prop="chooseCity" style="width: 50%">
-                      <el-cascader
-                        v-model="declareForm.chooseCity"
-                        :options="provinceAndCityData"
-                      >
-                      </el-cascader>
-                    </el-form-item>
-                    <el-form-item prop="place" style="width: 50%">
-                      <el-input type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
-                    </el-form-item>
-                  </div>
-                  <el-form-item prop="area">
-                    <label  class="xrequired">展览面积（m²）</label>
-                    <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off"
-                              placeholder=""></el-input>
+              <el-row>
+                <label class="xrequired" style="margin-left: 30px">举办地点</label>
+                <div  style="display: flex">
+                  <el-form-item prop="chooseCity" style="width: 100%">
+                    <el-cascader
+                      v-model="declareForm.chooseCity"
+                      :options="provinceAndCityData"
+                    >
+                    </el-cascader>
                   </el-form-item>
-                  <el-form-item prop="meetState">
-                    <label  class="xrequired">展会基本情况(100字以内)</label>
-                    <el-input type="textarea" ref="meetState" :maxlength="100" v-model="declareForm.meetState" auto-complete="off"
-                              placeholder="主题、主要内容、展区规划等"></el-input>
+                  <el-form-item prop="place" style="width: 100%">
+                    <el-input type="text" ref="place" v-model="declareForm.place" auto-complete="off" placeholder="具体举办地点，如xx展览中心"></el-input>
+                  </el-form-item>
+                </div>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item prop="Times">
+                    <div style="display: flex;flex-direction: column">
+                      <label class="xrequired">举办时间</label>
+                      <el-date-picker
+                        ref="Times"
+                        v-model="declareForm.Times"
+                        type="datetimerange"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :default-time="['8:00:00', '18:00:00']">
+                      </el-date-picker>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item prop="cycle">
+                    <label class="xrequired">举办周期</label>
+                    <el-input type="number" ref="cycle" v-model="declareForm.cycle" auto-complete="off"
+                              placeholder="">
+                      <template slot="append">年</template>
+                    </el-input>
                   </el-form-item>
                   <el-form-item prop="foreign">
                     <p><label>是否邀请境外有关机构及参展商</label>
@@ -126,44 +146,48 @@
                   </el-form-item>
                   <div style="display: flex; flex-direction: row; width: 100%">
                     <p style="padding-left: 30px;width: 130px"><label class="xrequired" style="width: 120px">观众构成</label></p>
-                    <el-form-item style="width: 40%;margin:5px 0 0 0" prop="view1">
-                      <label style="vertical-align:middle;">是否有采购商参加</label>
-                      <input style="vertical-align:middle;" ref="view1" type="checkbox" v-model="declareForm.view1" name="views" auto-complete="off"
-                             placeholder=""></input>
-                    </el-form-item>
-                    <el-form-item style="width: 40%;margin:5px 0 0 0" prop="view2">
-                      <label style="vertical-align:middle;">是否有消费者参加</label>
-                      <input style="vertical-align:middle;" ref="view2" type="checkbox" v-model="declareForm.view2" name="views" auto-complete="off"
-                             placeholder=""></input>
-                    </el-form-item>
+                    <div class="viewers">
+                      <el-form-item style="margin:5px 0 0 0" prop="view1">
+                        <label style="vertical-align:middle;">是否有采购商参加</label>
+                        <input style="vertical-align:middle;" ref="view1" type="checkbox" v-model="declareForm.view1" name="views" auto-complete="off"
+                               placeholder=""></input>
+                      </el-form-item>
+                      <el-form-item style="margin:5px 0 0 0" prop="view2">
+                        <label style="vertical-align:middle;">是否有消费者参加</label>
+                        <input style="vertical-align:middle;" ref="view2" type="checkbox" v-model="declareForm.view2" name="views" auto-complete="off"
+                               placeholder=""></input>
+                      </el-form-item>
+                    </div>
                   </div>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item prop="Times">
-                    <div style="display: flex;flex-direction: column">
-                      <label class="xrequired">举办时间</label>
-                      <el-date-picker
-                        ref="Times"
-                        v-model="declareForm.Times"
-                        type="datetimerange"
-                        size = 'large'
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :default-time="['8:00:00', '18:00:00']">
-                      </el-date-picker>
-                    </div>
+                  <el-form-item prop="area">
+                    <label  class="xrequired">展览面积</label>
+                    <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder="">
+                      <template slot="append">m²</template>
+                    </el-input>
                   </el-form-item>
-                  <el-form-item prop="cycle">
-                    <label class="xrequired">举办周期（年）</label>
-                    <el-input type="number" ref="cycle" v-model="declareForm.cycle" auto-complete="off"
-                              placeholder=""></el-input>
+                  <el-form-item prop="meetState">
+                    <label  class="xrequired">展会基本情况</label>
+                    <el-input
+                      type="textarea"
+                      ref="meetState"
+                      :maxlength="100"
+                      show-word-limit
+                      v-model="declareForm.meetState" auto-complete="off" placeholder="主题、主要内容、展区规划等"></el-input>
                   </el-form-item>
 
                   <el-form-item prop="activityBrief">
                     <label  class="xrequired">同期活动(200字以内)</label>
-                    <el-input type="textarea" ref="activityBrief" :maxlength="200" v-model="declareForm.activityBrief" auto-complete="off"
-                              placeholder=""></el-input>
+                    <el-input
+                      type="textarea"
+                      ref="activityBrief"
+                      :maxlength="200"
+                      show-word-limit
+                      v-model="declareForm.activityBrief"
+                      auto-complete="off"
+                      placeholder="">
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -173,21 +197,25 @@
                 <span>四、经费来源</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[3]">还有必填项未填写!</span>
               </template>
-              <el-row :gutter="40">
+              <el-row>
                 <el-col :span="12">
                   <el-form-item prop="finanFund">
-                    <label class="xrequired">财政金额（万元）</label>
+                    <label class="xrequired">财政金额</label>
                     <el-input type="number" ref="finanFund" v-model="declareForm.finanFund" auto-complete="off"
                               oninput="if(value.length > 8) value = value.slice(0,8)"
-                              placeholder="填写数字，没有请填0"></el-input>
+                              placeholder="填写数字，没有请填0">
+                      <template slot="append">万元</template>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item prop="selfFund">
-                    <label class="xrequired">自筹金额（万元）</label>
+                    <label class="xrequired">自筹金额</label>
                     <el-input type="number" ref="selfFund" v-model="declareForm.selfFund" auto-complete="off"
                               oninput="if(value.length > 8) value = value.slice(0,8)"
-                              placeholder="填写数字，没有请填0"></el-input>
+                              placeholder="填写数字，没有请填0">
+                      <template slot="append">万元</template>
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -197,56 +225,48 @@
                 <span>五、拟邀请领导情况</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[4]">还有必填项未填写!</span>
               </template>
-              <el-form-item style="margin-bottom: 0" prop="leaderN">
-                <p><label class="xrequired">领导出席情况</label></p>
-                  <p>
-                    <label style="vertical-align:middle;">党和国家领导人</label>
-                    <input style="vertical-align:middle;" ref="leaderN" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderN" name="leaderN" auto-complete="off"
-                           placeholder=""></input>
-                  </p>
-              </el-form-item>
-              <el-form-item style="margin-bottom: 0" prop="leaderD">
-                  <p>
-                    <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
-                    <input style="vertical-align:middle;" ref="leaderD" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderD" name="leaderD" auto-complete="off"
-                           placeholder=""></input>
-                  </p>
-              </el-form-item>
-              <el-form-item style="margin-bottom: 0" prop="leaderP">
-                  <p>
-                    <label style="vertical-align:middle;">省部级以上领导</label>
-                    <input style="vertical-align:middle;" ref="leaderP" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderP" name="leaderP" auto-complete="off"
-                           placeholder=""></input>
-                  </p>
-              </el-form-item>
-              <el-form-item style="margin-bottom: 0" prop="leaderA">
-                  <p>
-                    <label style="vertical-align:middle;">国家级行业协会负责人</label>
-                    <input style="vertical-align:middle;" ref="leaderA" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
-                           placeholder=""></input>
-                  </p>
-              </el-form-item>
-              <el-form-item style="margin-bottom: 0" prop="leaderF">
-                  <p>
-                    <label style="vertical-align:middle;">国外政府官员含驻华使馆</label>
-                    <input style="vertical-align:middle;" ref="leaderF" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
-                           placeholder=""></input>
-                  </p>
-              </el-form-item>
-              <el-form-item style="margin-bottom: 0" prop="leaderNull">
-                <p>
-                  <label style="vertical-align:middle;">无</label>
+              <p style="margin-left: 30px"><label class="xrequired">领导出席情况</label></p>
+              <div style="display: flex; flex-direction: row">
+                <el-form-item style="margin-bottom: 0" prop="leaderN">
+                  <label style="vertical-align:middle;">党和国家领导人</label>
+                  <input style="vertical-align:middle;" ref="leaderN" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderN" name="leaderN" auto-complete="off" placeholder=""></input>
+                </el-form-item>
+                <el-form-item style="margin-bottom: 0" prop="leaderF">
+                  <label style="vertical-align:middle;">国外政府官员含驻华使馆</label>
+                  <input style="vertical-align:middle;" ref="leaderF" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderF" name="leaderF" auto-complete="off"
+                         placeholder=""></input>
+                </el-form-item>
+
+                <el-form-item style="margin-bottom: 0" prop="leaderP">
+                  <label style="vertical-align:middle;">省部级以上领导</label>
+                  <input style="vertical-align:middle;" ref="leaderP" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderP" name="leaderP" auto-complete="off"
+                         placeholder=""></input>
+                </el-form-item>
+              </div>
+              <div style="display: flex; flex-direction: row">
+                <el-form-item style="margin-bottom: 0" prop="leaderA">
+                  <label style="vertical-align:middle;">国家级行业协会负责人</label>
+                  <input style="vertical-align:middle;" ref="leaderA" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderA" name="leaderA" auto-complete="off"
+                         placeholder=""></input>
+                </el-form-item>
+                <el-form-item style="margin-bottom: 0" prop="leaderD">
+                  <label style="vertical-align:middle;">有关司局和事业单位负责人</label>
+                  <input style="vertical-align:middle;" ref="leaderD" type="checkbox" @click="leaderClick()" v-model="declareForm.leaderD" name="leaderD" auto-complete="off" placeholder=""></input>
+                </el-form-item>
+                <el-form-item style="margin-bottom: 0" prop="leaderNull">
+                  <label style="vertical-align:middle; color: #Ff0000">无</label>
                   <input style="vertical-align:middle;" ref="leaderNull" type="checkbox" @click="leaderNullClick()" v-model="declareForm.leaderNull" name="leaderNull" auto-complete="off"
                          placeholder=""></input>
-                </p>
-              </el-form-item>
+                </el-form-item>
+              </div>
+
             </el-collapse-item>
             <el-collapse-item name="6">
               <template slot="title">
                 <span>六、填报单位信息</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[5]">还有必填项未填写!</span>
               </template>
-              <el-row :gutter="40">
+              <el-row>
                 <el-col :span="12">
                   <el-form-item prop="writeObject">
                     <label class="xrequired">填报单位</label>
@@ -960,20 +980,25 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   line-height: 100px;
   margin: 10px 0 10px 50px;
   z-index: 999999;
-  right: 100px;
+  right: 120px;
   position: fixed;
   .el-button{
-    height: 60px;
-    width: 100px;
-    border-radius: 40px;
-    font-size: 20px;
+    /*height: 40px;*/
+    /*width: 60px;*/
+    border-radius: 10px;
+    font-size: 16px;
   }
 }
 .el-collapse{
   margin: 30px 0 40px 0px;
   background-color: #ffffff;
+  /*padding-right: 20px;*/
+  width: 70%;
   display: flex;
   flex-direction: column;
+  .el-form-item{
+    margin-bottom: 0px !important;
+  }
   .el-collapse-item{
     margin-left: 40px;
     .el-collapse-item__header{
@@ -983,7 +1008,8 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     }
   }
   span{
-    font-size: 24px;
+    font-size: 18px;
+    /*font-weight: bold;*/
   }
 }
 .el-input{
@@ -991,13 +1017,14 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   font-size: 18px;
 }
 .attention {
-  /*background-color: lawngreen;*/
   background-color: rgba(70, 130, 180, 0.1);
-  /*color: rgba(80, 144,53, 1);*/
-  /*transform: translateY(24%);*/
   margin: 0px 10px 40px 20px;
   padding: 10px ;
-  width: 90% !important;
+  width: 100% !important;
+  color: rgba(80, 144,53, 1);
+  letter-spacing: 2px;
+  font-size: 20px;
+  font-family: 微软雅黑;
 }
 .hptext {
   /*color: rgba(70, 130, 180, 0.9);*/
@@ -1089,7 +1116,11 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   left: 6px;
 }
 label{
-  font-size: 20px;
+  font-size: 16px;
+  /*color: #68a5ff;*/
+  /*font-weight: bold;*/
+  /*text-align: right;*/
+  /*width: 200px;*/
   .xrequired:after {
     content: "*";
     color: red;
@@ -1099,8 +1130,30 @@ label{
     margin-left: 3px;
   }
 }
+.attention-tips{
+  width: 100%;
+  background-color: rgba(70, 130, 180, 0.1);
+  margin: 0px 10px 0px 30px;
+  padding: 10px 40px 10px 10px;
+  /*box-sizing: inherit;*/
+  p{
+    color: rgba(80, 144,53, 1);
+    letter-spacing: 2px;
+    font-size: 20px;
+    font-family: 微软雅黑;
+    width: 100%;
+  }
+}
 .el-cascader{
   width: 100% !important;
 }
+.el-range-editor.el-input__inner {
+  width: 100% !important;
+}
+  .viewers{
+    .el-form-item__content{
+      margin-left: 0 !important;
+    }
+  }
 </style>
 

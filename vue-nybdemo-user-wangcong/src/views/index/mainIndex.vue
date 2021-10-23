@@ -82,13 +82,13 @@
           <div class="history-font-data">
             <table  cellspacing="0">
               <tr class="table-head">
-                <td width="60px">#</td>
+                <td width="50px">#</td>
                 <td>展会名称</td>
-                <td width="60px">首次</br>申报</td>
+                <td width="70px">首次申报</td>
                 <td>举办地点</td>
-                <td>举办时间</td>
-                <td width="90px">申报</br>状态</td>
-                <td width="300px">操作</td>
+                <td width="190px">举办时间</td>
+                <td width="80px">申报状态</td>
+                <td width="270px">操作</td>
               </tr>
               <tr v-if="historyFontData.length === 0">
                 <td colspan="7">暂无历史申报数据</td>
@@ -100,9 +100,9 @@
                 <td>{{ item.chooseCity + "-" + item.place }}</td>
                 <td>{{ item.startTime.slice(0, 10) + " 至 " + item.endTime.slice(0, 10) }}</td>
                 <td>
-                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 3" type="success">已完成</el-tag>
-                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 4">已撤销</el-tag>
-                  <el-tag class="operationBtn" style="font-size: 16px" v-show="item.checkState === 5" type="danger">已驳回</el-tag>
+                  <el-tag class="operationBtn" style="font-size: 14px" v-show="item.checkState === 3" type="success">已完成</el-tag>
+                  <el-tag class="operationBtn" style="font-size: 14px" v-show="item.checkState === 4">已撤销</el-tag>
+                  <el-tag class="operationBtn" style="font-size: 14px" v-show="item.checkState === 5" type="danger">已驳回</el-tag>
                 </td>
                 <td>
                   <span class="operationBtn">
@@ -431,22 +431,23 @@ export default {
 }
 .current-font{
   width: 100%;
-  padding: 40px 20px 20px;
+  padding: 40px 20px 0;
   .current-font-data{
     font-size: 16px;
     width: 100%;
-    height: 220px;
+    height: 200px;
     /*box-sizing: border-box;*/
     .title{
-      height: 40px;
+      height: 30px;
+      padding-left: 3px;
       margin-bottom: 10px;
       display: flex;
       img{
-        height: 40px;
+        height: 30px;
       }
       div{
-        margin: auto 20px;
-        font-size: 20px;
+        margin: auto 10px;
+        font-size: 16px;
         color: #606266;
         font-weight: bold;
       }
@@ -455,7 +456,7 @@ export default {
       background-color: #fafafa;
       display: flex;
       font-weight: bold;
-      height: 50px;
+      height: 45px;
       justify-content: center;
       align-items: center;
       div{
@@ -469,16 +470,17 @@ export default {
       tr{
         td{
           border: 1px solid #ebeef5;
-          font-size: 16px;
+          font-size: 14px;
           /*color: #909399;*/
           .el-tag{
-            font-size: 16px !important;
+            font-size: 14px !important;
           }
           .el-button{
-            font-size: 16px;
+            font-size: 14px;
+            padding: 8px 10px;
           }
         }
-        height: 50px !important;
+        height: 45px !important;
       }
     }
   }
@@ -486,17 +488,18 @@ export default {
   //  text-align: center;
   //}
   .new-font-btn{
-    height: 120px;
+    height: 100px;
     width: 300px;
-    margin: 0 auto;
+    margin: 0px auto;
+    /*text-align: center;*/
     display: flex;
     justify-content: center;
     align-items: center;
     //border: #8c939d solid 1px;
     box-shadow: 2px 2px 2px 2px #cccdce, -2px -2px 2px 2px #cccdce, 2px -2px 2px 2px #cccdce, -2px 2px 2px 2px #cccdce;
     img{
-      height: 100px;
-      width: 100px;
+      height: 80px;
+      width: 80px;
     }
     span{
       font-size: 20px;
@@ -507,7 +510,8 @@ export default {
   }
   .el-divider{
     background-color: #409eff;
-    margin: 50px 0;
+    margin: 40px 0;
+    /*margin-bottom: 0 !important;*/
     .el-divider__text.is-center{
       padding: 0 0;
       line-height: 1px;
@@ -521,21 +525,22 @@ export default {
     color: black;
     margin: 30px 0px 20px ;
   }
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   //height: 120px;
   /*margin-left: 20px;*/
   padding:0 20px 40px 20px;
   .title{
-    height: 40px;
+    height: 30px;
+    padding-left: 3px;
     margin-bottom: 10px;
     display: flex;
     img{
-      height: 35px;
+      height: 27px;
     }
     div{
-      margin: auto 20px;
-      font-size: 20px;
+      margin: auto 10px;
+      font-size: 16px;
       color: #606266;
       font-weight: bold;
     }
@@ -552,8 +557,8 @@ export default {
       }
     }
     .table-head{
-      font-size: 16px;
-      height: 60px;
+      font-size: 14px;
+      height: 40px;
       font-weight: bold;
       background-color: #f8f8f9;
     }
@@ -565,6 +570,9 @@ export default {
       }
       td{
         border: 1px solid #ebeef5;
+        .el-button{
+          padding: 8px 10px;
+        }
       }
     }
   }
@@ -573,9 +581,7 @@ export default {
   float: right;
   margin: 20px 0px;
 }
-.el-button{
-  padding: 10px 12px !important;
-}
+
 
 
 .el-popover{

@@ -10,24 +10,26 @@
         </el-col>
         <el-col :span="11">
           <div class="function-btns">
-            <el-button round @click="returnMainIndex()" type="primary">返回</el-button>
-            <el-button round @click="clearForm('summaryForm')" type="danger" style="margin: 0 50px">重填</el-button>
+            <el-button @click="returnMainIndex()" type="primary">返回</el-button>
+            <el-button @click="clearForm('summaryForm')" type="danger" style="margin: 0 20px 0 30px">重填</el-button>
 <!--            <el-button @click="newFont()" type="primary">暂存</el-button>-->
-            <el-button round class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
+            <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
           </div>
         </el-col>
       </el-row>
       <el-row :gutter="40" style="margin: 0">
-        <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px" enctype='multipart/form-data'>
+        <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px; width: 75%" enctype='multipart/form-data'>
           <el-col :span="11">
 <!--            <el-form-item prop="detailId">-->
 <!--              <label class="xrequired">展会名称</label>-->
 <!--              <el-input type="text" ref="detailId" v-model="declareForm.detailId"-->
 <!--                        auto-complete="off"></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item prop="area">
-              <label class="xrequired">展览面积（㎡）</label>
-              <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder=""></el-input>
+            <el-form-item prop="area" style="margin-top: 20px">
+              <label class="xrequired">展览面积</label>
+              <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder="">
+                <template slot="append">m²</template>
+              </el-input>
             </el-form-item>
             <el-form-item prop="countryNum">
               <label class="xrequired">参展国家和地区数量</label>
@@ -46,8 +48,10 @@
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
             <el-form-item prop="onlineTurnover">
-              <label class="xrequired">线上成交额（万元）</label>
-              <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder=""></el-input>
+              <label class="xrequired">线上成交额</label>
+              <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder="">
+                <template slot="append">万元</template>
+              </el-input>
             </el-form-item>
             <el-form-item prop="onlineViewer">
               <label class="xrequired">线上参展人数</label>
@@ -55,25 +59,50 @@
             </el-form-item>
             <el-form-item prop="meetHighlight">
               <label class="xrequired">展会亮点(200字以内)</label>
-              <el-input type="textarea" ref="meetHighlight" :maxlength="200" v-model="declareForm.meetHighlight" auto-complete="off"
-                        placeholder=""></el-input>
+              <el-input
+                type="textarea"
+                ref="meetHighlight"
+                :maxlength="200"
+                show-word-limit
+                v-model="declareForm.meetHighlight"
+                auto-complete="off"
+                placeholder="">
+              </el-input>
             </el-form-item>
             <el-form-item prop="nextWorkPlan">
               <label class="xrequired">下一步工作计划(200字以内)</label>
-              <el-input type="textarea" ref="nextWorkPlan" :maxlength="200" v-model="declareForm.nextWorkPlan" auto-complete="off"
-                        placeholder=""></el-input>
+              <el-input
+                type="textarea"
+                ref="nextWorkPlan"
+                :maxlength="200"
+                show-word-limit
+                v-model="declareForm.nextWorkPlan"
+                auto-complete="off"
+                placeholder="">
+              </el-input>
             </el-form-item>
-            <el-form-item prop="department">
-              <label class="xrequired">责任处室</label>
-              <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
+            <el-form-item prop="writeObject">
+              <label class="xrequired">填报单位</label>
+              <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="teleNum">
-              <label class="xrequired">负责人手机号</label>
-              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off" oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
+            <el-form-item prop="charger">
+              <label class="xrequired">处室负责人</label>
+              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item style="padding-bottom:30px">
+              <div style="float:left">
+                <label class="xrequired">总结报告全文</label><br/>
+                <input type="file" ref="summaryFile" style="width: 160px" accept=".pdf" name="summaryFile"></input>
+              </div>
+              <div style="float:right">
+                <label class="xrequired">单位主要负责同志签发页</label><br/>
+                <input type="file" ref="hosterSignFile" style="width: 160px" accept=".pdf" name="hosterSignFile"></input>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="companyNum">
+            <el-form-item prop="companyNum" style="margin-top: 20px">
               <label class="xrequired">参展企业数量</label>
               <el-input type="number" ref="companyNum" v-model="declareForm.companyNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
@@ -88,8 +117,10 @@
               </div>
             </el-form-item>
             <el-form-item prop="turnover">
-              <label class="xrequired">线下成交额（含意向）（万元）</label>
-              <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder=""></el-input>
+              <label class="xrequired">线下成交额（含意向）</label>
+              <el-input type="number" ref="turnover" v-model="declareForm.turnover" auto-complete="off" placeholder="">
+                <template slot="append">万元</template>
+              </el-input>
             </el-form-item>
             <el-form-item prop="viewerNum">
               <label class="xrequired">线下参展人数</label>
@@ -99,23 +130,13 @@
               <label class="xrequired">同期活动数量</label>
               <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="writeObject">
-              <label class="xrequired">填报单位</label>
-              <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
+            <el-form-item prop="department">
+              <label class="xrequired">责任处室</label>
+              <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
             </el-form-item>
-              <el-form-item prop="charger">
-              <label class="xrequired">处室负责人</label>
-              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item style="padding-bottom:30px">
-              <div style="float:left">
-                <label class="xrequired">总结报告全文</label><br/>
-                <input type="file" ref="summaryFile" style="width: 200px" accept=".pdf" name="summaryFile"></input>
-              </div>
-              <div style="float:right">
-                <label class="xrequired">单位主要负责同志签发页</label><br/>
-                <input type="file" ref="hosterSignFile" style="width: 200px" accept=".pdf" name="hosterSignFile"></input>
-              </div>
+            <el-form-item prop="teleNum">
+              <label class="xrequired">负责人手机号</label>
+              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off" oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
             </el-form-item>
           </el-col>
         </el-form>
