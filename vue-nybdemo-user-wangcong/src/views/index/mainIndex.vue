@@ -256,7 +256,8 @@ export default {
     getAllFontData () {
       const that = this
       getAllFirstFontData(that.$store.state.token).then(res => {
-        console.log(res.data);
+        console.log(res)
+        // console.log(res.data);
         this.historyFontData = []
         if (res.data.length === 0) {
           console.log("首次");
@@ -345,7 +346,20 @@ export default {
           Vue.set(record, "isDownloading", false)
           let date = new Date(record.createTime)
           let targetTime = new Date(date.getTime() + 8*60*60*1000)
-          let showTime = targetTime.getFullYear()+"-"+ (targetTime.getMonth()+1).toString() +"-"+targetTime.getDate()+" "+targetTime.getHours()+":"+targetTime.getMinutes()+":"+targetTime.getSeconds()
+          let y = targetTime.getFullYear()
+          let M = (targetTime.getMonth() + 1).toString()
+          M = M < 10 ? "0"+M : M
+          let d = targetTime.getDate()
+          d = d < 10 ? "0" + d : d
+          let h = targetTime.getHours()
+          h = h < 10 ? "0" + h : h
+          let m = targetTime.getMinutes()
+          m = m < 10 ? "0" + m : m
+          let s = targetTime.getSeconds()
+          s = s < 10 ? "0" + s : s
+          let showTime = y+"-"+ M +"-"+d+" "+h+":"+m+":"+s
+
+          // let showTime = targetTime.getFullYear()+"-"+ (targetTime.getMonth()+1).toString() +"-"+targetTime.getDate()+" "+targetTime.getHours()+":"+targetTime.getMinutes()+":"+targetTime.getSeconds()
           Vue.set(record, "createTime", showTime)
         })
         this.handleRecordDialogVisible = true

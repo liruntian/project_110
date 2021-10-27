@@ -333,6 +333,7 @@
 <script>
 import Vue from "vue";
 import { getAllFirstFontData, getAllNotFirstFontData, } from "../../network/exhiState";
+import { BASE_URL } from "../../utils/constant"
 import chooseCity from "../../components/common/chooseCity/chooseCity";
 export default {
   name: "easyfont",
@@ -793,7 +794,8 @@ export default {
       }
       var axios = require("axios");
       if (this.isFirstFont) {
-        axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
+        // axios.post("http://8.140.21.128:8445/api/handin/detail", formdata)
+        axios.post(`${BASE_URL}/handin/detail`, formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
@@ -815,7 +817,8 @@ export default {
             });
           });
       } else {
-        axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
+        // axios.post("http://8.140.21.128:8445/api/handin/easy", formdata)
+        axios.post(`${BASE_URL}/handin/easy`, formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});

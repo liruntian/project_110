@@ -1,8 +1,11 @@
 <!--  -->
 <template>
   <div class='handin'>
+    <!--  0对应省部级展会  -->
     <provin-handin :id="id" v-if="kind==0"></provin-handin>
+    <!--  1对应事业单位  -->
     <firm-handin :id="id" v-if="kind == 1"></firm-handin>
+    <!--    2对应涉外展会-->
     <foreign-handin :id="id" v-if="kind == 2"></foreign-handin>
   </div>
 </template>

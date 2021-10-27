@@ -336,7 +336,8 @@
 </template>
 
 <script>
-import { getAllFirstFontData, getAllNotFirstFontData, getEasyFontById, getDetailFontById } from "../../network/exhiState"
+  import { BASE_URL } from "../../utils/constant";
+  import { getAllFirstFontData, getAllNotFirstFontData, getEasyFontById, getDetailFontById } from "../../network/exhiState"
 // import chooseCity from "../../components/common/chooseCity/chooseCity";
 import Vue from "vue"
 export default {
@@ -822,7 +823,8 @@ export default {
       formdata.append("authFile", ip0.files[0]);
       var axios = require("axios");
       if (this.isFirstFont){
-        axios.post("http://8.140.21.128:8445/api/handin/modifyDetail", formdata)
+        // axios.post("http://8.140.21.128:8445/api/handin/modifyDetail", formdata)
+        axios.post(`${BASE_URL}/handin/modifyDetail`, formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});
@@ -844,7 +846,8 @@ export default {
             });
           });
       }else {
-        axios.post("http://8.140.21.128:8445/api/handin/modifyEasy", formdata)
+        // axios.post("http://8.140.21.128:8445/api/handin/modifyEasy", formdata)
+        axios.post(`${BASE_URL}/handin/modifyEasy`, formdata)
           .then((successResponse) => {
             if (successResponse.data.code === 0) {
               this.$router.push("/").catch(() => {});

@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="11" style="margin: 0 50px">
           <div class="helpinfo">
-            <p><font class="hptext">请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
+            <p><font class="hptext">请省部级单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
             <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
           </div>
         </el-col>
@@ -47,6 +47,10 @@
               <label class="xrequired">宣传媒体数</label>
               <el-input type="text" ref="mediaNum" v-model="declareForm.mediaNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
+            <el-form-item prop="activityNum">
+              <label class="xrequired">同期活动数量</label>
+              <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
+            </el-form-item>
             <el-form-item prop="onlineTurnover">
               <label class="xrequired">线上成交额</label>
               <el-input type="number" ref="onlineTurnover" v-model="declareForm.onlineTurnover" auto-complete="off" placeholder="">
@@ -69,27 +73,16 @@
                 placeholder="">
               </el-input>
             </el-form-item>
-            <el-form-item prop="nextWorkPlan">
-              <label class="xrequired">下一步工作计划(200字以内)</label>
-              <el-input
-                type="textarea"
-                ref="nextWorkPlan"
-                :maxlength="200"
-                show-word-limit
-                v-model="declareForm.nextWorkPlan"
-                auto-complete="off"
-                placeholder="">
-              </el-input>
-            </el-form-item>
+
             <el-form-item prop="writeObject">
               <label class="xrequired">填报单位</label>
               <el-input type="text" ref="writeObject" v-model="declareForm.writeObject" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="charger">
-              <label class="xrequired">处室负责人</label>
-              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
-            </el-form-item>
 
+            <el-form-item prop="department">
+              <label class="xrequired">责任处室</label>
+              <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
+            </el-form-item>
             <el-form-item style="padding-bottom:30px">
               <div style="float:left">
                 <label class="xrequired">总结报告全文</label><br/>
@@ -126,13 +119,21 @@
               <label class="xrequired">线下参展人数</label>
               <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="activityNum">
-              <label class="xrequired">同期活动数量</label>
-              <el-input type="number" ref="activityNum" v-model="declareForm.activityNum" auto-complete="off" placeholder=""></el-input>
+            <el-form-item prop="nextWorkPlan">
+              <label class="xrequired">下一步工作计划(200字以内)</label>
+              <el-input
+                type="textarea"
+                ref="nextWorkPlan"
+                :maxlength="200"
+                show-word-limit
+                v-model="declareForm.nextWorkPlan"
+                auto-complete="off"
+                placeholder="">
+              </el-input>
             </el-form-item>
-            <el-form-item prop="department">
-              <label class="xrequired">责任处室</label>
-              <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
+            <el-form-item prop="charger">
+              <label class="xrequired">处室负责人</label>
+              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item prop="teleNum">
               <label class="xrequired">负责人手机号</label>
@@ -148,6 +149,7 @@
 <script>
 import { warningOpen, errorOpen, successOpen } from "../../utils/message";
 import { getLatestSummary } from "../../network/exhiState"
+import { BASE_URL } from "../../utils/constant";
 
 const cityOptions = ["北京市", "河北省", "山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","上海市","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","广西壮族自治区","海南省","重庆市","四川省","贵州省","云南省","西藏自治区","陕西省","甘肃省","青海省","宁夏回族自治区","新疆维吾尔自治区","台湾省","香港特别行政区","澳门特别行政区"];
 export default {
@@ -390,11 +392,10 @@ export default {
       //单位主要负责同志签发页
       formdata.append("hosterSignFile", ip2.files[0]);
 
-      console.log(this.checkedCities);
-
       var axios = require("axios");
       axios
-        .post("http://8.140.21.128:8445/api/handin/summary", formdata)
+        // .post("http://8.140.21.128:8445/api/handin/summary", formdata)
+        .post(`${BASE_URL}/handin/summary`, formdata)
         .then((successResponse) => {
           if (successResponse.data.code === 0) {
             this.$router.push("/").catch(() => {});

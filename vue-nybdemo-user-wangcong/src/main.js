@@ -35,9 +35,10 @@ VueAMap.initAMapApiLoader({
   key: 'f1c1b84bd0b4b044f920735f25126438'
 });
 
+import {BASE_URL} from "./utils/constant";
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://192.168.43.226:8445/api'
-axios.defaults.baseURL = 'http://8.140.21.128:8445/api'
+axios.defaults.baseURL = BASE_URL
 Vue.prototype.$axios = axios
 
 //iView的使用

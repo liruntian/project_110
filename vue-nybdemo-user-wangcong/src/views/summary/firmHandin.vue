@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="14" style="margin: 0 50px">
           <div class="helpinfo" style="width: 100%">
-            <p><font class="hptext">请省部级单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
+            <p><font class="hptext">请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
             <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
           </div>
         </el-col>
@@ -23,7 +23,7 @@
 <!--              <el-input type="text" ref="detailId" v-model="declareForm.detailId"-->
 <!--                        auto-complete="off"></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item prop="area">
+            <el-form-item prop="area" style="margin-top: 20px">
               <label class="xrequired">展览面积</label>
               <el-input type="number" ref="area" v-model="declareForm.area" auto-complete="off" placeholder="">
                 <template slot="append">m²</template>
@@ -82,10 +82,9 @@
               <label class="xrequired">责任处室</label>
               <el-input type="text" ref="department" v-model="declareForm.department" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="teleNum">
-              <label class="xrequired">负责人手机号</label>
-              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
-                        oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
+            <el-form-item prop="charger">
+              <label class="xrequired">处室负责人</label>
+              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="padding-bottom:30px">
               <div style="float:left">
@@ -99,7 +98,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="countryNum">
+            <el-form-item prop="countryNum" style="margin-top: 20px">
               <label class="xrequired">参展国家和地区数量</label>
               <el-input type="number" ref="countryNum" v-model="declareForm.countryNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
@@ -135,11 +134,12 @@
               <label class="xrequired">线下参展人数</label>
               <el-input type="number" ref="viewerNum" v-model="declareForm.viewerNum" auto-complete="off" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item prop="charger">
-              <label class="xrequired">处室负责人</label>
-              <el-input type="text" ref="charger" v-model="declareForm.charger" auto-complete="off"></el-input>
-            </el-form-item>
 
+            <el-form-item prop="teleNum">
+              <label class="xrequired">负责人手机号</label>
+              <el-input type="number" ref="teleNum" v-model="declareForm.teleNum" auto-complete="off"
+                        oninput="if(value.length > 11) value = value.slice(0,11)"></el-input>
+            </el-form-item>
           </el-col>
         </el-form>
       </el-row>
@@ -150,7 +150,7 @@
 <script>
 import { warningOpen, errorOpen, successOpen } from "../../utils/message";
 import { getLatestSummary } from "../../network/exhiState"
-
+import { BASE_URL } from "../../utils/constant";
 const cityOptions = ["北京市", "河北省", "山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","上海市","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","广西壮族自治区","海南省","重庆市","四川省","贵州省","云南省","西藏自治区","陕西省","甘肃省","青海省","宁夏回族自治区","新疆维吾尔自治区","台湾省","香港特别行政区","澳门特别行政区"];
 export default {
   name: "firmHandin",
@@ -388,7 +388,8 @@ export default {
 
       var axios = require("axios");
       axios
-        .post("http://8.140.21.128:8445/api/handin/summary", formdata)
+        // .post("http://8.140.21.128:8445/api/handin/summary", formdata)
+        .post(`${BASE_URL}/handin/summary`, formdata)
         .then((successResponse) => {
           console.log(successResponse)
           if (successResponse.data.code === 0) {
