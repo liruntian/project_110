@@ -1,36 +1,21 @@
 <template>
   <div class="main">
     <h1 style="margin-bottom: 16px">待处理任务</h1>
-    <table border=".5px" cellspacing="0" class="task-table">
+    <table border="1px" cellspacing="0" class="task-table">
       <tr>
         <th>待审核首次申报</th>
         <th>待审核再次申报</th>
         <th>待提交总结</th>
       </tr>
-
       <tr class="num">
         <td>
-          <el-button
-            plain
-            type="info"
-            @click="toDetailCheck"
-            class="num-button"
-            >{{ detailNum }}</el-button
-          >
+          <el-tag type="danger" class="num-tag"> {{ detailNum }}</el-tag>
         </td>
         <td>
-          <el-button
-            plain
-            type="info"
-            class="num-button"
-            @click="toEasyCheck"
-            >{{ easyNum }}</el-button
-          >
+          <el-tag type="danger" class="num-tag">{{ easyNum }}</el-tag>
         </td>
         <td>
-          <el-button plain class="num-button" type="info" disabled>{{
-            summaryNum
-          }}</el-button>
+          <el-tag type="danger" class="num-tag">{{ summaryNum }}</el-tag>
         </td>
       </tr>
     </table>
@@ -56,7 +41,7 @@
 
     <h1 style="margin-bottom: 16px; margin-top: 16px">历史申报情况</h1>
     <i-circle
-      :size="250"
+      :size="150"
       :trail-width="4"
       :stroke-width="5"
       :percent="100"
@@ -253,7 +238,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     width: 70%;
     font-family: verdana, arial, sans-serif;
     color: #333333;
-    border-width: 1px;
+    border-width: 1.5px;
     border-color: #666666;
     border-collapse: collapse;
     background-color: #fff;
@@ -268,10 +253,12 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
     }
     .num {
       color: red;
-      .num-button {
-        color: rgb(245, 108, 108);
-        font-size: 16px;
+      .num-tag{
+        width: 60px;
+        height: 35px;
+        font-size: 18px;
         font-weight: bold;
+        line-height: 35px;
         font-family: "element-icons";
       }
     }

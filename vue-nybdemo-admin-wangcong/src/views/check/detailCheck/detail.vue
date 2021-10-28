@@ -1,19 +1,16 @@
 <template>
   <div class="detailCheck">
     <div class="card kjfs">
-      <div class="notice">
-        若经过审核，认为该展会申报没有问题，可点击<span>审核通过</span>按钮，通过该申报;<br>
-        若认为申报存在问题，可点击<span>返回修改</span>按钮，并附上修改意见让申报者重新提交申请。
-      </div>
-      <el-button type="primary" round @click="back" class="back"
-        >返回</el-button
-      >
-
+<!--      <div class="notice">-->
+<!--        若经过审核，认为该展会申报没有问题，可点击<span>审核通过</span>按钮，通过该申报;<br>-->
+<!--        若认为申报存在问题，可点击<span>返回修改</span>按钮，并附上修改意见让申报者重新提交申请。-->
+<!--      </div>-->
+<!--      <el-button type="primary" round @click="back" class="back">返回</el-button>-->
       <div
         v-if="!(checkState == '已完成' && status == '查看总结')"
         id="pdfDom"
         style="
-          padding-top: 55px;
+          padding-top: 35px;
           padding-left: 24px;
           padding-right: 24px;
           background-color: #fff;
@@ -21,7 +18,7 @@
           width: fit-content;
         "
       >
-        <table border="1px" cellspacing="0">
+        <table style="border: 2px solid rgba(0,0,0,0.2)" border="1px" cellspacing="0">
           <colgroup span="8" width="200"></colgroup>
           <!-- <colgroup span="1" width="200"></colgroup> -->
           <tr align="center">
@@ -116,42 +113,47 @@
           <tr align="center">
             <td v-if="isFirstApply">批准审核文件</td>
             <td v-if="!isFirstApply">去年审批文件</td>
-            <td colspan="7" style="font-size: 10px">
+            <td colspan="7" style="font-size: 10px;position: relative">
               <div class="down" @click="downAuthorizeFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[0]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
           <tr align="center">
             <td>展会工作方案文档</td>
-            <td colspan="7" style="font-size: 10px">
+            <td colspan="7" style="font-size: 10px;position: relative">
               <div class="down" @click="downMeetPlanFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[1]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
           <tr align="center">
             <td>招展招商方案文档</td>
-            <td colspan="7" style="font-size: 10px">
+            <td colspan="7" style="font-size: 10px; position: relative">
               <div class="down" @click="downInvestmentPlanFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[2]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
           <tr align="center" v-show="isFirstApply">
             <td>可行性报告文档</td>
-            <td colspan="7" style="font-size: 10px">
+            <td colspan="7" style="font-size: 10px; position: relative">
               <div class="down" @click="downFeasibilityFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[3]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
           <tr align="center" v-show="isFirstApply">
             <td>承办单位办展条件说明</td>
-            <td colspan="7" style="font-size: 10px">
+            <td colspan="7" style="font-size: 10px; position: relative">
               <div class="down" @click="downConditionStateFile">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[4]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
         </table>
@@ -159,7 +161,7 @@
       <div
         id="pdfDom"
         style="
-          padding-top: 55px;
+          padding-top: 35px;
           padding-left: 24px;
           padding-right: 24px;
           background-color: #fff;
@@ -168,11 +170,11 @@
         "
         v-if="checkState == '已完成' && status == '查看总结'"
       >
-        <table border="1px" cellspacing="0">
+        <table style="border: 2px solid rgba(0,0,0,0.2)" border="1px" cellspacing="0">
           <colgroup span="8" width="200"></colgroup>
           <!-- <colgroup span="1" width="200"></colgroup> -->
           <tr align="center">
-            <th colspan="8">{{ detailForm.name }}上报总结</th>
+            <th colspan="8">{{ detailForm.name }}展会总结</th>
           </tr>
           <tr align="center">
             <td>展会名称</td>
@@ -230,18 +232,20 @@
 
           <tr align="center">
             <td>总结报告全文</td>
-            <td colspan="7" style="font-size: 10px">
-              <div class="down" @click="downSummaryFile">
+            <td colspan="7" style="font-size: 10px; position: relative">
+              <div class="down" @click="downFile(detailForm.summaryFileId,meetName + '的总结报告全文.pdf',5 )">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[5]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
           <tr align="center">
             <td>单位主要负责同志签发页</td>
-            <td colspan="7" style="font-size: 10px">
-              <div class="down" @click="downHosterSignFile">
+            <td colspan="7" style="font-size: 10px;position: relative">
+              <div class="down" @click="downFile(detailForm.hosterSignFileId,meetName + '的单位主要负责同志签发页.pdf', 6)">
                 <img src="../../../assets/file.svg" />点击下载
               </div>
+              <span v-show="isDownloading[6]" style="position: absolute;left: 560px;top: 15px; color: #79bbff; font-weight: bold">正在下载文件...</span>
             </td>
           </tr>
         </table>
@@ -251,12 +255,12 @@
         <button class="pass" @click="Pass" style="cursor: pointer">
           审核通过
         </button>
-        <button class="pass" @click="getPdf()" style="cursor: pointer">
+        <button class="pass" @click="getPdf()" style="cursor: pointer;margin: 0 30px">
           导出为pdf
         </button>
-        <Button class="reject" type="primary" @click="rejected"
-          >返回修改</Button
-        >
+        <button class="reject"  @click="rejected">
+          退回修改
+        </button>
       </div>
     </div>
     <el-dialog title="修改建议" :visible.sync="centerDialogVisible" width="30%">
@@ -299,6 +303,7 @@
 </template>
 
 <script>
+import Vue from "vue"
 import { getUserId, send } from "../../../network/sendMessage"
 import {
   getdetailFile,
@@ -321,25 +326,27 @@ export default {
       form: {
         content: "",
         fileList: []
-      }
+      },
+      isDownloading: [false, false, false, false, false, false, false]
       // ishow: false
     }
   },
   created () {
-    this.checkState = this.$route.query.checkState
+    this.checkState = this.$route.query.item.checkState
     this.detailForm = this.$route.query.item
     this.meetName = this.$route.query.item.name
     this.status = this.$route.query.status
-
+    console.log(this.detailForm.isFirstFont)
+    this.isFirstApply = this.detailForm.isFirstFont
     getSummary(this.detailForm.id).then((res) => {
       if (res.code === 0 && res.data && this.status === "查看总结") {
         this.detailForm = res.data
       }
     })
     // this.checkState = '待总结';
-    if (this.$route.query.checkType == 2) {
-      this.isFirstApply = false
-    }
+    // if (this.$route.query.checkType == 2) {
+
+    // }
     this.pdfTitle = `${
       this.detailForm ? this.detailForm.name : "未命名展会"
     }申报文件`
@@ -390,7 +397,8 @@ export default {
     }
   },
   methods: {
-    downFile (fileId, fileName) {
+    downFile (fileId, fileName, index) {
+      Vue.set(this.isDownloading, index, true)
       getdetailFile(fileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
         const elink = document.createElement("a")
@@ -402,14 +410,20 @@ export default {
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
+        Vue.set(this.isDownloading, index, false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,index,false)
       })
     },
+    // 下载总结报告全文
     downSummaryFile () {
       this.downFile(
         this.detailForm.summaryFileId,
         this.meetName + "的总结报告全文.pdf"
       )
     },
+    // 下载单位主要负责同志签发页
     downHosterSignFile () {
       this.downFile(
         this.detailForm.hosterSignFileId,
@@ -423,22 +437,27 @@ export default {
       this.centerDialogVisible = true
     },
     Pass () {
-      this.isFirstApply
-        ? checkPassDetail(
+      this.$confirm("确定通过该申报?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.isFirstApply
+          ? checkPassDetail(
           this.detailForm.id,
           this.$store.getters.token,
           1
-        ).then((successResponse) => {
-          if (successResponse.data.code === 0) {
-          } else {
-            this.$message({
-              showClose: true,
-              message: "提交失败！",
-              type: "error"
-            })
-          }
-        })
-        : checkPassEasy(this.detailForm.id, this.$store.getters.token, 1).then(
+          ).then((successResponse) => {
+            if (successResponse.data.code === 0) {
+            } else {
+              this.$message({
+                showClose: true,
+                message: "提交失败！",
+                type: "error"
+              })
+            }
+          })
+          : checkPassEasy(this.detailForm.id, this.$store.getters.token, 1).then(
           (successResponse) => {
             if (successResponse.data.code === 0) {
             } else {
@@ -449,18 +468,19 @@ export default {
               })
             }
           }
-        )
-      // todo 自动发送处理成功消息
-      getUserId(this.detailForm.meetAddr).then((res) => {
-        this.detailForm.userId = res.data
-        send(
-          this.$store.getters.token,
-          this.detailForm.userId,
-          "审核通过",
-          "您的申请已经通过审核"
-        )
+          )
+        // todo 自动发送处理成功消息
+        getUserId(this.detailForm.meetAddr).then((res) => {
+          this.detailForm.userId = res.data
+          send(
+            this.$store.getters.token,
+            this.detailForm.userId,
+            "审核通过",
+            "您的申请已经通过审核"
+          )
+        })
+        history.go(-1)
       })
-      history.go(-1)
     },
     submitForm () {
       let ip = this.$refs.adviceFile
@@ -517,13 +537,9 @@ export default {
         .catch((failResponse) => {})
       this.reject()
     },
-    // handleRemove(file, fileList) {
-    //   console.log(file, fileList);
-    // },
-    // handlePreview(file) {
-    //   console.log(file);
-    // },
+    // 下载审批文件
     downAuthorizeFile () {
+      Vue.set(this.isDownloading,0,true)
       getdetailFile(this.detailForm.authFileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
         const fileName = this.detailForm.name + "的批准审核文件.pdf"
@@ -536,10 +552,15 @@ export default {
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
+        Vue.set(this.isDownloading,0,false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,0,false)
       })
     },
     // 下载展会工作方案文档
     downMeetPlanFile () {
+      Vue.set(this.isDownloading,1,true)
       getdetailFile(this.detailForm.meetPlanFileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
         const fileName = this.detailForm.name + "的展会工作方案文档.pdf"
@@ -552,40 +573,15 @@ export default {
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
+        Vue.set(this.isDownloading,1,false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,1,false)
       })
     },
-    downFeasibilityFile () {
-      getdetailFile(this.detailForm.feasibilityFileId).then((res) => {
-        const blob = new Blob([res]) // 处理文档流
-        const fileName = this.detailForm.name + "的可行性报告文档.pdf"
-        const elink = document.createElement("a")
-        elink.setAttribute("download", decodeURIComponent(fileName))
-        elink.download = fileName
-        elink.style.display = "none"
-        elink.href = URL.createObjectURL(blob)
-        document.body.appendChild(elink)
-        elink.click()
-        URL.revokeObjectURL(elink.href) // 释放URL 对象
-        document.body.removeChild(elink)
-      })
-    },
-    // 下载条件说明
-    downConditionStateFile () {
-      getdetailFile(this.detailForm.conditionStateFileId).then((res) => {
-        const blob = new Blob([res]) // 处理文档流
-        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf"
-        const elink = document.createElement("a")
-        elink.setAttribute("download", decodeURIComponent(fileName))
-        elink.download = fileName
-        elink.style.display = "none"
-        elink.href = URL.createObjectURL(blob)
-        document.body.appendChild(elink)
-        elink.click()
-        URL.revokeObjectURL(elink.href) // 释放URL 对象
-        document.body.removeChild(elink)
-      })
-    },
+    // 下载招展招商方案文档
     downInvestmentPlanFile () {
+      Vue.set(this.isDownloading,2,true)
       getdetailFile(this.detailForm.investmentPlanFileId).then((res) => {
         const blob = new Blob([res]) // 处理文档流
         const fileName = this.detailForm.name + "的招商方案.pdf"
@@ -598,8 +594,55 @@ export default {
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
+        Vue.set(this.isDownloading,2,false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,2,false)
       })
     },
+    // 下载可行性报告文档
+    downFeasibilityFile () {
+      Vue.set(this.isDownloading,3,true)
+      getdetailFile(this.detailForm.feasibilityFileId).then((res) => {
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的可行性报告文档.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+        Vue.set(this.isDownloading,3,false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,3,false)
+      })
+    },
+    // 下载承办单位办展条件说明
+    downConditionStateFile () {
+      Vue.set(this.isDownloading,4,true)
+      getdetailFile(this.detailForm.conditionStateFileId).then((res) => {
+        const blob = new Blob([res]) // 处理文档流
+        const fileName = this.detailForm.name + "的承办单位办展条件说明.pdf"
+        const elink = document.createElement("a")
+        elink.setAttribute("download", decodeURIComponent(fileName))
+        elink.download = fileName
+        elink.style.display = "none"
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+        Vue.set(this.isDownloading,4,false)
+      }).catch(() => {
+        this.$message.error("文件下载失败，请重试")
+        Vue.set(this.isDownloading,4,false)
+      })
+    },
+
     reject () {
       this.isFirstApply
         ? checkPassDetail(
@@ -696,23 +739,27 @@ tr {
 }
 
 .check {
+  position: fixed;
+  top: 160px;
+  right: 80px;
+  font-size: 14px;
   display: flex;
-  justify-content: space-around;
-  margin-top: 30px;
+  justify-content: center;
+  /*margin-top: 30px;*/
 }
 .pass,
 .reject {
-  width: 140px;
+  width: 90px;
   height: 40px;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 .pass {
   background-color: #82c8a0;
   color: white;
-  padding: 3px 25px;
+  padding: 3px 5px;
   display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.21);
-  border-bottom-color: rgba(0, 0, 0, 0.34);
+  border: 1px solid #82c8a0;
+  border-bottom-color: #82c8a0;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset,
     0 2px 0 -1px rgba(0, 0, 0, 0.13), 0 3px 0 -1px rgba(0, 0, 0, 0.08),
@@ -722,10 +769,10 @@ tr {
 .reject {
   background-color: #fa5a5a;
   color: white;
-  padding: 3px 25px;
+  padding: 3px 5px;
   display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.21);
-  border-bottom-color: rgba(0, 0, 0, 0.34);
+  border: 1px solid #fa5a5a;
+  border-bottom-color: #fa5a5a;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset,
     0 2px 0 -1px rgba(0, 0, 0, 0.13), 0 3px 0 -1px rgba(0, 0, 0, 0.08),

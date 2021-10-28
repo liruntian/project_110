@@ -99,6 +99,7 @@ export default {
             password: this.loginForm.password
           })
           .then(successResponse => {
+            console.log(successResponse.data)
             if (successResponse.data.code === 0) {
               // 将 id 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
               that.$store.dispatch("setToken", that.loginForm.id).then(() => {
@@ -119,9 +120,9 @@ export default {
               })
             }
           })
-          .catch(failResponse => {
+          .catch(() => {
+            this.$message.error("账号或密码错误！")
           })
-
       }
     },
 

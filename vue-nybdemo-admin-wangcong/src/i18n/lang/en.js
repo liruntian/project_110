@@ -37,6 +37,7 @@ const en = {
     message:"message",
     send:"send",
     account:"account",
+    accountManagement: "accountManagement",
     register:"register",
     frozenAccount: "frozenAccount",
 

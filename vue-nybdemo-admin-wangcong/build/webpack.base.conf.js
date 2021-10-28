@@ -69,6 +69,9 @@ module.exports = {
       return res
     })()
   ],
+  performance: {
+    hints: false
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

@@ -36,6 +36,7 @@ const cn = {
     message:"信息系统",
     send:"消息推送",
     account:"账号管理",
+    accountManagement: "账号管理",
     register:"添加账户",
     frozenAccount:"冻结账号",
     "menu2-1": "二级-1",

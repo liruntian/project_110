@@ -15,8 +15,8 @@ const DetailCheck = () => import("@/views/check/detailCheck/detail")
 const Easy = () => import("@/views/check/easyCheck/easyCheckList")
 const EasyCheck = () => import("@/views/check/easyCheck/easy")
 const Send = () => import("@/views/message/send")
-const Register = () => import("@/views/useraccount/registercheck")
-const frozenAccount = () => import("@/views/useraccount/frozenAccount")
+const register = () => import("@/views/useraccount/register")
+const accountManagement = () => import("@/views/useraccount/accountManagement")
 
 /**
  * 重写路由的push方法
@@ -65,23 +65,6 @@ let defaultRouter = [
     component: Layout,
     alone: true,
     children: [
-      // {
-      //   path: "/easy",
-      //   iconCls: "fa fa-leanpub", // 图标样式class
-      //   name: routeName.easy,
-      //   component: Easy,
-      //   children: [
-
-      //   ]
-      // },
-      // {
-      //   path: "/easyCheck",
-      //   component: EasyCheck,
-      //   name: "EasyCheck",
-      //   hidden: true,
-      //   children: []
-      // },
-
       {
         path: "/detail",
         iconCls: "fa fa-wpforms", // 图标样式class
@@ -108,45 +91,18 @@ let defaultRouter = [
 ]
 
 let addRouter = [
-
-
-
-  //信息系统
-
-  // {
-  //   path: "/",
-  //   iconCls: "fa fa-file-text", // 图标样式class
-  //   name: routeName.message,
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: "/send",
-  //       iconCls: "el-icon-edit", // 图标样式class
-  //       name: routeName.send,
-  //       component: Send,
-  //       children: []
-  //     }
-  //   ]
-  // },
-
   {
-    path: "/",
+    path: "/accountManagement",
     iconCls: "fa fa-user-circle", // 图标样式class
-    name: routeName.account,
+    name: routeName.accountManagement,
     component: Layout,
+    alone: true,
     children: [
       {
-        path: "/register",
+        path: "/accountManagement",
         iconCls: "fa fa-address-card-o", // 图标样式class
-        name: routeName.register,
-        component: Register,
-        children: []
-      },
-      {
-        path: "/frozenAccount",
-        iconCls: "el-icon-warning", // 图标样式class
-        name: routeName.frozenAccount,
-        component: frozenAccount,
+        name: routeName.accountManagement,
+        component: accountManagement,
         children: []
       }
     ]
