@@ -1,21 +1,22 @@
 <template>
   <div style="height: 100%">
     <div class="card1 bbxx" style="width: 100%; height: 100%">
-      <div class="chartUser">
-        <div class="helpinfo">
-          <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
-          <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
-          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
-        </div>
+<!--      <div class="chartUser">-->
+
         <div class="function-btns">
           <el-button @click="returnMainIndex()" type="primary">返回</el-button>
-          <el-button @click="clearForm()" type="danger" style="margin: 0 10px 0 20px">重填</el-button>
+          <el-button @click="clearForm()" type="danger">重填</el-button>
 <!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
           <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
         </div>
-      </div>
+<!--      </div>-->
       <div>
         <el-form :model="declareForm" ref="fontForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;background-color: #ffffff" enctype='multipart/form-data'>
+          <div class="helpinfo">
+            <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
+            <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
+            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
+          </div>
           <el-collapse @change="collapseChange">
             <el-collapse-item name="1">
               <template slot="title">
@@ -999,21 +1000,22 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   //background-color: green;
 }
 .helpinfo {
-  background-color: rgba(70, 130, 180, 0.1);
+  /*background-color: rgba(70, 130, 180, 0.1);*/
   transform: translateY(24%);
-  margin: 10px;
-  padding: 10px;
+  margin: 10px 10px 10px 70px;
+  padding: 10px 0 10px 10px;
   //width: 556px;
 }
 .function-btns{
-  height: 100px;
-  line-height: 100px;
-  margin: 10px;
+  height: 200px;
+  /*line-height: 100px;*/
+  /*margin: 10px;*/
   z-index: 999999;
-  right: 120px;
+  right: 260px;
   .el-button{
     border-radius: 10px;
     font-size: 16px;
+    margin-left: 0px !important;
   }
 }
 .el-collapse{
@@ -1134,16 +1136,16 @@ label.xrequired:after {
 }
 .attention-tips{
   width: 100%;
-  background-color: rgba(70, 130, 180, 0.1);
-  margin: 0px 10px 0px 30px;
-  padding: 10px 40px 10px 10px;
+  /*background-color: rgba(70, 130, 180, 0.1);*/
+  margin: 0px 20px 0px 30px;
+  padding: 10px 0px 10px 10px;
   /*box-sizing: inherit;*/
   p{
     color: rgba(80, 144,53, 1);
     letter-spacing: 2px;
     font-size: 20px;
     font-family: 微软雅黑;
-    width: 100%;
+    /*width: 100%;*/
   }
 }
 

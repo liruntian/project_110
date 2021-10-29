@@ -1,21 +1,26 @@
 <template>
-  <div style="height: 100%">
+  <div>
     <div class="card1 bbxx" style="width: 100%; height: 100%">
-      <div class="chartUser">
-        <div class="helpinfo">
-          <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
-          <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
-          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
-        </div>
+<!--      <div class="chartUser">-->
+<!--        <div class="helpinfo">-->
+<!--          <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>-->
+<!--          <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>-->
+<!--          <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>-->
+<!--        </div>-->
         <div class="function-btns">
           <el-button @click="returnMainIndex()" type="primary" >返回</el-button>
-          <el-button @click="clearForm()" style="margin: 0 20px 0 30px" type="danger">重填</el-button>
+          <el-button @click="clearForm()"  type="danger">重填</el-button>
 <!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
           <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
         </div>
-      </div>
-      <div>
+<!--      </div>-->
+      <div class="easy-font-form">
         <el-form :model="declareForm" ref="fontForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;background-color: #ffffff" enctype='multipart/form-data'>
+          <div class="helpinfo">
+            <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
+            <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
+            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
+          </div>
           <el-collapse @change="collapseChange">
             <el-collapse-item name="1">
               <template slot="title">
@@ -60,11 +65,14 @@
                 <span>二、办展依据</span>
                 <span style="color: red;margin-left: 20px;font-family: 宋体" v-show="collapse[1]">还有必填项未填写!</span>
               </template>
-              <div class="attention-tips">
-                <p >
-                  注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见
-                </p>
+              <div style="padding-right: 35px">
+                <div class="attention-tips">
+                  <p >
+                    注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见
+                  </p>
+                </div>
               </div>
+
 <!--              <div class="attention">-->
 <!--                注：省部主办展会须提供全国清理和规范庆典研讨会论坛活动工作领导小组的批文；事业单位主办展会须提供行业主管司局审核意见；境外组团参展须提供国际合作司审核意见-->
 <!--              </div>-->
@@ -972,31 +980,45 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   //background-color: green;
 }
 .helpinfo {
-  background-color: rgba(70, 130, 180, 0.1);
+  /*background-color: rgba(70, 130, 180, 0.1);*/
+  border: 0.4px solid #e0dbdb;
   transform: translateY(24%);
-  margin: 10px;
+  margin: 10px 10px 10px 30px;
   padding: 10px;
-  //width: 70%;
+  /*width: 65%;*/
 }
 .function-btns{
-  height: 100px;
-  line-height: 100px;
+  height: 200px;
+  /*line-height: 100px;*/
+  justify-content: space-around;
   margin: 10px 0 10px 50px;
+  display: flex;
+  flex-direction: column;
   z-index: 999999;
-  right: 120px;
+  top: 160px;
+  right: 260px;
   position: fixed;
   .el-button{
     /*height: 40px;*/
     /*width: 60px;*/
     border-radius: 10px;
     font-size: 16px;
+    margin-left: 0px !important;
+  }
+}
+
+.easy-font-form{
+  .el-form{
+    width: 70%;
+    /*margin-bottom: 40px;*/
+    padding-bottom: 15px;
   }
 }
 .el-collapse{
   margin: 30px 0 40px 0px;
   background-color: #ffffff;
   /*padding-right: 20px;*/
-  width: 70%;
+  /*width: 70%;*/
   display: flex;
   flex-direction: column;
   .el-form-item{
@@ -1020,7 +1042,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   font-size: 18px;
 }
 .attention {
-  background-color: rgba(70, 130, 180, 0.1);
+  /*background-color: rgba(70, 130, 180, 0.1);*/
   margin: 0px 10px 40px 20px;
   padding: 10px ;
   width: 100% !important;
@@ -1134,17 +1156,18 @@ label{
   }
 }
 .attention-tips{
-  width: 100%;
-  background-color: rgba(70, 130, 180, 0.1);
-  margin: 0px 10px 0px 30px;
-  padding: 10px 40px 10px 10px;
+  /*width: 100%;*/
+  border: 0.4px solid #e0dbdb;
+  /*background-color: rgba(70, 130, 180, 0.1);*/
+  margin: 0px 20px 0px 30px;
+  padding: 10px 0px 10px 10px;
   /*box-sizing: inherit;*/
   p{
     color: rgba(80, 144,53, 1);
     letter-spacing: 2px;
     font-size: 20px;
     font-family: 微软雅黑;
-    width: 100%;
+    /*width: 100%;*/
   }
 }
 .el-cascader{

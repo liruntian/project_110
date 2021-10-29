@@ -4,14 +4,14 @@ import store from "../vuex"
 import Router from "vue-router"
 import Login from "@/views/login/index"
 import Layout from "@/views/layout/layout"
-import userfontview from "@/views/foundchart/userfontview"
+// import userfontview from "@/views/foundchart/userfontview"
 import easyfontview from "@/views/foundchart/easyfontview"
 import HomeMain from "@/views/index/mainIndex"
 // import HaveRead from "@/views/message/haveread"
 // 不是必须加载的组件使用懒加载
 import {getDetail} from '../network/getForm';
 import easyfont from "../views/foundchart/easyfont"
-import userfont from "@/views/foundchart/userfont"
+// import userfont from "@/views/foundchart/userfont"
 import modifyfont from "../views/foundchart/modifyfont";
 import seefont from "../views/foundchart/seefont";
 import seesummary from "../views/foundchart/seesummary";
@@ -158,24 +158,24 @@ let defaultRouter = [
 
     ]
   },
-  {
-    path: "/userfont",
-    iconCls: "el-icon-setting", // 图标样式class
-    name: routeName.userfond,
-    component: Layout,
-    alone: true,
-    hidden: true,
-    children: [
-      {
-        path: "/userfont",
-        name: routeName.userfond,
-        component: userfont,
-        hidden: false,
-        children: [],
-      }
-
-    ]
-  },
+  // {
+  //   path: "/userfont",
+  //   iconCls: "el-icon-setting", // 图标样式class
+  //   name: routeName.userfond,
+  //   component: Layout,
+  //   alone: true,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: "/userfont",
+  //       name: routeName.userfond,
+  //       component: userfont,
+  //       hidden: false,
+  //       children: [],
+  //     }
+  //
+  //   ]
+  // },
   {
     path: "/modifyfont",
     iconCls: "el-icon-setting", // 图标样式class
@@ -246,24 +246,24 @@ let defaultRouter = [
 
     ]
   },
-  {
-    path: "/userfontview",
-    iconCls: "el-icon-setting", // 图标样式class
-    name: routeName.userfontview,
-    component: Layout,
-    alone: true,
-    hidden: true,
-    children: [
-      {
-        path: "/userfontview",
-        name: routeName.userfontview,
-        component: userfontview,
-        hidden: false,
-        children: [],
-      }
-
-    ]
-  },
+  // {
+  //   path: "/userfontview",
+  //   iconCls: "el-icon-setting", // 图标样式class
+  //   name: routeName.userfontview,
+  //   component: Layout,
+  //   alone: true,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: "/userfontview",
+  //       name: routeName.userfontview,
+  //       component: userfontview,
+  //       hidden: false,
+  //       children: [],
+  //     }
+  //
+  //   ]
+  // },
   {
     path: "/handin",
     iconCls: "el-icon-setting", // 图标样式class
