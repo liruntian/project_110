@@ -258,7 +258,7 @@
         <button class="pass" @click="getPdf()" style="cursor: pointer;margin: 0 30px">
           导出为pdf
         </button>
-        <button class="reject"  @click="rejected">
+        <button class="reject"  @click="rejected" style="cursor: pointer">
           退回修改
         </button>
       </div>
@@ -336,17 +336,12 @@ export default {
     this.detailForm = this.$route.query.item
     this.meetName = this.$route.query.item.name
     this.status = this.$route.query.status
-    console.log(this.detailForm.isFirstFont)
     this.isFirstApply = this.detailForm.isFirstFont
     getSummary(this.detailForm.id).then((res) => {
       if (res.code === 0 && res.data && this.status === "查看总结") {
         this.detailForm = res.data
       }
     })
-    // this.checkState = '待总结';
-    // if (this.$route.query.checkType == 2) {
-
-    // }
     this.pdfTitle = `${
       this.detailForm ? this.detailForm.name : "未命名展会"
     }申报文件`

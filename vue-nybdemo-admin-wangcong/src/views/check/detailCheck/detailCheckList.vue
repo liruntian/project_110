@@ -1,96 +1,81 @@
-<!--  -->
 <template>
   <div class="detailCheckList">
     <el-card >
-    <div class="search-area">
-    <div class="search-content">
-      <h3 style="margin-right: 16px">展会名称</h3>
-      <el-input
-        v-model="exportName"
-        placeholder="请输入展会名称"
-        @keyup.enter.native="search"
-        style="width: 200px; margin-right: 48px"
-      ></el-input>
-      <h3 style="margin-right: 16px">展会简称</h3>
-      <el-input
-        v-model="exportAddr"
-        placeholder="请输入展会简称"
-        @keyup.enter.native="search"
-        style="width: 200px; margin-right: 48px"
-      ></el-input>
-      <!-- <h3 style="margin-right: 16px">主办方</h3>
-      <el-input
-        v-model="hostComp"
-        placeholder="请输入主办方"
-        style="width: 200px"
-      ></el-input> -->
-    </div>
-    <div class="search-button">
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        @click="search"
-        >查询</el-button
-      >
-      <el-button @click="reset">重置</el-button>
+      <div class="search-area">
+        <div class="search-content">
+          <h3 style="margin-right: 16px">展会名称</h3>
+          <el-input
+            v-model="exportName"
+            placeholder="请输入展会名称"
+            @keyup.enter.native="search"
+            style="width: 200px; margin-right: 48px"
+          ></el-input>
+          <h3 style="margin-right: 16px">展会简称</h3>
+          <el-input
+            v-model="exportAddr"
+            placeholder="请输入展会简称"
+            @keyup.enter.native="search"
+            style="width: 200px; margin-right: 48px"
+          ></el-input>
+        </div>
+        <div class="search-button">
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="search"
+            >查询</el-button
+          >
+          <el-button @click="reset">重置</el-button>
+          </div>
       </div>
-
-    </div>
-    <div class="filter-state">
-      <h3 class="title">申报状态</h3>
-      <div>
+      <div class="filter-state">
+        <h3 class="title">申报状态</h3>
+        <div>
+          <el-checkbox-group
+            v-model="checkList"
+            @change="checkListChange"
+          >
+            <el-checkbox label="待审核"></el-checkbox>
+            <el-checkbox label="待修改"></el-checkbox>
+            <el-checkbox label="待总结"></el-checkbox>
+            <el-checkbox label="已完成"></el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </div>
+      <div class="check-type">
+        <h3 style="margin-right: 16px">申报类型</h3>
         <el-checkbox-group
-          v-model="checkList"
-          @change="checkListChange"
-        >
-          <el-checkbox label="待审核"></el-checkbox>
-          <el-checkbox label="待修改"></el-checkbox>
-          <el-checkbox label="待总结"></el-checkbox>
-          <el-checkbox label="已完成"></el-checkbox>
+          v-model="checkTypeList"
+          size="small"
+          @change="checkTypeChange">
+          <el-checkbox :label="true">首次申报</el-checkbox>
+          <el-checkbox :label="false">再次申报</el-checkbox>
         </el-checkbox-group>
+        <div class="export">
+          <el-button type="primary" v-show="selectionLength === 0" disabled  @click="exportCsv">
+            导出选中的
+            <span>{{ selectionLength }}</span>
+            条记录
+          </el-button>
+          <el-button type="primary" v-show="selectionLength > 0"  @click="exportCsv">
+            导出选中的
+            <span>{{ selectionLength }}</span>
+            条记录
+          </el-button>
+          <el-button type="success" v-show="showDataList.length === 0" disabled @click="exportAllRecord">
+            导出所有
+            <span>{{ showDataList.length }}</span>
+            条记录
+          </el-button>
+          <el-button type="success" v-show="showDataList.length > 0" @click="exportAllRecord">
+            导出所有
+            <span>{{ showDataList.length }}</span>
+            条记录
+          </el-button>
+        </div>
       </div>
-    </div>
-    <div class="check-type">
-      <h3 style="margin-right: 16px">申报类型</h3>
-      <el-checkbox-group
-        v-model="checkTypeList"
-        size="small"
-        @change="checkTypeChange">
-        <el-checkbox :label="true">首次申报</el-checkbox>
-        <el-checkbox :label="false">再次申报</el-checkbox>
-      </el-checkbox-group>
-
-<!--      <el-checkbox-group-->
-<!--        v-model="checkType"-->
-<!--        size="small"-->
-<!--        @change="checkTypeChange">-->
-<!--        <el-checkbox label="首次申报"></el-checkbox>-->
-<!--        <el-checkbox label="再次申报"></el-checkbox>-->
-<!--      </el-checkbox-group>-->
-      <div class="export">
-        <el-button type="primary" v-show="selectionLength === 0" disabled  @click="exportCsv">
-          导出选中的
-          <span>{{ selectionLength }}</span>
-          条记录
-        </el-button>
-        <el-button type="primary" v-show="selectionLength > 0"  @click="exportCsv">
-          导出选中的
-          <span>{{ selectionLength }}</span>
-          条记录
-        </el-button>
-        <el-button type="success" v-show="showDataList.length === 0" disabled @click="exportAllRecord">
-          导出所有
-          <span>{{ showDataList.length }}</span>
-          条记录
-        </el-button>
-        <el-button type="success" v-show="showDataList.length > 0" @click="exportAllRecord">
-          导出所有
-          <span>{{ showDataList.length }}</span>
-          条记录
-        </el-button>
-      </div>
-    </div>
     </el-card>
+<!-- 展示在页面上的表格子组件-->
     <bea-table
       :data="showDataList"
       :nextPath="nextPath"
@@ -98,6 +83,7 @@
       @selectionChange="getselectionLength"
       ref = "bee_table"
     ></bea-table>
+<!--创建的一个虚拟的表格，不在页面上展示，用来导出符合条件的申报信息-->
     <el-table
       id="allTableData"
       :data="showDataList"
@@ -144,11 +130,9 @@
 </template>
 
 <script>
-  import Vue from 'vue'
+import Vue from 'vue'
   import XLSX from "xlsx";
   import FileSaver from 'file-saver'
-// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-// 例如：import 《组件名称》 from '《组件路径》';
 import {
   getdetailFormdata,
   getDeatilByMeetName,
@@ -176,7 +160,6 @@ export default {
       detailForm: [],
       easyForm: [],
       datalist: [],
-      allAdataList: [],
       hostComp: "",
       exportName: "",
       exportAddr: "",
@@ -198,6 +181,13 @@ export default {
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   async created () {
+    console.log(this.$route.query.value)
+    if (this.$route.query.value === "1") {
+      this.checkTypeList = [true]
+    }else if (this.$route.query.value === "2"){
+      this.checkTypeList = [false]
+    }
+    console.log(this.checkTypeList)
     await this.getdetailList()
     await this.getEasyList()
     this.showDataList = this.allDataList.filter((item) => {
@@ -206,36 +196,31 @@ export default {
     this.showDataList = this.showDataList.filter((item) => {
       return this.checkTypeList.indexOf(item.isFirstFont) > -1
     })
-    // if (this.checkType == 1) {
-    //   this.allAdataList = this.detailForm
-    //   // console.log('allAdataList',this.allAdataList);
-    // } else {
-    //   this.allAdataList = this.easyForm
-    // }
-    // this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
   },
   // 监控data中的数据变化
   watch: {},
 
   // 方法集合
   methods: {
+    // 获取子组件table传出来的选中的申报记录的数量
     getselectionLength (length){
       this.selectionLength = length
     },
+    // 获取子组件table的导出申报记录的函数
     exportCsv () {
       this.$refs.bee_table.downCSV()
     },
+    // 导出所有符合条件的申报记录
     exportAllRecord () {
       let xlsxData = XLSX.utils.table_to_book(document.querySelector("#allTableData"))
       let downloadData = XLSX.write(xlsxData,{ bookType: 'xlsx', bookSST: true, type: 'array' })
       FileSaver.saveAs(new Blob([downloadData], {type: "application/octet-stream"}), "汇总表格.xlsx")
       return downloadData
     },
+    // 获取所有首次申报记录
     async getdetailList () {
       await getdetailFormdata().then((res) => {
-        // this.detailForm = res.data
-        // this.checkStateToString(this.detailForm)
-
+        // 给每一个记录加一个是否首次申报的字段
         res.data.forEach((item) => {
           Vue.set(item,"isFirstFont", true)
         })
@@ -243,11 +228,10 @@ export default {
         this.checkStateToString(this.allDataList)
       })
     },
+    // 获取所有再次申报记录
     async getEasyList () {
       await getEasyFormdata().then((res) => {
-        // this.easyForm = res.data
-        // this.checkStateToString(this.easyForm)
-
+        // 给每一个记录加一个是否首次申报的字段
         res.data.forEach((item) => {
           Vue.set(item,"isFirstFont", false)
         })
@@ -255,7 +239,9 @@ export default {
         this.checkStateToString(this.allDataList)
       })
     },
+    //
     checkTypeChange (value) {
+      console.log(value)
       this.checkTypeList = value
       if ((this.exportName || this.exportAddr) && this.allSearchResultData.length>0){
         this.showDataList = this.allSearchResultData.filter((item) => {
@@ -272,39 +258,8 @@ export default {
           return this.checkList.indexOf(item.checkState) > -1
         })
       }
-      // if (value == 1) {
-      //   this.allAdataList = this.detailForm
-      // } else {
-      //   this.allAdataList = this.easyForm
-      // }
-      // this.checkList = ["待审核"]
-      // this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
-      // console.log(this.allDataList)
-      // if (this.exportAddr || this.exportName) {
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      // }else {
-      //   this.showDataList = this.allDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      // }
-      // console.log(this.showDataList)
     },
     checkListChange (value) {
-      // this.datalist = []
-      // for (let item of this.checkList) {
-      //   this.datalist = this.datalist.concat(
-      //     this.allAdataList.filter((v) => v.checkState == item)
-      //   )
-      // }
-
       if ((this.exportName || this.exportAddr) && this.allSearchResultData.length>0){
         this.showDataList = this.allSearchResultData.filter((item) => {
           return this.checkTypeList.indexOf(item.isFirstFont) > -1
@@ -320,22 +275,6 @@ export default {
           return this.checkList.indexOf(item.checkState) > -1
         })
       }
-
-      // if (this.exportName || this.exportAddr) {
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      // }else {
-      //   this.showDataList = this.allDataList.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      // }
     },
     checkStateToString (items) {
       for (let item of items) {
@@ -406,74 +345,6 @@ export default {
           return this.checkTypeList.indexOf(item.isFirstFont) > -1
         })
       }
-
-      // if (this.exportName) {
-      //   this.allSearchResultData = this.allDataList.filter((item) => {
-      //     return item.name.match(this.exportName)
-      //   })
-      //   this.showDataList = this.allSearchResultData.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      // }
-      // if (this.exportAddr) {
-      //   this.allSearchResultData = this.allDataList.filter((item) => {
-      //     return item.name.match(this.exportName)
-      //   })
-      //   this.showDataList = this.allSearchResultData.filter((item) => {
-      //     return this.checkList.indexOf(item.checkState) > -1
-      //   })
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return this.checkTypeList.indexOf(item.isFirstFont) > -1
-      //   })
-      //
-      //   this.showDataList = this.showDataList.filter((item) => {
-      //     return item.meetAddr.match(this.exportAddr)
-      //   })
-      // }
-
-      this.allAdataList = []
-      // if (this.checkType == 1) {
-      //   if (this.exportName) {
-      //     await getDeatilByMeetName(this.exportName).then((res) => {
-      //       this.allAdataList = this.allAdataList.concat(res.data)
-      //       this.allAdataList = this.allAdataList.filter((value) => {return  value.checkState === 0 || value.checkState === 1 || value.checkState === 2 || value.checkState === 3 || value.checkState === 5 })
-      //       this.checkStateToString(this.allAdataList)
-      //     })
-      //   }
-      //   if (this.exportAddr) {
-      //     await getDeatilByMeetAddr(this.exportAddr).then((res) => {
-      //       this.allAdataList = this.allAdataList.concat(res.data)
-      //       this.allAdataList = this.allAdataList.filter((value) => {return  value.checkState === 0 || value.checkState === 1 || value.checkState === 2 || value.checkState === 3 || value.checkState === 5 })
-      //       this.checkStateToString(this.allAdataList)
-      //     })
-      //   }
-      //   if (this.hostComp) {
-      //     console.log("根据主办方查询")
-      //   }
-      // } else {
-      //   if (this.exportName) {
-      //     await getEasyByMeetName(this.exportName).then((res) => {
-      //       this.allAdataList = this.allAdataList.concat(res.data)
-      //       this.allAdataList = this.allAdataList.filter((value) => {return  value.checkState === 0 || value.checkState === 1 || value.checkState === 2 || value.checkState === 3 || value.checkState === 5 })
-      //       this.checkStateToString(this.allAdataList)
-      //     })
-      //   }
-      //   if (this.exportAddr) {
-      //     await getEasyByMeetAddr(this.exportAddr).then((res) => {
-      //       this.allAdataList = this.allAdataList.concat(res.data)
-      //       this.allAdataList = this.allAdataList.filter((value) => {return  value.checkState === 0 || value.checkState === 1 || value.checkState === 2 || value.checkState === 3 || value.checkState === 5})
-      //       this.checkStateToString(this.allAdataList)
-      //     })
-      //   }
-      //   if (this.hostComp) {
-      //     console.log("根据主办方查询")
-      //   }
-      // }
-      // this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
-      this.datalist = this.allAdataList
     },
     async reset () {
       this.exportName = ""
@@ -491,13 +362,6 @@ export default {
       this.showDataList = this.showDataList.filter((item) => {
         return this.checkTypeList.indexOf(item.isFirstFont) > -1
       })
-      // if (this.checkType == 1) {
-      //   this.allAdataList = this.detailForm
-      //   // console.log('allAdataList',this.allAdataList);
-      // } else {
-      //   this.allAdataList = this.easyForm
-      // }
-      // this.datalist = this.allAdataList.filter((v) => v.checkState == "待审核")
     }
   },
 

@@ -479,13 +479,6 @@ export default {
       let downloadData = XLSX.write(xlsxData,{ bookType: 'xlsx', bookSST: true, type: 'array' })
       FileSaver.saveAs(new Blob([downloadData], {type: "application/octet-stream"}), "汇总表格.xlsx")
       return downloadData
-      // let downloadColumns = this.columns1.filter((col, index) => index > 1 && index < 8)
-      // downloadColumns.unshift({title: "序号", key: "index"})
-      // this.$refs.table.exportCsv({
-      //   filename: "申报记录",
-      //   columns: downloadColumns,
-      //   data: this.selection
-      // })
     },
     changePageSize (size) {
       this.pageSize = size
@@ -504,7 +497,6 @@ export default {
         type: "warning"
       })
         .then(() => {
-          // this.checkType == 1
           item.isFirstFont
             ? checkPassDetail(item.id, this.$store.getters.token, 5).then(
               (successResponse) => {
@@ -549,7 +541,6 @@ export default {
         query: {
           item: data,
           checkType: this.checkType,
-          // checkState: data.checkState,
           status: status
         }
       })

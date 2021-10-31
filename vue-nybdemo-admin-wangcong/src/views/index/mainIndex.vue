@@ -9,10 +9,10 @@
       </tr>
       <tr class="num">
         <td>
-          <el-tag type="danger" class="num-tag"> {{ detailNum }}</el-tag>
+          <el-tag type="danger" class="num-tag" @click="toDetailCheck" style="cursor: pointer"> {{ detailNum }}</el-tag>
         </td>
         <td>
-          <el-tag type="danger" class="num-tag">{{ easyNum }}</el-tag>
+          <el-tag type="danger" class="num-tag" @click="toEasyCheck" style="cursor: pointer">{{ easyNum }}</el-tag>
         </td>
         <td>
           <el-tag type="danger" class="num-tag">{{ summaryNum }}</el-tag>
