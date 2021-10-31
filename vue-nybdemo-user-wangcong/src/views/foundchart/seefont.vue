@@ -96,7 +96,7 @@
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
-            <span v-show="isDownloading[0]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
+            <span v-show="isDownloading[0]" style="position: absolute;left: 580px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
@@ -106,7 +106,7 @@
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
-            <span v-show="isDownloading[1]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
+            <span v-show="isDownloading[1]" style="position: absolute;left: 580px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr>
@@ -116,7 +116,7 @@
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
-            <span v-show="isDownloading[2]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
+            <span v-show="isDownloading[2]" style="position: absolute;left: 580px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr v-show="detailForm.isFirstFont">
@@ -126,7 +126,7 @@
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
-            <span v-show="isDownloading[3]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
+            <span v-show="isDownloading[3]" style="position: absolute;left: 580px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
         <tr v-show="detailForm.isFirstFont">
@@ -136,7 +136,7 @@
               <img :src="downloadIcon" alt="">
               <span>点击下载</span>
             </a>
-            <span v-show="isDownloading[4]" style="position: absolute;left: 560px;top: 15px; color: #79bbff">正在下载文件...</span>
+            <span v-show="isDownloading[4]" style="position: absolute;left: 580px;top: 15px; color: #79bbff">正在下载文件...</span>
           </td>
         </tr>
       </table>

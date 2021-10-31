@@ -1,21 +1,15 @@
 <template>
   <div style="height: 100%">
-    <div class="card1 bbxx" style="width: 100%; height: 100%">
-<!--      <div class="chartUser">-->
-
+    <div class="card1 bbxx" style="width: 100%">
         <div class="function-btns">
           <el-button @click="returnMainIndex()" type="primary">返回</el-button>
           <el-button @click="clearForm()" type="danger">重填</el-button>
-<!--          <el-button @click="newFont()" type="primary">暂存</el-button>-->
           <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
         </div>
-<!--      </div>-->
-      <div>
+      <div class="modify-font-form">
         <el-form :model="declareForm" ref="fontForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px;background-color: #ffffff" enctype='multipart/form-data'>
           <div class="helpinfo">
-            <p><span class="wrtext">本申报适用于已加入展会计划的申报！</span></p>
-            <p><font class="hptext">请认真填写展会活动登记表，提交后未经审核无法修改</font></p>
-            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
+            <span>本申报适用于已加入展会计划的申报！请认真填写展会活动登记表，提交后未经审核无法修改!所需上传的文件均为.pdf格式，且大小在10MB以内!</span>
           </div>
           <el-collapse @change="collapseChange">
             <el-collapse-item name="1">
@@ -1002,8 +996,11 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 .helpinfo {
   /*background-color: rgba(70, 130, 180, 0.1);*/
   transform: translateY(24%);
-  margin: 10px 10px 10px 70px;
-  padding: 10px 0 10px 10px;
+  margin: 10px 20px 10px 170px;
+  padding: 10px 0px 10px 10px;
+  span{
+
+  }
   //width: 556px;
 }
 .function-btns{
@@ -1011,7 +1008,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   /*line-height: 100px;*/
   /*margin: 10px;*/
   z-index: 999999;
-  right: 260px;
+  right: 160px;
   .el-button{
     border-radius: 10px;
     font-size: 16px;
@@ -1024,10 +1021,17 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   display: flex;
   flex-direction: column;
   .el-collapse-item{
-    margin-left: 40px;
+    margin-left: 140px;
   }
   span{
     font-size: 18px;
+    font-family: "黑体";
+  }
+}
+.modify-font-form{
+  .el-form{
+    width: 80%;
+    padding-bottom: 15px;
   }
 }
 .el-input{
@@ -1046,7 +1050,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
 
 .wrtext {
   /*color: rgba(255, 38, 38, 0.9);*/
-  color: #F56C6C;
+  /*color: #F56C6C;*/
 }
 
 .card1 {
@@ -1135,11 +1139,8 @@ label.xrequired:after {
   width: 100% !important;
 }
 .attention-tips{
-  width: 100%;
-  /*background-color: rgba(70, 130, 180, 0.1);*/
   margin: 0px 20px 0px 30px;
   padding: 10px 0px 10px 10px;
-  /*box-sizing: inherit;*/
   p{
     color: rgba(80, 144,53, 1);
     letter-spacing: 2px;

@@ -2,21 +2,24 @@
   <div style="height: 100%; width: 100%">
     <div class="card bbxx" style="height: 100%; width: 100%">
       <el-row>
-        <el-col :span="14" style="margin: 0 50px">
-          <div class="helpinfo" style="width: 100%">
-            <p><font class="hptext">请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>
-            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>
-          </div>
-        </el-col>
+<!--        <el-col :span="14" style="margin: 0 50px">-->
+<!--          <div class="helpinfo" style="width: 100%">-->
+<!--            <p><font class="hptext">请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!</font></p>-->
+<!--            <p><font class="hptext">所需上传的文件均为.pdf格式，且大小在10MB以内!</font></p>-->
+<!--          </div>-->
+<!--        </el-col>-->
           <div class="function-btns">
             <el-button @click="returnMainIndex()" type="primary">返回</el-button>
-            <el-button @click="clearForm()" type="danger" style="margin: 0 20px 0 30px">重填</el-button>
+            <el-button @click="clearForm()" type="danger">重填</el-button>
 <!--            <el-button @click="newFont()" type="primary">暂存</el-button>-->
             <el-button class="subBtn" type="success" v-on:click="declareFormed">提交</el-button>
           </div>
       </el-row>
       <el-row>
-        <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="demo-ruleForm" style="padding-right: 30px; width: 75%;padding-left: 20px" enctype='multipart/form-data'>
+        <el-form :model="declareForm" ref="summaryForm" status-icon label-width="30px" class="firm-handin-form" style="padding-right: 30px; width: 75%;padding-left: 20px" enctype='multipart/form-data'>
+          <div class="helpinfo">
+            <span>请企事业单位认真填写展会活动登记表，所有选项均为必填，没有请填无，提交后无法修改!所需上传的文件均为.pdf格式，且大小在10MB以内!</span>
+          </div>
           <el-col :span="11">
 <!--            <el-form-item prop="detailId">-->
 <!--              <label class="xrequired">展会名称</label>-->
@@ -457,14 +460,7 @@ $list1: $bluee $pinkk $yelloww $grennn $purplee $lightBluee;
   font-family: 华文细黑;
 }
 
-.helpinfo {
-  background-color: rgba(70, 130, 180, 0.1);
-  transform: translateY(24%);
-  margin: 10px 10px 50px 0px;
-  padding: 10px;
-  //width: 100%;
-  font-size: 16px;
-}
+
 .hptext {
   color: rgba(80, 144,53, 1);
   font-family: 微软雅黑;
@@ -617,9 +613,22 @@ top: 8px;
 margin-left: 3px;
 
 }
-.demo-ruleForm{
+.el-row{
+  .el-form{
+    margin-left: 120px;
+  }
+}
+.firm-handin-form{
   .el-form-item{
     margin-bottom: 0px;
+  }
+  .helpinfo {
+    /*background-color: rgba(70, 130, 180, 0.1);*/
+    transform: translateY(24%);
+    margin: 10px 10px 10px 30px;
+    padding: 10px;
+    width: 90%;
+    font-size: 16px;
   }
 }
 .el-checkbox{
