@@ -9,11 +9,11 @@
           placeholder="请输入展会名称"
           style="width: 160px; margin-right: 18px"
         ></el-input>
-        <h3 style="margin-right: 16px">展会简称</h3>
+        <h3 style="margin-right: 16px">账号名称</h3>
         <el-input
           v-model="meetAddr"
           @keyup.enter.native="searchAccountData"
-          placeholder="请输入展会简称"
+          placeholder="请输入账号名称"
           style="width: 160px;margin-right: 18px"
         ></el-input>
         <h3 style="margin-right: 16px">展会类型</h3>
@@ -41,7 +41,7 @@
           <el-form-item label="展会名称:">
             <el-input style="width: 300px;" v-model="formInline.name" placeholder="展会名称"></el-input>
           </el-form-item>
-          <el-form-item label="展会简称:">
+          <el-form-item label="账号名称:">
             <el-input
               style="width: 300px;"
               v-model="formInline.meetAddr"
@@ -79,14 +79,14 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="name"
-          label="展会名称">
+          prop="meetAddr"
+          label="账号名称"
+          width="180">
         </el-table-column>
         <el-table-column
           align="center"
-          prop="meetAddr"
-          label="展会简称"
-          width="180">
+          prop="name"
+          label="展会名称">
         </el-table-column>
         <el-table-column
           align="center"
@@ -150,7 +150,7 @@ export default {
           align: "center"
         },
         {
-          title: "展会简称",
+          title: "账号名称",
           key: "meetAddr",
           align: "center",
           width: 90
@@ -333,7 +333,7 @@ export default {
       if (!this.formInline.meetAddr) {
         this.$message({
           showClose: true,
-          message: "请填写展会简称！",
+          message: "请填写账号名称！",
           type: "error",
         });
         return false;
@@ -346,21 +346,6 @@ export default {
         });
         return false;
       }
-      // if (this.formInline.kindInput === "事业单位") {
-      //   this.formInline.kind = 0;
-      // } else if (this.formInline.kindInput === "省部级") {
-      //   this.formInline.kind = 1;
-      // } else if (this.formInline.kindInput === "海外机构") {
-      //   this.formInline.kind = 2;
-      // } else {
-      //   this.$message({
-      //     showClose: true,
-      //     message: "请填写正确的类型！",
-      //     type: "error",
-      //   });
-      //   return false;
-      // }
-
       addUser(
         this.formInline.name,
         this.formInline.meetAddr,

@@ -60,7 +60,7 @@
                 detailForm.endTime.slice(0, 10)
               }}
             </td>
-            <td>举办周期</td>
+            <td>举办周期（年）</td>
             <td>{{ detailForm.cycle }}</td>
             <td>是否邀请境外有关机构及参展商</td>
             <td>{{ getForign }}</td>
@@ -91,9 +91,9 @@
           <tr align="center">
             <td>经费来源</td>
             <td colspan="7">
-              财政资金：<span>{{ detailForm.finanFund }} 元<br /></span>
+              财政资金：<span>{{ detailForm.finanFund }} 万元<br /></span>
               自筹资金:
-              <span>{{ detailForm.selfFund }} 元</span>
+              <span>{{ detailForm.selfFund }} 万元</span>
             </td>
           </tr>
           <tr align="center">
@@ -181,35 +181,42 @@
             <td colspan="7">{{ detailForm.name || meetName }}</td>
           </tr>
           <tr align="center">
-            <td>展览面积</td>
+            <td>展览面积（㎡）</td>
             <td>{{ detailForm.area }}</td>
-            <td>参展国家和地区数量</td>
-            <td>{{ detailForm.countryNum }}</td>
-            <td>参展省市自治区情况</td>
-            <td>{{ detailForm.provinceState }}</td>
             <td>参展企业数量</td>
             <td>{{ detailForm.companyNum }}</td>
-          </tr>
-          <tr align="center">
             <td>采购商数量</td>
             <td>{{ detailForm.buyerNum }}</td>
             <td>参展产品数量</td>
             <td>{{ detailForm.displayObj }}</td>
+          </tr>
+          <tr align="center">
             <td>同期活动数量</td>
             <td>{{ detailForm.activityNum }}</td>
             <td>宣传媒体数</td>
             <td>{{ detailForm.mediaNum }}</td>
-          </tr>
-
-          <tr align="center">
-            <td>线下成交额（含意向）</td>
-            <td>{{ detailForm.turnover }}</td>
-            <td>线上成交额</td>
-            <td>{{ detailForm.onlineTurnover }}</td>
             <td>线下参展人数</td>
             <td>{{ detailForm.viewerNum }}</td>
             <td>线上参展人数</td>
             <td>{{ detailForm.onlineViewer }}</td>
+          </tr>
+          <tr align="center">
+            <td colspan="2">线下成交额（含意向）（万元）</td>
+            <td colspan="2">{{ detailForm.turnover }}</td>
+            <td colspan="2">线上成交额（万元）</td>
+            <td colspan="2">{{ detailForm.onlineTurnover }}</td>
+          </tr>
+          <tr align="center">
+            <td>参展国家和地区数量</td>
+            <td>{{ detailForm.countryNum }}</td>
+            <td>参展省市自治区情况</td>
+            <td colspan="5">{{ detailForm.provinceState }}</td>
+          </tr>
+          <tr align="center" style="height:100px">
+            <td>展会亮点</td>
+            <td colspan="3">{{ detailForm.meetHighlight }}</td>
+            <td>下一步工作计划</td>
+            <td colspan="3">{{ detailForm.nextWorkPlan }}</td>
           </tr>
           <tr align="center">
             <td>填报单位</td>
@@ -221,15 +228,6 @@
             <td>手机号</td>
             <td>{{ detailForm.teleNum }}</td>
           </tr>
-          <tr align="center">
-            <td>展会亮点(200字以内)</td>
-            <td colspan="7">{{ detailForm.meetHighlight }}</td>
-          </tr>
-          <tr align="center">
-            <td>下一步工作计划(200字以内)</td>
-            <td colspan="7">{{ detailForm.nextWorkPlan }}</td>
-          </tr>
-
           <tr align="center">
             <td>总结报告全文</td>
             <td colspan="7" style="font-size: 10px; position: relative">
@@ -776,7 +774,7 @@ tr {
 
 .card {
   color: #666;
-  padding: 10px 20px 30px 40px;
+  padding: 10px 20px 30px 20px;
   @extend %shadow;
 
   ul {
