@@ -43,7 +43,8 @@ export default {
   data () {
     return {
       isfullScreen: true,
-      avatar: "./static/images/icon.jpg",
+      // avatar: "./static/images/icon.jpg",
+      avatar: require("../../../assets/icons/avatar.svg"),
       dialogInfoVisible: false,
       dialogPassVisible: false,
       title: "",

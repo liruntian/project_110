@@ -560,7 +560,7 @@ export default {
         this.$refs.view1.focus();
         return false;
       }
-      if (!this.declareForm.finanFund) {
+      if (this.declareForm.finanFund === "") {
         this.$message({
           showClose: true,
           message: "请填写财政金额！",
@@ -569,7 +569,7 @@ export default {
         this.$refs.finanFund.focus();
         return false;
       }
-      if (!this.declareForm.selfFund) {
+      if (this.declareForm.selfFund === "") {
         this.$message({
           showClose: true,
           message: "请填写自筹金额！",
@@ -873,7 +873,7 @@ export default {
       }else {
         Vue.set(this.collapse,2,false)
       }
-      if (!this.declareForm.finanFund || !this.declareForm.selfFund){
+      if (this.declareForm.finanFund === "" || this.declareForm.selfFund === ""){
         Vue.set(this.collapse,3,true)
       }else {
         Vue.set(this.collapse,3,false)
